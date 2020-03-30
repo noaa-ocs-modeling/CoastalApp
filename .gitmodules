@@ -13,3 +13,6 @@
 [submodule "ADCIRC"]
 	path = ADCIRC
 	url = https://github.com/moghimis/adcirc-cg.git
+[submodule "NWM"]
+	path = NWM
+	url = https://github.com/trimbleava/nwm-nuopc.git
