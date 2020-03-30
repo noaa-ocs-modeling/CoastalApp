@@ -1,0 +1,17 @@
+#NEMS model configure inputs 
+print_esmf:              .true.
+RUN_CONTINUE:            .false.
+ENS_SPS:                 .false.
+total_member:            1
+PE_MEMBER01:             @[TASKS]
+
+
+start_year:              @[YEAR]
+start_month:             @[MONTH] 
+start_day:               @[DAY]
+start_hour:              @[HOUR]
+start_minute:            0
+start_second:            0
+nhours_fcst:             @[NFHRS]
+
+
