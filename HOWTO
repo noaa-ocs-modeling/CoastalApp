@@ -3,7 +3,7 @@ Coastal Act Team - 9/13/2019
 The purpose of this directory is to test/run the ESMF/NUOPC/NEMS couple system that
 comprises COASTAL ACT coupling system. 
 
-The latest version of NEMS has been cloned into current directory:
+The latest version of the NEMS has been cloned into current directory:
 
   git clone https://github.com/NOAA-EMC/NEMS
   

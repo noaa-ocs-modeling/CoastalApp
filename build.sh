@@ -1,8 +1,10 @@
 #!/bin/bash
-# moghimis@gmail.com 
-# Script to compile NSEModel NEMS application
 
-## Feb 27, 2020
+# Description : Script to compile NSEModel NEMS application
+# Usage       : ./build.sh
+# Date        : Feb 27, 2020
+# Contact     : moghimis@gmail.com 
+
 
 # load modules
 source modulefiles/hera/ESMF_NUOPC
