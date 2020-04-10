@@ -1,0 +1,15 @@
+#NEMS model configure inputs
+print_esmf:              .true.
+RUN_CONTINUE:            .false.
+ENS_SPS:                 .false.
+total_member:            1
+PE_MEMBER01:             6
+
+
+start_year:              2008
+start_month:             09
+start_day:               04
+start_hour:              12
+start_minute:            0
+start_second:            0
+nhours_fcst:             36

@@ -1,0 +1,37 @@
+#!/bin/sh -l
+
+#SBATCH -A coastal            # -A, --account=name          charge job to specified account
+##SBATCH -q debug              # coastal group can only submit to this Q
+#SBATCH -e slurm.error        # -e, --error=err             file for batch script's standard error
+#SBATCH --ignore-pbs          # --ignore-pbs            Ignore #PBS options in the batch script
+#SBATCH -J nsem               # -J, --job-name=jobname      name of job
+                              # (type = block|cyclic|arbitrary)
+#SBATCH                       # --mail-user=user        who to send email notification for job state
+                              # changes
+#SBATCH --ntasks-per-node=34  # --ntasks-per-node=n     number of tasks to invoke on each node
+#SBATCH -N 33                 # -N, --nodes=N           number of nodes on which to run (N = min[-max])
+#SBATCH --parsable            # --parsable              outputs only the jobid and cluster name (if present),
+                              # separated by semicolon, only on successful submission.
+#SBATCH -t 420                # -t, --time=minutes          time limit
+
+############################### main - to run: $sbatch nsem.job ##########################
+set -x
+echo $SLURM_SUBMIT_DIR            # (in Slurm, jobs start in "current dir")       
+echo $SLURM_JOBID                                                      
+echo $SLURM_JOB_NAME
+echo $SLURM_NNODES                                                     
+echo $SLURM_TASKS_PER_NODE
+
+# PBS_NODEFILE:  There is not a direct equivalent for this, but 
+echo $SLURM_NODELIST              # give you the list of assigned nodes.
+
+# cd $SLURM_SUBMIT_DIR
+echo "STARTING THE JOB AT"
+date
+
+# change the ROOTDIR to absolute path of where your pulled the 
+# NEMS and NEMS Applications
+cp -fv <ROOTDIR>/NEMS/exe/NEMS.x NEMS.x
+source <ROOTDIR>/NEMS/src/conf/modules.nems
+srun ./NEMS.x
+date
