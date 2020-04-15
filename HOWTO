@@ -26,8 +26,33 @@ Pull the latest NEMS from repository into a root directory in Hera:
 
 1) cd <ROOTDIR>
 2) git clone https://github.com/NOAA-EMC/NEMS
-3) create 4 directories: compsets\  conf\  modulefiles\  parm\
-    you should have 5 directories, including NEMS
+3) got to NEMS/src/incmake/env to see if your system is implemented (i.e. wcoss, rdhps, ...)
+   If it doesn't exist, you must create one and register it in "detect.mk" file.
+   For example, our rdhpcs system moved from Thiea to Hera node. The directory rdhpcs and the
+   detect.mk file already existed. Although we could rename the theia to hera, we left it for
+   the NEMS admin to do the cleanup. Looking into detect.mk, we understood to create a environment
+   make file for hera system by adding below lines to detect.mk:
+
+   ifneq (,$(and $(wildcard /scratch1),$(wildcard /scratch2)))
+      NEMS_COMPILER?=intel
+      $(call add_build_env,hera.$(NEMS_COMPILER),env/rdhpcs/hera.$(NEMS_COMPILER).mk)
+
+   We further created "hera.intel.mk" file with below contents:
+  
+   MACHINE_ID=hera
+   FULL_MACHINE_ID=hera
+   USE_MODULES=YES
+   DEFAULT_MODULE=$(FULL_MACHINE_ID)/ESMF_NUOPC
+   BUILD_TARGET=$(FULL_MACHINE_ID).$(NEMS_COMPILER)
+   NEMS_COMPILER=intel
+   MODULE_LOGIC=$(call ULIMIT_MODULE_LOGIC,200000)
+
+   If your system differs, you must implement the above steps.
+   If you do not have your system included, you will get an error from this file:
+   NEMS/src/incmake/buildenv.mk
+  
+4) create 4 directories: compsets\  conf\  modulefiles\  parm\ if they do not exist.
+   you should have 5 directories, including NEMS
 	
 Go to created modulefiles directory
 
@@ -47,11 +72,11 @@ Go to user created conf directory
     that is a makefile fragment common to all the coupled models and
     esmf,  nuopc , netcdf, external libs, ...
     
-Go to ROOTDIR directory
+Go to ROOTDIR directory ( this section applies to any other model cap such as ADCIRC, WW3, ...)
 
 1) copy source code of a new model, aka. NEMS APP or CAP, into this directory (i.e. cp -r NWM .)
-2)  goto <NEMSDIR>/src/incmake system directory and copy
-     "example_component_FOO.mk" to "component_<Model>.mk" (i.e. component_NWM.mk)
+2) goto NEMS/src/incmake system directory and copy
+   "example_component_FOO.mk" to "component_<Model>.mk" (i.e. component_NWM.mk)
 3) edit the file by changing "FOO" to <Model> and "foo" to
      <model> (i.e. NWM  and   nwm)
 4) edit the file further to add model specific make file options (i.e. see component_NWM.mk)
@@ -76,7 +101,7 @@ Go to ROOTDIR directory
 
 NOTE: This is how and where a new model cap integrates into the NEMS system. 
    The added contents on step (6) above must be correctly handled in the new
-   model makefile. Because this is not vey intuitive, please, consult make files
+   model makefile. Because this step is not vey intuitive, please, consult make files
    of the existing model caps such as: <ROOTDIR>/NWM/trunk/NDHMS/CPL/NUOPC_cpl/Makefile
    around line 200, Rule: $(CAP_MK):
    @echo "ESMF_DEP_FRONT     = nwm_nuopc_cap" >> nwm.mk  
