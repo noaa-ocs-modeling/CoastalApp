@@ -18,6 +18,7 @@ make -f GNUmakefile distclean_ATMESH COMPONENTS="ATMESH"
 make -f GNUmakefile distclean_NWM COMPONENTS="NWM"
 
 #make
+#make -f GNUmakefile build COMPONENTS="ADCIRC NWM ATMESH"
+#make -f GNUmakefile build COMPONENTS="ADCIRC ATMESH WW3 NWM"
 #make -f GNUmakefile build COMPONENTS="ADCIRC WW3DATA ATMESH"
-# Beheen - is ATMESH part of the NSEM? We see this in CONOPS as MESH STREAM??
 make -f GNUmakefile build COMPONENTS="ADCIRC ATMESH  NWM"
