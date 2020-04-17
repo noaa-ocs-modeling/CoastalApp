@@ -19,14 +19,14 @@ Below instrutions are how NEMS is build in Hera :
 ======================
 Assuming:
 
-ROOTDIR= ADC-WW3-NWM-NEMS
+ROOTDIR= NEMS_APP
 NEMSDIR=$(ROOTDIR)/NEMS
 
 Pull the latest NEMS from repository into a root directory in Hera:
 
 1) cd <ROOTDIR>
 2) git clone https://github.com/NOAA-EMC/NEMS
-3) got to NEMS/src/incmake/env to see if your system is implemented (i.e. wcoss, rdhps, ...)
+3) got to NEMS/src/incmake/env to see if your system is implemented (i.e. wcoss, rdhps, ...).
    If it doesn't exist, you must create one and register it in "detect.mk" file.
    For example, our rdhpcs system moved from Thiea to Hera node. The directory rdhpcs and the
    detect.mk file already existed. Although we could rename the theia to hera, we left it for
@@ -47,6 +47,14 @@ Pull the latest NEMS from repository into a root directory in Hera:
    NEMS_COMPILER=intel
    MODULE_LOGIC=$(call ULIMIT_MODULE_LOGIC,200000)
 
+   then check the file NEMS/src/incmake/buildenv.mk
+   if you just add a new system, you must add a line
+   above this line in this file:
+
+   include $(call locate_incmake_file,env/your_newly_added/detect.mk)
+   include $(call locate_incmake_file,env/uname/detect.mk)
+
+   NOTE:
    If your system differs, you must implement the above steps.
    If you do not have your system included, you will get an error from this file:
    NEMS/src/incmake/buildenv.mk
