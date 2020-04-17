@@ -47,12 +47,12 @@ Pull the latest NEMS from repository into a root directory in Hera:
    NEMS_COMPILER=intel
    MODULE_LOGIC=$(call ULIMIT_MODULE_LOGIC,200000)
 
-   then check the file NEMS/src/incmake/buildenv.mk
-   if you just add a new system, you must add a line
-   above this line in this file:
+   then check the file NEMS/src/incmake/buildenv.mk.
+   if you just add a new system, you must add a line(i,e. a)
+   above the line b) in this file:
 
-   include $(call locate_incmake_file,env/your_newly_added/detect.mk)
-   include $(call locate_incmake_file,env/uname/detect.mk)
+   include $(call locate_incmake_file,env/your_newly_added/detect.mk)    a)
+   include $(call locate_incmake_file,env/uname/detect.mk)               b)
 
    NOTE:
    If your system differs, you must implement the above steps.
