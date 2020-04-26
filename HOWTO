@@ -1,189 +1,417 @@
-Coastal Act Team - 9/13/2019
-============================
+==================================
+Coastal Act Team  - 9/13/2019
 
-The purpose of this directory is to test/run the ESMF/NUOPC/NEMS couple system that
-comprises COASTAL ACT coupling system. However, this instruction applies to other
-models and other system hardware/software as well.   
+Thanks to all the contributors. 
+==================================
 
-The latest version of the NEMS has been cloned into current directory:
-
-  git clone https://github.com/NOAA-EMC/NEMS
-  
-  git log
+Forked latest version of the NEMS software program from the
+official NEMS repository at https://github.com/NOAA-EMC/NEMS
+git log:
     commit e05bf2a554544093f02bf177658ad432cbafbaa8
     Merge: c8e05a8 95c63cb
     Author: RatkoVasic-NOAA <37597874+RatkoVasic-NOAA@users.noreply.github.com>
     Date:   Fri Sep 13 15:13:28 2019 -0400
 
+ 
+The purpose of this document is to setup, integrate, compile and run ESMF aware
+applications, also known as NUOPC CAP using the NEMS framework which is also an
+application of ESMF framework. The idea is to show, with an example, how to add
+a new model into a couple system, using the NEMS program.  
+
+To put it simply NEMS consists of a main program and a driver  where  different 
+models can integrate into and exchange data at runtime in a standard manner. 
+
+Figure below, depicts simplified relations among the ESMF-NUOPC & NEMS & MODELS 
+
+ Model Coupling       Main Exec.      Models + Interface(CAP)
+   Framework          & Driver           to ESMF & Makefile 
+                                          Fragment for NEMS
+ ==============      ==========       ====================== 
+ESMF & NUOPC    -->     NEMS     -->   Mode1(1), Model(2), Model(3), ...
+
+      |                   |                     |
+      |                   |                     |
+      V	                  V                     V
+
+  libraries of        unifier to       models participating
+callable functions    bring models     to be coupled together
+designed to couple    together as an   through calls to ESMF & NUOPC(a.k.a CAP)  
+     Models           executable       through makefile & manual setup to  NEMS
+ 
+Note: 
+     A CAP is a piece of program written in Fortran extending the model  source 
+     code through calling the appropriate functions from ESMF & NUOPC frameworks.   
+     The models can communicate with one another through CAPs.
+  
+     A makefile fragment is a section of a makefile that is cut from a makefile
+	 and is written into a different file.   A makefile fragment is a part of a 
+     whole. So all the parts must fit together like pieces of a puzzle in order
+	 to complete the entire makefile. 
+
+*****************************************************************
+In rush to use NEMS - below are the required steps for your model
+and your computing system and your machine name and your compiler
+*****************************************************************
+Assumptions:
+   NWM     - is the model to be added to the NEMS system     - <MODEL>
+   Hera    - is the user computer, machine name              - <COMPUTER>
+   rdhpcs  - is the computing system where hera is a node of - <COMPUTING>
+   intel   - is the compiler of choice in hera computer      - <COMPILER>
+   ROOTDIR - is the directory of your choice in hera where you
+             clone the NEMS in
+
+cd ROOTDIR
+   
+1) git clone --recursive https://github.com/moghimis/ADC-WW3-NWM-NEMS
+2) mkdir conf 
+3) mkdir modulefiles
+4) mkdir modulefiles/<COMPUTER>
+5) vi modulefiles/<COMPUTER>/ESMF_NUOPC                           -- see TABLE 1
+6) vi conf/configure.nems.<COMPUTER>.<COMPILER>                   -- see TABLE 2 
+7) mkdir NEMS/src/incmake/env/<COMPUTING>                         -- if it doesn't exist
+8) vi NEMS/src/incmake/env/<COMPUTING>/<COMPUTER>.<COMPILER>.mk   -- see step 4 item c below
+9) vi NEMS/src/incmake/env/<COMPUTING>/detect.mk                  -- see TABLE 3
+10) vi NEMS/src/incmake/buildenv.mk                                                                                       
+  include $(call locate_incmake_file,env/<COMPUTER>/detect.mk)    -- add this line
+  include $(call locate_incmake_file,env/uname/detect.mk)         -- must be the last in line
+11) cp NEMS/src/incmake/example_component_FOO.mk NEMS/src/incmake/component_<COMPUTER>.mk  
+12) vi NEMS/src/incmake/component_<MODEL>.mk                      -- see TABLE 4 
+13) vi NEMS/src/module_EARTH_GRID_COMP.F90                        -- copy lines 171 and 3869 and change model name
+14) Adjust your model makefile                                    -- see TABLE 5 and component_<MODEL>.mk (step 12)
+
+TABLE 0 depicts above steps in form of tree structure
 
 
-Below instrutions are how to add a new model and compile with NEMS 
-======================
-Assuming:
+************************************************************************************
+Below instrutions show how to add a new model for the coupling with other models and
+how to compile and integrate with the NEMS framwork.
+************************************************************************************
+ 
+NEMS is designed to work with different earth system models developed in variety
+of Linux based computer systems.   There are two parts for the user to  acheive
+to integrate into NEMS program. Apart from developing a NUOPC CAP for the model
+to participate in a coupling project, user should write a makefile fragment  in 
+the model's makefile to comply with NEMS workflow for a successful integration.
+The second part of the user's action requires configuration, setup, and  coding
+into NEMS source files. We start with the sencond part first. The first part is
+described on step 7. 
 
-ROOTDIR= NEMS_APP
-NEMSDIR=$(ROOTDIR)/NEMS
 
-Pull the latest NEMS from repository into a root directory in your computer (i.e. Hera):
+Assumptions:
+   NWM     - is the model to be added to the NEMS system 
+   Hera    - is the user computer, machine name
+   rdhpcs  - is the computing system where hera is a node of
+   intel   - is the compiler of choice in hera computer with the version of interest
+   ROOTDIR - is the directory of your choice in hera
 
 1) cd <ROOTDIR>
-2) git clone https://github.com/NOAA-EMC/NEMS
-3) got to directory "NEMS/src/incmake/env" to see if your computing system is implemented (i.e. wcoss, rdhps, ...).
 
-   Note that there are two types of such systems:
-   case 1) the system contains many nodes such as rdhps with nodes such as hera, gaea, jet
-   case 2) the system is an stand alone system such as wcoss
- 
-   If you do not see the name of your system, you must create it and register it as follow: 
+2) Get the source codes into <ROOTDIR>
 
-   case 1)
-   ========
-   usually, a computing environment with many nodes has a name for the parent computer and
-   each node has its own name. The parent and the node names are only some identifiers and
-   the NEMS program doesn't care what they are called as long as you are consistant on using
-   the same name in the right place.
-
-   a) create the parent directory (i.e rdhpcs) in "NEMS/src/incmake/env"
-   b) under parent directory you must create a makefile fragment with the name of the node 
-      of interest (i.e. hera). You also need to know what compiler in the note you would like
-      to use to compile your coupled model with (i.e. intel, gnu, ...). In the case of hera
-      we created a makefile fragment called hera.intel.mk
-   c) add the below contents to this file or copy and adjust the contents from similar file.
-      MACHINE_ID=hera
-      FULL_MACHINE_ID=hera
-      USE_MODULES=YES
-      DEFAULT_MODULE=$(FULL_MACHINE_ID)/ESMF_NUOPC
-      BUILD_TARGET=$(FULL_MACHINE_ID).$(NEMS_COMPILER)
-      NEMS_COMPILER=intel
-      MODULE_LOGIC=$(call ULIMIT_MODULE_LOGIC,200000)
-
-      Note: The third line, if set to "YES" means that the NEMS program will use the user defined
-            module files which is defined on the fourth line. The location of this file is at:
-            ROOTDIR/modulefiles/<hera>/ESMF_NUOPC - more on this is explained below. To recap,
-            make sure the makefile fragment file name "hera.intel.mk" is represented in the contents
-            as shown above.  
-            See the file NEMS/src/incmake/configure_rules.mk for more information
-
-   d) create a file named "detect.mk" file in the parent directory (i.e. "NEMS/src/incmake/env/rdhpcs").
-      The contents of the detect.mk file is a little hard to explain. In summary, you have to add 
-      such statements where each node can be identified uniquely.
-
-      For example, hera node is identified by mounted file systems such as /scratch1 and /scratch2 versus
-      other nodes under the rdhpcs parent system. So, we had to add below statements to the detect.mk:
-
-      ifneq (,$(and $(wildcard /scratch1),$(wildcard /scratch2)))
-        NEMS_COMPILER?=intel
-        $(call add_build_env,hera.$(NEMS_COMPILER),env/rdhpcs/hera.$(NEMS_COMPILER).mk)
+   a) git clone https://github.com/NOAA-EMC/NEMS
       
-      Note that NEMS_COMPILER must be the name of the compiler you have selected and the path to the 
-      makefile fragment must be registered by the call to the "add_build_env" function as shown.
+	  The above command only gets the NEMS code from the official repository. 
+	  Most likely, users are required permission from the NEMS administrator
+      to access this repo.	  
 
-   e) check the file NEMS/src/incmake/buildenv.mk and add this line anywhere above the uname/detect.mk
-      line in this file. The uname/detect.mk is executed if NEMS program can not locate your correct
-      detect.mk file.
+      Or get the development (a.k.a dev) version of the NEMS code to follow
+	  the instruction easier.
 
-      include $(call locate_incmake_file,env/rdhpcs/detect.mk)
-      include $(call locate_incmake_file,env/uname/detect.mk)
+   b) git clone --recursive https://github.com/moghimis/ADC-WW3-NWM-NEMS
+   
+      The development version includes the NEMS code and few model codes
+	  such as ADCIRC, WW3, ATMESH.  This version is located in a private 
+	  github repository at https://github.com/moghimis . 
+	  
+	  To clone from dev you should have an account on  github repository
+	  with a valid email, username, and a password. You also required to 
+	  request a collaborator access to this repo. by sending an email to 
+	  saeed.moghimi@noaa.gov. 
+   
+      During cloning from dev, github asks for a username and password, 
+	  which are those you use to login to your github account.
 
-   If you do not have your system included, you will get an error from this file:
-   NEMS/src/incmake/buildenv.mk
-  
-   case 2)
-   =======
-   This case is same as case 1 whare the parent name and the node name are the same.
-   For example look at the wcoss in "NEMS/src/incmake/env" directory to see this structure:
-   	NEMS/src/incmake/env/
-  		wcoss/
-			wcoss.intel.mk
-			detect.mk
+      After the first clone, you should use "git pull" command to access 
+	  the latest changes from dev repo.
+	
+	For user who used 2a), contents are put into TABLEs and they are located
+	at the end of instructions. 
+
+3) Setup and configure user environment required by NEMS
+
+    a) Create 4 directories: compsets\   conf\   modulefiles\   parm\  in <ROOTDIR> if
+       they do not exist. 
+	  
+	   Note: These 4 directories are user directories and may or may not be saved as part 
+	         of the NEMS source codes. However, there are name dependencies in NEMS code 
+			 to these directories.	  
+
+             You should have 5 directories, including NEMS, if cloned by way of 2a). 
+             You should have 5 directories, including NEMS, and many models that are
+			 integrated into this development version of NEMS (github version), if 
+			 cloned by way of 2b).
+   
+             Since this document is describing the addition of NWM, the final product is 
+             also included in development version. As such you should also see NWM final 
+		     product & to checkout each step of the instruction as you arrive to them.
+		 
+    b) mkdir modulefiles/hera           --  this should match the machine name 
+   
+    c) vi modulefiles/hera/ESMF_NUOPC   --  could be any name 
+   
+	   Note: This file is to set the compilation  environments for this version of  NEMS and 
+	         ESMF and all the participant coupled models. Examples are MPI libraries, NETCDF, 
+		     HDF, SZIP, ESMF, Compilers, and more. See <ROOTDIR>/modulefiles/hera/ESMF_NUOPC
+			
+		 	 The module file name can be any name, however, the directory name "modulefiles" 
+		 	 is expected. See <ROOTDIR>/NEMS/src/incmake/configure_vars.mk for detail.
+			
+             During runtime the contents of this modulefile will be copied into "modules.nems"
+			 located at the <ROOTDIR>/NEMS/src/conf/modules.nems
+   
+    d) vi conf/configure.nems.hera.intel  
+      
+	   Note: This makefile fragment is the common part of a makefile that applies to all the
+             participant coupled models including NEMS itself in Hera computer using intel
+			 compiler. See the contents in <ROOTDIR>/conf/configure.nems.hera.intel
+	  
+	         The name of this makefile is constructed by appending the machine name, "hera", 
+	         dotted with compiler selected, "intel", to the constant "configure.nems", formula
+			 is configure.nems.{COMPUTER}.{COMPILER}
+			    
+             We suggest to copy contents of another makefile into this file and modify according
+			 to your system. Make sure CC, FC and F77 compiler options are set to the intended 
+			 compilers.
+
+    e) Place holder for the <ROOTDIR>/compsets and <ROOTDIR>/parm - TODO
+	
+4) Setup, configuration, and integration of the machine and user modulefile into NEMS system
+
+    a) ls NEMS/src/incmake/env 
+      
+	   Look for directory named after your computing system (i.e. rdhpcs).
+	  
+       Note: There are two types of computing systems that NEMS is concerned with.
+	   
+	         case 1) The system contains many nodes(computers) such as "rdhpcs" with nodes known as
+			         "hera", "gaea", "jet", ...
+			   
+	         case 2) The system is an stand alone system such as "wcoss"
+
+    b) mkdir NEMS/src/incmake/env/rdhpcs  -- if it doesn't exist 
+	
+	   In our case "hera" is a machine belong to the "rdhpcs" where other nodes such as "gaea" and
+	   "jet" were setup but "hera" was not. So we need to implement "hera" under its parent system 
+	   "rdhpcs".
+
+       In case 1), such as our case example, user should create the parent directory in <ROOTDIR>/ 
+	   NEMS/src/incmake/env, if it doesn't exist.
+	   
+	   In case 2), machine name is also the parent and user should create the directory with the node
+       name in <ROOTDIR>/NEMS/src/incmake/env, if it doesn't exist.	   
+   
+    c) vi NEMS/src/incmake/env/rdhpcs/hera.intel.mk
+	
+	   Under parent directory you must create a makefile fragment with this formula, defined by NEMS
+	   {COMPUTER}.{COMPILER}.mk    
+	   
+	   Note: The parent and the node names are only "strings" and NEMS program does not care what they 
+	         are called as long as you are consistant on using the same name in the right place.
+	  
+       Add below contents to this file or copy from another similar file and then  edit
+   
+       MACHINE_ID=hera
+       FULL_MACHINE_ID=hera
+       USE_MODULES=YES
+       DEFAULT_MODULE=$(FULL_MACHINE_ID)/ESMF_NUOPC
+       BUILD_TARGET=$(FULL_MACHINE_ID).$(NEMS_COMPILER)
+       NEMS_COMPILER=intel
+       MODULE_LOGIC=$(call ULIMIT_MODULE_LOGIC,200000)
+
+       Note: The first and 2nd lines are the machine name, the third  line is a toggle set to "YES". 
+	         This means that NEMS program expects a user defined module file set on the fourth line. 
+			 This the user modulefile is the same modulefile we created previousely on step 3 item b
+			 called <ROOTDIR>/modulefiles/hera/ESMF_NUOPC. 
+			
+			 See the file NEMS/src/incmake/configure_rules.mk for more information on the options.
+
+    d) vi NEMS/src/incmake/env/rdhpcs/detect.mk
+
+       The purpose of this file is to locate the machine and find the modules and model codes, etc.
+       In order to do so, especially in case 2) where there are many computer nodes under one parent
+	   computing system, the task is not that trivial. That is why selection of computing system name
+	   and computer name are important to pay attention to.
+	   
+	   In our case example, file systems /scratch1 and /scratch2 are mounting points on "Hera" node.
+	   As a result we added the following statement to the "detect.mk" file to find our machine.
+	   
+       ifneq (,$(and $(wildcard /scratch1),$(wildcard /scratch2)))
+           NEMS_COMPILER?=intel
+           $(call add_build_env,hera.$(NEMS_COMPILER),env/rdhpcs/hera.$(NEMS_COMPILER).mk) 
+       ...
+	   
+	   After finding the computer, the code also calls the "add_build_env" function of the NEMS code 
+	   and passes "hera.intel" and "NEMS/src/incmake/env/rdhpcs/hera.intel.mk", created on step 4c
+	   as arguments to this function in order to build the required environment.
+	   
+	   In summary, you have to add such statements to each detect.mk file where each node under one 
+	   parent can be identified uniquely. There is one such detect.mk file per computer name.
+
+    e) vi NEMS/src/incmake/buildenv.mk 
+	 
+	   Add the newely created "detect.mk" file to the "buildenv.mk" above the "uname/detect.mk" line.
+	   
+	   include $(call locate_incmake_file,env/rdhpcs/detect.mk)
+       include $(call locate_incmake_file,env/uname/detect.mk)      -- comes last
+	  
+	   Note: It is important to make sure uname/detect.mk line is always the last line after all other 
+             detect.mk lines. Otherwise, uname/detect.mk, if executed, assumes sets the computer name  
+             to the result of linux command "uname" which may or may not equate to the machine name you 
+			 defined. 		 
+		 
+             If you do not have your detect.mk file included, you will get an error from systems file
+             NEMS/src/incmake/buildenv.mk.
+		
+5) Setup, configuration, and integration of the model specific compiled files into NEMS system
+		
+    a) cp NEMS/src/incmake/example_component_FOO.mk NEMS/src/incmake/component_NWM.mk 
+	
+	   Note: Each model is required to have a makefile fragment using formula component_{model_name}.mk
+	         There is a system "example_component_FOO.mk" file that is for this purpose, to copy from it.
+	      
+		     The selected model_name is significant because this string is like a keyword and is shared
+             between the model and the NEMS system. More on this later in this document.
+        			 
+    b) vi NEMS/src/incmake/component_NWM.mk
+	   
+	   Through this file NEMS dynamically communicates information about the model's compiled modules location
+	   as well as source files location.
+	   
+	   1) Edit the file by changing the word "FOO" to "NWM" and "foo" to "nwm" without double quotes.
+	   
+	   2) Further edit this file to match your model's compilation and linkage process. It is best to look
+          at this 3 files at the same time to see the connections.
+		  
+	      - NEMS/src/incmake/component_NWM.mk
+		  - $(ROOTDIR)/NWM_INSTALL/nwm.mk  
+		  - <ROOTDIR>/NWM/trunk/NDHMS/CPL/NUOPC_cpl/Makefile around line 200, rule $(CAP_MK)
+		  
+		  OR checkout ADCIRC
+		  
+	      - NEMS/src/incmake/component_ADCIRC.mk
+		  - $(ROOTDIR)/ADCIRC_INSTALL/adcirc.mk 
+		  - <ROOTDIR>/ADCIRC/cpl/nuopc/makefile.adc_cap.nuopc lines 73-95
+
+6) Integration of the model CAP into NEMS system
+
+   a) vi NEMS/src/module_EARTH_GRID_COMP.F90 
+   
+      Edit to add below statements tailored to your model name into two places in this file:
+
+      #ifdef FRONT_NWM
+        use FRONT_NWM,        only: NWM_SS  => SetServices
+      #endif
+
+      And further down the file also add:
+
+      #ifdef FRONT_NWM
+        call NUOPC_DriverAddComp(driver, trim(prefix), NWM_SS, &
+             petList=petList, comp=comp, rc=rc)
+          if (ESMF_LogFoundError(rcToCheck=rc, msg=ESMF_LOGERR_PASSTHRU, &
+                    line=__LINE__, file=trim(name)//":"//__FILE__)) return   
+      #else
+        write (msg, *) "Model '", trim(model), "' was requested, "// &
+                             "but is not available in the executable!"
+        call ESMF_LogSetError(ESMF_RC_NOT_VALID, msg=msg, line=__LINE__, &
+                                             file=__FILE__, rcToReturn=rc)
+        return  ! bail out
+      #endif
+
+7) Model makefile specific fragment for NEMS 
+
+   Each model's makefile has to provide following information to the NEMS system:
+   
+   ESMF_DEP_FRONT     = nwm_nuopc_cap
+   ESMF_DEP_INCPATH   = /scratch2/COASTAL/coastal/save/NAMED_STORMS/NEMS_APP/NWM/trunk/NDHMS/CPL/NUOPC_cpl 
+                        /scratch2/COASTAL/coastal/save/NAMED_STORMS/NEMS_APP/NWM_INSTALL
+   ESMF_DEP_CMPL_OBJS =
+   ESMF_DEP_LINK_OBJS = /scratch2/COASTAL/coastal/save/NAMED_STORMS/NEMS_APP/NWM_INSTALL/libnwm_nuopc.a
+   ESMF_DEP_SHRD_PATH =
+   ESMF_DEP_SHRD_LIBS =
+   
+   These information are writen to the file $(ROOTDIR)/NWM_INSTALL/nwm.mk from the model's makefile. Related
+   section of NWM makefile is shown below:
+   
+   CAP_DEP_FRONT := nwm_nuopc_cap    # for NEMS, must be same name as its module
+   CAP_VERS      := VERSION
+   CAP_MK        := nwm.mk           # for NEMS
+
+
+   $(CAP_MK): 
+        @echo $(HR)
+        @echo "Generating NUOPC Makefile Fragment"
+        @echo
+        @echo "# ESMF self-describing build dependency makefile fragment" > $(CAP_MK)
+        @echo "" >> $(CAP_MK)
+        @echo "ESMF_DEP_FRONT     = $(CAP_DEP_FRONT)" >> $(CAP_MK)
+        @echo "ESMF_DEP_INCPATH   = $(CAP_DIR)" >> $(CAP_MK)
+        @echo "ESMF_DEP_CMPL_OBJS = " >> $(CAP_MK)
+        @echo "ESMF_DEP_LINK_OBJS = $(CAP_DIR)/$(CAP_LIB)" >> $(CAP_MK)
+        @echo "ESMF_DEP_SHRD_PATH = " >> $(CAP_MK)
+        @echo "ESMF_DEP_SHRD_LIBS = " >> $(CAP_MK)
    
     
-4) create 4 directories: compsets\  conf\  modulefiles\  parm\ in ROOTDIR, if they do not exist.
-   you should have 5 directories, including NEMS
-	
-5) Go to the modulefiles directory and create user modulefile, mentioned in step 3) item c.
+   Note: The value of the ESMF_DEP_FRONT is the name of the model's CAP module name and not the model's 
+         file name.
 
-   a) cd <ROOTDIR>/modulefiles
-   b) create a directory called "hera"
-   c) copy/create a module file called "ESMF_NUOPC" - Note that this file is to set the
-      compilation environments for this version of the NEMS and your coupled models. The module file
-      name can be any name, however, the directory modulefiles is constant.
-      See <ROOTDIR>/modulefiles/hera/ESMF_NUOPC for the contents and adjust yours based on your system. 
+8) Model source code locations
 
-      Note that during runtime the contents of this file will be copied into "NEMS/src/conf/modules.nems"
+   a) cp -rf nwm <ROOTDIR>/NWM
+   
+   NEMS system expects source codes of all the model participant to be available in the same level 
+   directory as NEMS source code. This location is the <ROOTDIR> where we cloned the NEMS. As the last 
+   step before compilation, copy your model into <ROOTDIR>
+   
+9) There are 3 files located in <ROOTDIR> worth noting
 
-6) Go to user created conf directory and create another makefile fragment
-
-   a) cd <ROOTDIR>/conf
-   b) create a configuration file called "configure.nems.hera.intel". Notice the "hera.intel" which must
-      be same as your computer and the selected compiler. This makefile fragment is common to all the 
-      coupled models as well as esmf,  nuopc , netcdf, external libs, ...
-
-   Note: make sure CC, FC and F77 are set to the intended compilers.
-
+   a) model_configure 
+   b) nems.configure
+   c) build.sh
+   d) nems.job
+   
     
-7) Go to ROOTDIR directory ( this section applies to any other model cap such as ADCIRC, WW3, ...)
+***************************
+To build model(s) with NEMS
+***************************
 
-   a) copy source code of your model, aka. NEMS APP or CAP, into this directory (i.e. cp -r NWM .)
+1) got to: <ROOTDIR>/NEMS
 
-8) Go to NEMS/src/incmake system directory and 
-   a) copy the file "example_component_FOO.mk" to "component_<Model>.mk" (i.e. component_NWM.mk)
-   b) edit the file by changing the word "FOO" to <Model> and "foo" to <model> (i.e. NWM  and nwm)
-   c) edit the file further to add model specific make file options (i.e. see component_NWM.mk)
-
-      Note: This step is not vey intuitive, please, consult make files of the existing model caps 
-            such as: <ROOTDIR>/NWM/trunk/NDHMS/CPL/NUOPC_cpl/Makefile around line 200, makefile rule
-            $(CAP_MK):
-            @echo "ESMF_DEP_FRONT     = nwm_nuopc_cap" >> nwm.mk
-
-            such as: <ROOTDIR>/ADCIRC/cpl/nuopc/makefile.adc_cap.nuopc lines 73-95
-              
-9) Edit the file "NEMS/src/module_EARTH_GRID_COMP.F90 and add similar statements with your model name
-   to two places in this file:
-
-   #ifdef FRONT_NWM
-      use FRONT_NWM,        only: NWM_SS  => SetServices
-   #endif
-
-   AND further down the file also add:
-
-   #ifdef FRONT_NWM
-            call NUOPC_DriverAddComp(driver, trim(prefix), NWM_SS, &
-              petList=petList, comp=comp, rc=rc)
-            if (ESMF_LogFoundError(rcToCheck=rc, msg=ESMF_LOGERR_PASSTHRU, &
-              line=__LINE__, file=trim(name)//":"//__FILE__)) return  !  bail out
-   #else
-            write (msg, *) "Model '", trim(model), "' was requested, "// &
-              "but is not available in the executable!"
-            call ESMF_LogSetError(ESMF_RC_NOT_VALID, msg=msg, line=__LINE__, &
-              file=__FILE__, rcToReturn=rc)
-            return  ! bail out
-   #endif
-
-   Note: By adding the above statements your model/cap integrates into the NEMS system.
- 
-
-To build NEMS:
-===============
-
-1) got to: <NEMSDIR>
-   clean and/or distclean before compiling........
+   clean and/or distclean before compiling
+   
 2) make -f GNUmakefile distclean_ADCIRC COMPONENTS="ADCIRC"
    make -f GNUmakefile distclean_NWM COMPONENTS="NWM"
    make -f GNUmakefile distclean_WW3DATA COMPONENTS="WW3DATA"
    make -f GNUmakefile distclean_ATMESH COMPONENTS="ATMESH"
    make -f GNUmakefile distclean_NEMS COMPONENTS="NEMS"
+   
+   Note: You have to make sure your component_<model_name>.mk and your model's 
+         makefile has distclean rule build into it.
+   
+   build one or more model
+   
 3) make -f GNUmakefile build COMPONENTS="ADCIRC WW3DATA ATMESH NWM"
    make -f GNUmakefile build COMPONENTS="ADCIRC"
 
-OR simply, add the new model to <ROOTDIR>/build.sh and while in
+   OR simply, add the new model to <ROOTDIR>/build.sh and while in
    <ROOTDIR> type: ./build.sh
 
 
-TO run NEMS: TODO - not complete
-============
-1) create a RUNDIRectoy (better be outside of NEMSDIR!!)
-2) copy all the input files/environ files/config files/etc/ 
+*********************************
+TO run NEMS: TODO - workflow is in progress
+*********************************
+
+1) create a <RUNDIR> (better be outside of NEMSDIR!!)
+2) copy all the input files/environ files/config files/etc/
    required by all the coupled models into <RUNDIR>
 3) copy <ROOTDIR>nsem.job into <RUNDIR>
 4) edit nsem.job file to adjsut the <ROOTDIR> and the NODE/TASK options
@@ -192,16 +420,235 @@ TO run NEMS: TODO - not complete
 6) then run the command > sbatch nsem.job
 7) check the process > squeue -u $USER
 
+Note: There are two run time configuration files, required by NEMS. 
+      Example of these two files are located in this directory for convenience.
+      To use them, you should copy and rename them to exclude the ".sample".
+      These two files are hard coded into the NEMS source codes and expected files
+      names are: 
+	  - model_configure and 
+	  - nems.configure
+	  
+      The file <ROOTDIR>/nsem.job.sample is an example of SLURM job batch file.
+
+
+******************************************************************
+TABLE 0 - Schematic workflow of files involved in pre compilation 
+****************************************************************** 
+   <ROOTDIR>
+   |
+   |--- NEMS
+   |     |
+   |     |--- src/ --- module_EARTH_GRID_COMP.F90
+   |           |
+   |           |--- incmake/ --- buildenv.mk, component_NWM.mk, example_component_FOO.mk
+   |           |       |
+   |           |       |--- env/ --- rdhpcs/ --- detect.mk, hera.intel.mk 
+   |           |       
+   |		   |--- conf/ --- modules.nems
+   |--- ModelA
+   |
+   |--- ModelA_INSTALL/ --- libmodelA.a, modelA.mk, modelA.mod 
+   |
+   |--- ModelB
+   |
+   |--- ModelB_INSTALL/ --- libmodelB.a, modelB.mk, modelB.mod
+   |
+   |--- ModelN
+   |
+   |--- ModelN_INSTALL/ --- libmodelN.a, modelN.mk, modelN.mod
+   |
+   |--- modulefiles/ --- hera/ --- ESMF_NUOPC
+   |
+   |--- conf/ --- configure.nems.hera.intel
+   |
+   |--- NEMS_RUN
+   
+
+*************************************************
+TABLE 1 - Contents of modulefiles/hera/ESMF_NUOPC
+*************************************************
+#%Module
+#
+#    NEMS FV3 Prerequisites: Hera/Intel
+
+
+# load programming environment
+# this typically includes compiler, MPI and job scheduler
+#
+
+module load intel/18.0.5.274
+module load szip/2.1
+module load hdf5/1.10.4
+module load impi/2018.0.4
+module load netcdf/4.6.1
+
+# environment for ESMF v8.0.0 beta snapshot 48g
+module use /home/emc.nemspara/SOFT-hera/modulefiles
+module load esmf/8.0.0bs48g
+
+# add others for each model as needed
+
+****************************************************
+TABLE 2 - Contents of conf/configure.nems.hera.intel
+****************************************************
+# NEMS configuration file
+#
+# Platform: Hera
+# Compiler: Intel with IntelMPI
+
+SHELL           = /bin/sh
+
+
+# Include the common configuration parts
+include         $(TOP)/conf/configure.nems.NUOPC
+
+# Other settings
+
+NETCDF_INC   = -I$(NETCDF)/include
+NETCDF_LIB   = -L$(NETCDF)/lib -lnetcdf
+
+NEMSIO_INC   = -I${LIBDIR}/incmod/nemsio
+NEMSIO_LIB   = -L${LIBDIR} -lnemsio
+SYS_LIB      =
+
+EXTLIBS      = $(NEMSIO_LIB) \
+               $(NETCDF_LIB) \
+               $(ESMF_LIB)   \
+               $(SYS_LIB) -lm
+
+EXTLIBS_POST = $(NEMSIO_LIB)  \
+               $(ESMF_LIB)    \
+               $(NETCDF_LIB)  \
+               $(SYS_LIB)
+#
+FC          = mpiifort -g -qopenmp -mkl=sequential -align array32byte -lmkl_intel_lp64 -lmkl_core -lmkl_sequential -lpthread -qopenmp -convert big_endian -assume byterecl -mkl=sequential
+F77         = mpiifort -g -qopenmp -mkl=sequential -align array32byte -lmkl_intel_lp64 -lmkl_core -lmkl_sequential -lpthread -qopenmp -convert big_endian -assume byterecl -mkl=sequential
+FREE         = -free
+FIXED        = -fixed
+R8           = -r8
+
+FINCS        = $(ESMF_INC) $(NEMSIO_INC) $(NETCDF_INC)
+#TRAPS        = -g -fno-inline -no-ip -traceback -ftrapuv -fpe0 -ftz -check all -check noarg_temp_created -fp-stack-check
+
+FFLAGS       = $(TRAPS) $(FINCS) -fp-model strict
+
+OPTS_NMM     = -g -fno-inline -no-ip -traceback -ftrapuv -fpe0 -ftz -check all -check noarg_temp_created -fp-stack-check $(FREE)
+
+FFLAGM_DEBUG =
+
+FFLAGS_NMM   = $(MACROS_NWM) $(OPTS_NMM) $(FFLAGS)
+
+FPP          = -fpp
+CPP          = cpp -P -traditional
+CPPFLAGS     = -DENABLE_SMP -DCHNK_RRTM=8
+
+AR           = ar
+ARFLAGS      = -r
+
+RM           = rm
+
+***********************************************************        
+TABLE 3 - Contents of NEMS/src/incmake/env/rdhpcs/detect.mk
+***********************************************************
+
+ifneq (,$(and $(wildcard /scratch),$(wildcard /scratch3)))
+  NEMS_COMPILER?=intel
+  $(call add_build_env,theia.$(NEMS_COMPILER),env/rdhpcs/theia.$(NEMS_COMPILER).mk)
+else
+  ifneq (,$(and $(wildcard /scratch1),$(wildcard /scratch2)))
+    NEMS_COMPILER?=intel
+    $(call add_build_env,hera.$(NEMS_COMPILER),env/rdhpcs/hera.$(NEMS_COMPILER).mk)
+  else
+    ifneq (,$(and $(wildcard /lfs1),$(wildcard /lfs3)))
+      NEMS_COMPILER?=intel
+      $(call add_build_env,jet.$(NEMS_COMPILER),env/rdhpcs/jet.$(NEMS_COMPILER).mk)
+    else
+      ifneq (,$(shell hostname | grep -i gaea))
+        NEMS_COMPILER?=intel
+        $(call add_build_env,gaea.$(NEMS_COMPILER),env/rdhpcs/gaea.$(NEMS_COMPILER).mk)
+      endif
+    endif
+  endif
+endif
+
+********************************************************
+TABLE 4 - Contents of NEMS/src/incmake/component_NWM.mk
+********************************************************
+# Location of the ESMF makefile fragment for this component:
+nwm_mk = $(NWM_BINDIR)/nwm.mk
+all_component_mk_files+=$(nwm_mk)
+
+# Location of source code and installation
+NWM_SRCDIR?=$(ROOTDIR)/NWM/trunk/NDHMS
+NWM_BINDIR?=$(ROOTDIR)/NWM_INSTALL
+
+# Make sure the expected directories exist and are non-empty:
+$(call require_dir,$(NWM_SRCDIR),NWM source directory)
+
+
+# Rule for building this component:
+build_NWM: $(nwm_mk)
+
+
+env_file=$(NWM_SRCDIR)/setEnvar.sh
+esmf_env=$(NWM_SRCDIR)/esmf-impi-env.sh
+comp_opt=3
+
+# HOW to source env here??
+#
+NWM_ALL_OPTS= \
+  COMP_SRCDIR="$(NWM_SRCDIR)" \
+  COMP_BINDIR="$(NWM_BINDIR)" \
+  MACHINE_ID="$(MACHINE_ID)"
+
+
+$(nwm_mk): configure $(CONFDIR)/configure.nems
+        @echo ""
+        +$(MODULE_LOGIC) ; cd $(NWM_SRCDIR) ; exec ./compile_nuopc_NoahMP.sh $(env_file) $(esmf_env) $(comp_opt)
+        +$(MODULE_LOGIC) ; cd $(NWM_SRCDIR)/CPL/NUOPC_cpl ; exec $(MAKE) -f Makefile nuopcinstall \
+          $(NWM_ALL_OPTS) DESTDIR=/ "INSTDIR=$(NWM_BINDIR)"
+        @echo ""
+        test -d "$(NWM_BINDIR)"
+        @echo ""
+        test -s $(nwm_mk)
+
+# Rule for cleaning the SRCDIR and BINDIR:
+clean_NWM:
+        @echo ""
+        +-cd $(NWM_SRCDIR) ; exec $(MAKE) -f Makefile.nuopc nuopcclean
+
+distclean_NWM: clean_NWM
+        @echo ""
+        rm -rf $(NWM_BINDIR)
+
+distclean_NUOPC:
+        @echo ""
+        +-cd $(NWM_SRCDIR) ; exec $(MAKE) -C CPL/NUOPC_cpl -f Makefile nuopcclean
+        rm -rf $(NWM_BINDIR)
+
+***********************************************************
+TABLE 5 - <ROOTDIR>/NWM/trunk/NDHMS/CPL/NUOPC_cpl/Makefile
+***********************************************************
+CAP_DEP_FRONT := nwm_nuopc_cap    # for NEMS, must be same name as its module
+CAP_VERS      := VERSION
+CAP_MK        := nwm.mk           # for NEMS
+
+
+$(CAP_MK): 
+        @echo $(HR)
+        @echo "Generating NUOPC Makefile Fragment"
+        @echo
+        @echo "# ESMF self-describing build dependency makefile fragment" > $(CAP_MK)
+        @echo "" >> $(CAP_MK)
+        @echo "ESMF_DEP_FRONT     = $(CAP_DEP_FRONT)" >> $(CAP_MK)
+        @echo "ESMF_DEP_INCPATH   = $(CAP_DIR)" >> $(CAP_MK)
+        @echo "ESMF_DEP_CMPL_OBJS = " >> $(CAP_MK)
+        @echo "ESMF_DEP_LINK_OBJS = $(CAP_DIR)/$(CAP_LIB)" >> $(CAP_MK)
+        @echo "ESMF_DEP_SHRD_PATH = " >> $(CAP_MK)
+        @echo "ESMF_DEP_SHRD_LIBS = " >> $(CAP_MK)
+
+=====================================================   
 
 
 Please add contents as needed into <ROOTDIR>.gitignore file:
 
-There are two configuration files, required by NEMS to run. Example of these
-two files are located in this directory for your information.
-To use them, you should copy and rename them to exclude the ".sample". 
-These two files are hard coded into the NEMS source codes and expected files 
-names are: model_configure and nems.configure
-
-The file <ROOTDIR>nsem.job.sample is an example of SLURM job batch file when
-you are ready to run the NEMS and its coupled models on Hera.
-To submit the job type: sbatch nems.job
