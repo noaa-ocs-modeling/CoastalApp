@@ -34,7 +34,8 @@ Go to your local directoy and clone the the repository:
 2) do your collaboration edition and when finished 
 3) git add .
 4) git commit -m "describe what you changed"
-5) git push origin master - to push your changes into your github 
+5) git push origin master - to push your changes into your github
+6) enter your github username/password if asked
 
 While in your github repository GUI:
 
