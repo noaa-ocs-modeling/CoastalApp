@@ -59,6 +59,8 @@ is a "HOWTO" that explains in detail about the usage of this application.
 
 ## Cite
 
+Moghimi, S.; Van der Westhuysen, A.; Abdolali, A.; Myers, E.; Vinogradov, S.; Ma, Z.; Liu, F.; Mehra, A.; Kurkowski, N. Development of an ESMF Based Flexible Coupling Application of ADCIRC and WAVEWATCH III for High Fidelity Coastal Inundation Studies. J. Mar. Sci. Eng. 2020, 8, 308.  https://doi.org/10.3390/jmse8050308
+
 Development of a Flexible Coupling Framework for Coastal Inundation Studies, 2020 S Moghimi, A van der Westhuysen, A Abdolali, E Myers, S Vinogradov
 https://arxiv.org/abs/2003.12652
 
