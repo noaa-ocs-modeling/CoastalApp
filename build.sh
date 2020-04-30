@@ -21,4 +21,7 @@ make -f GNUmakefile distclean_NWM COMPONENTS="NWM"
 #make -f GNUmakefile build COMPONENTS="ADCIRC NWM ATMESH"
 #make -f GNUmakefile build COMPONENTS="ADCIRC ATMESH WW3 NWM"
 #make -f GNUmakefile build COMPONENTS="ADCIRC WW3DATA ATMESH"
-make -f GNUmakefile build COMPONENTS="ADCIRC ATMESH  NWM"
+#make -f GNUmakefile build COMPONENTS="ADCIRC ATMESH  NWM"
+make -f GNUmakefile build COMPONENTS="ADCIRC WW3DATA ATMESH NWM"
+
+
