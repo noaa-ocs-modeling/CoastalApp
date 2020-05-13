@@ -1,18 +1,24 @@
 [submodule "ATMESH"]
 	path = ATMESH
-	url = https://github.com/moghimis/ATMESH
+  	url = https://github.com/moghimis/ATMESH
+	branch = master
 [submodule "WW3DATA"]
 	path = WW3DATA
 	url = https://github.com/moghimis/WW3DATA
+	branch = master
 [submodule "WW3"]
 	path = WW3
-	url = https://github.com/NOAA-EMC/WW3.git
+	url = https://github.com/awest-noaa/WW3.git
+	branch = nuopc_unstruc
 [submodule "NEMS"]
 	path = NEMS
 	url = https://github.com/moghimis/NEMS
+	branch = develop
 [submodule "ADCIRC"]
 	path = ADCIRC
 	url = https://github.com/moghimis/adcirc-cg.git
+	branch = master
 [submodule "NWM"]
 	path = NWM
 	url = https://github.com/trimbleava/nwm_public_nuopc.git
+	branch = master
