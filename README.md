@@ -5,38 +5,38 @@ coupling project to determine wind versus water percentage loss caused by a
 Named Storm Event. 
 
 ## Cloning
-git clone --recursive https://github.com/moghimis/ADC-WW3-NWM-NEMS
+    git clone --recursive https://github.com/moghimis/ADC-WW3-NWM-NEMS
 
 ## Requirements
 
 ### Install ParMETIS
 
-Unstructured WW3 requires an installation of ParMETIS. Download the code from this [link](http://glaros.dtc.umn.edu/gkhome/metis/parmetis/download)  
+Unstructured WW3 requires an installation of ParMETIS for domain decomposition. Download the code from this [link](http://glaros.dtc.umn.edu/gkhome/metis/parmetis/download)  
 
 To build ParMETIS:  
 
-   module purge  
+    module purge  
 
-   module load intel impi  
+    module load intel impi  
 
-   setenv CFLAGS -fPIC  
+    setenv CFLAGS -fPIC  
 
-   make config cc=mpiicc cxx=mpiicc prefix=/path/to/your/parmetis/ | & tee config.out-rr  
+    make config cc=mpiicc cxx=mpiicc prefix=/path/to/your/parmetis/ | & tee config.out-rr  
 
-   make install | & tee make-install.out-rr  
+    make install | & tee make-install.out-rr  
 
 This adds `libparmetis.a` under `/path/to/your/parmetis/lib/libparmetis.a`  
 
 Set the path to ParMETIS:  
 
-   setenv METIS_PATH /path/to/your/parmetis  
+    setenv METIS_PATH /path/to/your/parmetis  
 
 ### Set module files based on your HPC
 modulefiles/hera/ESMF_NUOPC
 
 
 ## Compile
-./build.sh
+    ./build.sh
 
 
 To collaborate and contribute to this repository follow below instructions:
@@ -79,7 +79,7 @@ is a "HOWTO" that explains in detail about the usage of this application.
 
 ## Compile
 
-./build.sh
+    ./build.sh
 
 
 ## Cite
