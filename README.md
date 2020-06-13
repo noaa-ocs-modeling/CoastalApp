@@ -32,7 +32,10 @@ Set the path to ParMETIS:
     setenv METIS_PATH /path/to/your/parmetis  
 
 ### Set module files based on your HPC
-modulefiles/hera/ESMF_NUOPC
+
+For a list of additional requirements and versions, see:
+
+    modulefiles/hera/ESMF_NUOPC
 
 
 ## Compile
