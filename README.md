@@ -42,8 +42,8 @@ For a list of additional requirements and versions, see:
 
 Set the following environment variables:
 
-    ROOTDIR - The directory of your choice where the repository has been cloned
-    NEMSDIR - The subdirectory $ROOTDIR/NEMS where the core NEMS code resides
+- `ROOTDIR`: The directory of your choice where the repository has been cloned
+- `NEMSDIR`: The subdirectory $ROOTDIR/NEMS where the core NEMS code resides
 
 In the build script `build.sh`, select desired components for which to build the app, e.g.:
 
