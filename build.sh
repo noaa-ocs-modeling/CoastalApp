@@ -54,8 +54,8 @@ cp $ROOTDIR/WW3/model/bin/link.Intel link
 
 # Make coupled NEMS app
 #make -f GNUmakefile build COMPONENTS="ADCIRC NWM ATMESH"
-make -f GNUmakefile build COMPONENTS="ADCIRC WW3 ATMESH"
+#make -f GNUmakefile build COMPONENTS="ADCIRC WW3 ATMESH"
 #make -f GNUmakefile build COMPONENTS="ADCIRC ATMESH WW3 NWM"
 #make -f GNUmakefile build COMPONENTS="ADCIRC WW3DATA ATMESH"
 #make -f GNUmakefile build COMPONENTS="ADCIRC ATMESH  NWM"
-#make -f GNUmakefile build COMPONENTS="ADCIRC WW3DATA ATMESH NWM"
+make -f GNUmakefile build COMPONENTS="ADCIRC WW3DATA ATMESH NWM"
