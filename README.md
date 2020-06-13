@@ -54,9 +54,9 @@ Execute the build script:
     ./build.sh
 
 
-To collaborate and contribute to this repository follow below instructions:
+## Collaboration
 
-## Usage
+To collaborate and contribute to this repository follow below instructions:
 
 While in github GUI, https://github.com/moghimis/ADC-WW3-NWM-NEMS:
 
@@ -84,16 +84,12 @@ While in your github repository GUI:
 3) the request goes to originated repository, where your changes are reviewed and 
    merged or rejected.
 
-## Setup
+### Setup and compilation
 
 This application contains a module file tailored for the intended computer system.
 To compile in your own system you should create a similar file.  The setup module
 file, is located at modulefile/hera/ESMF_NUOPC. Also, for your  convenience there
 is a "HOWTO" that explains in detail about the usage of this application.
-
-
-## Compile
-    ./build.sh
 
 
 ## Cite
