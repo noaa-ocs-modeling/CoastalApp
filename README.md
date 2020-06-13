@@ -39,6 +39,18 @@ For a list of additional requirements and versions, see:
 
 
 ## Compile
+
+Set the following environment variables:
+
+    ROOTDIR - The directory of your choice where the repository has been cloned
+    NEMSDIR - The subdirectory $ROOTDIR/NEMS where the core NEMS code resides
+
+In the build script `build.sh`, select desired components for which to build the app, e.g.:
+
+    make -f GNUmakefile build COMPONENTS="ADCIRC WW3 ATMESH"
+
+Execute the build script:
+
     ./build.sh
 
 
@@ -81,7 +93,6 @@ is a "HOWTO" that explains in detail about the usage of this application.
 
 
 ## Compile
-
     ./build.sh
 
 
