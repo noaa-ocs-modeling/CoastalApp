@@ -4,11 +4,36 @@ ADC-WW3-NWM-NEMS is an ESMF application developed as part of the Coastal Act
 coupling project to determine wind versus water percentage loss caused by a 
 Named Storm Event. 
 
-## Usage
+## Cloning
 git clone --recursive https://github.com/moghimis/ADC-WW3-NWM-NEMS
 
-## Set module files based on your HPC
+## Requirements
+
+### Install ParMETIS
+
+Unstructured WW3 requires an installation of ParMETIS. Download the code from this [link](http://glaros.dtc.umn.edu/gkhome/metis/parmetis/download)  
+
+To build ParMETIS:  
+
+   module purge  
+
+   module load intel impi  
+
+   setenv CFLAGS -fPIC  
+
+   make config cc=mpiicc cxx=mpiicc prefix=/path/to/your/parmetis/ | & tee config.out-rr  
+
+   make install | & tee make-install.out-rr  
+
+This adds `libparmetis.a` under `/path/to/your/parmetis/lib/libparmetis.a`  
+
+Set the path to ParMETIS:  
+
+   setenv METIS_PATH /path/to/your/parmetis  
+
+### Set module files based on your HPC
 modulefiles/hera/ESMF_NUOPC
+
 
 ## Compile
 ./build.sh
