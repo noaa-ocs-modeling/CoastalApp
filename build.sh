@@ -11,11 +11,6 @@ if [ "${ROOTDIR}" == "" ]
     echo "ERROR - Your ROOTDIR environment variable is not set"
     exit 1
 fi
-if [ "${NEMSDIR}" == "" ]
-    then 
-    echo "ERROR - Your NEMSDIR environment variable is not set"
-    exit 1
-fi
 if [ "${METIS_PATH}" == "" ]
     then 
     echo "ERROR - Your METIS_PATH environment variable for WW3 is not set"
@@ -28,8 +23,8 @@ fi
 source ${ROOTDIR}/modulefiles/hera/ESMF_NUOPC
 module list
 
-echo "Building NEMS app in ${NEMSDIR}"
-cd $NEMSDIR
+echo "Building NEMS app in ${ROOTDIR}/NEMS"
+cd ${ROOTDIR}/NEMS
 
 # Clean up
 make -f GNUmakefile distclean_ADCIRC COMPONENTS="ADCIRC"
