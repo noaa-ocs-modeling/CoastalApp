@@ -61,7 +61,7 @@ While in github GUI, https://github.com/moghimis/ADC-WW3-NWM-NEMS:
 
 1) Hit the "Fork" button located on the upper right corner of the GUI in order 
    to have your own copy of this repository into your own github repository.
-2) Your github username displays with a message "Where should we work ..." . 
+2) Your github username displays with a message "Where should we fork ..." . 
    Click on your username to fork it into your account. 
 3) You should see the source codes in your own github repository with the same 
    name as the forked reopsitory.
