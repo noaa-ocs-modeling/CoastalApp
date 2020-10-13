@@ -1,0 +1,24 @@
+# Directory to receive the webpage with regression test results
+ON hera               WEBPAGE jetscp.rdhpcs.noaa.gov:/lfs3/projects/hfv3gfs/emc.nemspara/web/nems-commit/NUOPC/
+ON hera.intel         WEBPAGE jetscp.rdhpcs.noaa.gov:/lfs3/projects/hfv3gfs/emc.nemspara/web/nems-commit/NUOPC/
+ON wcoss1             WEBPAGE jetscp.rdhpcs.noaa.gov:/lfs3/projects/hfv3gfs/emc.nemspara/web/nems-commit/NUOPC/
+ON wcoss2             WEBPAGE jetscp.rdhpcs.noaa.gov:/lfs3/projects/hfv3gfs/emc.nemspara/web/nems-commit/NUOPC/
+ON wcoss_cray         WEBPAGE jetscp.rdhpcs.noaa.gov:/lfs3/projects/hfv3gfs/emc.nemspara/web/nems-commit/NUOPC/
+ON wcoss_dell_p3      WEBPAGE jetscp.rdhpcs.noaa.gov:/lfs3/projects/hfv3gfs/emc.nemspara/web/nems-commit/NUOPC/
+
+USER ACCOUNT IS Ratko.Vasic
+ROLE ACCOUNT IS emc.nemspara
+
+# nems branch - branch of NEMS that is being tested.  Set to "default"
+# to test the app's own NEMS
+NEMS   BRANCH IS commit_tmp
+
+# app branch - branch to use for committing logs to each
+#APP    BRANCH IS NUOPC-commit
+
+# If relevant, the starting branch that we copy to make the app
+# branch.  Default is the master branch.
+#APP NEMSfv3gfs       CHECKOUT NUOPC
+
+# master branch - name of the git "master" branch.  Do not change.
+MASTER BRANCH IS master

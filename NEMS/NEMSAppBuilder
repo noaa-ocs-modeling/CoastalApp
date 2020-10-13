@@ -1,0 +1,76 @@
+#! /bin/sh
+
+# NOTE: This script no longer directly builds anything; all the real
+# work is in the makefiles.  This is a dumb wrapper around "make" that
+# is designed to look like the old NEMSAppBuilder.
+
+cd $( dirname "$0" )
+
+global_name='NEMSAppBuilder'
+global_version='version 2.0.0'
+global_capabilities=$( ls -1 ../conf/component_*.mk src/incmake/component_*.mk | sed 's,.*component_\(.*\).mk,\1,g' | sort -u )
+global_capabilities="make $global_capabilities"
+
+version() {
+    echo "$global_name $global_version"
+    echo "Capabilities: $global_capabilities"
+}
+
+help() {
+    cat<<EOF
+$global_name
+
+This script is a dumb wrapper around "make."  It exists to support
+legacy applications that still need a NEMSAppBuilder program. Choose
+one of the following:
+
+To wipe out compiler intermediate files and rebuild everything:
+NEMSAppBuilder app=appname =>
+    make app=appname distclean
+    make app=appname build
+
+NEMSAppBuilder app=appname rebuild =>
+    make app=appname distclean
+    make app=appname build
+
+To compile without first cleaning:
+NEMSAppBuilder app=appname norebuild =>
+    make app=appname build
+EOF
+    exit $1
+}
+
+ARGS=""
+TARGETS="distclean build"
+
+for opt in "$@" ; do
+    if [[ "$opt" =~ ^app=.+ ]] ; then
+        ARGS="$ARGS $opt"
+    elif [[ "$opt" =~ ^project=.+ ]] ; then
+        ARGS="$ARGS app=${opt:8}"
+    elif [[ "$opt" == auto ]] ; then
+        : # No-op that means "enable autobuild"
+    elif [[ "$opt" == rebuild || "$opt" == noreuse ]] ; then
+        # Do not reuse existing data and rebuild all components that are selected.
+        TARGETS="distclean build"
+    elif [[ "$opt" == norebuild || "$opt" == reuse ]] ; then
+        # Reuse existing data; do not rebuild components unless they're missing.
+        TARGETS="build"
+    elif [[ "$opt" == "--help" ]] ; then
+        help 0
+    elif [[ "$opt" == "--version" ]] ; then
+        version
+    else
+        echo "Bad argument: $opt" 1>&2
+        help 1
+    fi
+done
+
+for target in $TARGETS ; do
+    echo "NEMSAppBuilder: make $ARGS $target"
+    make $ARGS $target
+    err=$?
+    if [[ $err -ne 0 ]] ; then
+        exit $err
+    fi
+done

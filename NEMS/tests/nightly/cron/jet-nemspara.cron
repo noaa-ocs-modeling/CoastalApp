@@ -1,0 +1,13 @@
+30 13 * * * find /lfs3/projects/hfv3gfs/emc.nemspara/scrub/   -maxdepth 2 -user $USER -ctime +5 -print0 | xargs -0 rm -rfv > /dev/null 2>&1
+
+03 00 * * * mkdir -p /lfs3/projects/hfv3gfs/emc.nemspara/scrub
+
+05 06 * * * /lfs3/projects/hfv3gfs/Ratko.Vasic/noscrub/multi-app-test/tests/nightly/email-rt.pl -e Samuel.Trahan@noaa.gov,Mark.Iredell@noaa.gov,Bin.Li@noaa.gov,Jessica.Meixner@noaa.gov,Jun.Wang@noaa.gov,Ratko.Vasic@noaa.gov /lfs3/projects/hfv3gfs/emc.nemspara/web/rt/*/*/*.txt > /lfs3/projects/hfv3gfs/emc.nemspara/scrub/nightly-test-email-selective.log
+
+05 18 * * * /lfs3/projects/hfv3gfs/Ratko.Vasic/noscrub/multi-app-test/tests/nightly/email-rt.pl -a -e Samuel.Trahan@noaa.gov,Ratko.Vasic@noaa.gov /lfs3/projects/hfv3gfs/emc.nemspara/web/rt/*/*/*.txt > /lfs3/projects/hfv3gfs/emc.nemspara/scrub/nightly-test-email-always.log
+
+37 18 * * * /lfs3/projects/hfv3gfs/Ratko.Vasic/noscrub/multi-app-test/tests/nightly/run-from-jet-nemspara.sh ngt tujet test    > /lfs3/projects/hfv3gfs/emc.nemspara/scrub/tujet-nightly-test.log 2>&1
+47  * * * * /lfs3/projects/hfv3gfs/Ratko.Vasic/noscrub/multi-app-test/tests/nightly/run-from-jet-nemspara.sh ngt tujet deliver > /lfs3/projects/hfv3gfs/emc.nemspara/scrub/tujet-nightly-deliver.log 2>&1
+
+37 18 * * * /lfs3/projects/hfv3gfs/Ratko.Vasic/noscrub/multi-app-test/tests/nightly/run-from-jet-nemspara.sh -Mslurm ngt ujet.slurm test    > /lfs3/projects/hfv3gfs/emc.nemspara/scrub/ujet-slurm-nightly-test.log 2>&1
+47  * * * * /lfs3/projects/hfv3gfs/Ratko.Vasic/noscrub/multi-app-test/tests/nightly/run-from-jet-nemspara.sh         ngt ujet.slurm deliver > /lfs3/projects/hfv3gfs/emc.nemspara/scrub/ujet-slurm-nightly-deliver.log 2>&1

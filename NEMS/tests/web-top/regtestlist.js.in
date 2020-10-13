@@ -1,0 +1,213 @@
+
+current_dir_index=0;
+old_wcoss_tests=0;
+testInfo=new Array();
+
+function cachebuster() {
+    return '?cachebuster='
+	+'A'+Math.random().toString()
+	+'B'+Math.random().toString()
+	+'C'+Math.random().toString()
+	+'D'+Math.random().toString();
+}
+
+function zeroPad2(number) {
+    if(number<10) {
+	return '0'+number.toString();
+    } else {
+	return number.toString();
+    }
+}
+
+function cleanText(text) {
+  return text.replace(/&/g,"&amp;").replace(/</g,"&lt;").
+              replace(/\s+/g,"&nbsp;");
+}
+
+function niceTime(when) {
+    var date;
+    date=new Date(0);
+    date.setUTCSeconds(when);
+    return date.toUTCString();
+}
+
+function niceDuration(duration) {
+    var hours, minutes, seconds;
+    var hoursPad, minutesPad, secondsPad;
+    hours=Math.floor(duration/3600);
+    minutes=Math.floor((duration-hours*3600)/60);
+    seconds=Math.floor(duration-hours*3600-minutes*60);
+    return zeroPad2(hours)+':'+zeroPad2(minutes)+':'+zeroPad2(seconds);
+}
+
+function hourAge(whence) {
+    var nowdate=new Date();
+    var nowtime=nowdate.valueOf()/1000.0;
+    return (nowtime-whence)/3600;
+}
+
+function niceAge(whence) {
+    var nowdate;
+    var nowtime;
+    var duration;
+    nowdate=new Date();
+    nowtime=nowdate.valueOf()/1000.0;
+    duration=nowtime-whence;
+    return niceDuration(duration);
+   
+}
+
+
+function parseText(dirpath,txtpath,txt) {
+  var lines=txt.split(/[\n\r]+/);
+  var mode='PRE';
+  var line;
+  var rtStartTime=-1;
+  var rtEndTime=-1;
+  var rtPlatform='(**UNKNOWN**)';
+  var rtResult='(**UNKNOWN**)';
+  var rowclass;
+  var txtdir=txtpath.replace(/\/[^\/]*$/,'');
+  var duration;
+
+  console.log('parseText: dir='+dirpath.toString()
+	      +' txtpath='+txtpath.toString())
+      
+  for(var i=0;i<lines.length;i++) {
+    line=lines[i];
+    if(-1!==line.search(/^\s*$/)) {
+      // Ignore blank lines.
+      continue;
+    }
+
+    m=line.match(/^===.REGTEST BEGIN\s+\+(\d+)$/);
+    if(m) {
+	mode='REGTEST';
+	rtStartTime=m[1];
+	console.log(line);
+	continue;
+    }
+
+    m=line.match(/^===!REGTEST (\S+) (\S+) ?(.*)/);
+    if(m!=null) {
+	if(m[1]=='END') {
+	    rtEndTime=m[2];
+	    console.log(line);
+	    continue;
+	} else if(m[1]=='PLATFORM') {
+	    rtPlatform=m[2];
+	    if(m[3]) {
+		rtPlatform+=' '+m[3];
+	    }
+	    console.log(line);
+	    continue;
+        } else if(m[1]=='RESULT') {
+	    rtResult=m[2];
+	    console.log(line);
+	    continue;
+        }
+    }
+  }
+
+  rowclass='failrow';
+  if(hourAge(rtEndTime)>30) {
+      if(hourAge(rtEndTime)<128) {
+	  if(rtResult=="PASS") {
+	      rowclass='passold';
+	  }
+	  rtResult=rtResult+' [OLD]';
+      } else {
+	  if(rtResult=="PASS") {
+	      rowclass='passancient';
+	  }
+	  rtResult=rtResult+' [ANCIENT]';
+      }
+      if(txtdir.match(/wcoss/i) || rtPlatform.match(/wcoss/i)) {
+	  rtResult=rtResult + '*';
+	  old_wcoss_tests++;
+      }
+  } else if(rtResult=='PASS') {
+      rowclass='passrow';
+  }
+  
+  console.log('Result: '
+	      +'  txtpath='+txtpath
+	      +'  txtdir='+txtdir
+	      +'  rtResult='+rtResult.toString()
+	      +'  rtPlatform='+rtPlatform.toString()
+	      +'  rtStartTime='+rtStartTime.toString()
+	      +'  rtEndTime='+rtEndTime.toString());
+
+  return '<tr class="'+rowclass+'" onclick="window.location='
+      +"'"+txtdir+"'"+'"><td class="rep_name">'
+      +cleanText(rtPlatform)
+      +'</td><td class="rep_result">'+cleanText(rtResult)
+      +'</td><td class="rep_age">'+niceAge(rtEndTime)
+      +'</td><td class="rep_dur">'
+      +niceDuration(rtEndTime-rtStartTime)
+      +'</td></tr>\n';
+}
+
+function errorText(dir,txtpath,status) {
+  var txtdir=txtpath.replace(/\/[^\/]*$/,'');
+    console.log('errorText: dir='+dir.toString()
+		+' txtpath='+txtpath.toString()
+		+' status='+status.toString())
+    return '<tr class="errorrow"><td class="rep_path">'
+	+'<a href="'+txtpath+'">'+cleanText(txtdir)+'</a>'
+	+'</td><td class="rep_result">ERROR '+cleanText(status.toString())
+	+'</td><td class="rep_age">(unknown)'
+	+'</td><td class="rep_dur">(unknown)'
+	+'</td></tr>\n';
+}
+
+function loadPage() {
+    var dir;
+    var txt;
+    var reader;
+    console.log('current_dir_index='+current_dir_index.toString())
+    if(current_dir_index>=TEST_DIRS.length) {
+	text='<h1>'+TEST_NAME+'</h1>'+
+	    '<table class="rt_list">'+
+	    '<tr class="head"><th>Test</th><th>Result</th><th>Age</th><th>Duration</th></tr>'+
+	    testInfo.join(' ')+
+	    '<caption class="note"><p>This table summarizes the results of the regression tests, which consist of all compsets for several apps on several platforms.  Each row above represents one app on one platform; select the row for details.  Legend:</p><p>'
+	    +'<span class="passrow">PASS</span> - all compsets ran to completion and matched baseline<br>'
+	    +'<span class="failrow">FAIL</span> - a compset failed or did not match the baseline<br>'
+	    +'<span class="failrow">ABORT</span> - regression test system failed; results are unknown<br>'
+	    +'<span class="passold">PASS [OLD]</span> - compsets matched baseline, but test has not run in >30 hours<br>'
+	    +'<span class="passancient">PASS [ANCIENT]</span> - compsets matched baseline, but test has not run in >5 days</p>';
+	if(old_wcoss_tests>1) {
+	    text=text+'<p>*<b>WCOSS NOTE</b>: WCOSS is divided into a production side and a development side which swap frequently.  Often, there is no development side; it is down for maintenance.  When that happens, the "Result" column will display "PASS [OLD]" if the test passed before the downtime.  You may occasionally see comically large ages with "PASS [ANCIENT]".  Those are the tests before the last production switch replacing the latest ones.  A day or two after WCOSS is available for development again, the regression tests run normally, and you will see the normal PASS or FAIL messages for each app on WCOSS.</p>';
+	}
+	text=text+'</caption></table>';	    
+	document.body.innerHTML=text;
+	return;
+    }
+    dir=TEST_DIRS[current_dir_index];
+    current_dir_index++;
+    txt=dir+"/regtest.txt"+cachebuster();
+    document.body.innerHTML="<h1>Loading "+dir+"</h1>"+
+    	'<p class="loading">Please wait.  Loading '+txt+"...</p>";
+    reader=new XMLHttpRequest();
+    reader.open("GET",txt,true);
+    reader.onreadystatechange=function () {
+	if(reader.readyState==4) {
+	    if(reader.status==200) {
+		testInfo.push(parseText(dir,txt,reader.responseText));
+	    } else {
+		testInfo.push(errorText(dir,txt,reader.status));
+	    }
+	    loadPage();
+	}
+    }
+    reader.send(null);
+}
+
+window.onload=function() {
+    var reader;
+    var dir;
+    var txt;
+    current_dir_index=0;
+    loadPage();
+}

@@ -1,0 +1,207 @@
+body {
+    background-color: white;
+}
+
+.passrow {
+    background-color: Moccasin ;
+}
+
+.repo {
+    background-color: PowderBlue ;
+}
+
+p {
+    line-height: 70%;
+}
+
+h1 {
+    text-align: center;
+}
+
+table.rt_list {
+    margin-left: auto; 
+    margin-right: auto;
+}
+
+table.rtresult {
+    margin-left: auto; 
+    margin-right: auto;
+}
+
+p.loading {
+    line-height: 110%;
+}
+
+caption.note {
+    margin-top: 1m;
+    line-height: 110%;
+    text-align: justify;
+    text-justify: auto;
+    caption-side: bottom;
+}
+
+caption.note p {
+    margin-top: 1m;
+    line-height: 110%;
+    text-align: justify;
+    text-justify: auto;
+    caption-side: bottom;
+    font-size: 80%;
+}
+
+caption.note span {
+    margin-top: 1m;
+    line-height: 110%;
+    text-align: justify;
+    text-justify: auto;
+    caption-side: bottom;
+    font-size: 80%;
+}
+
+a {
+    color: MidnightBlue ;
+}
+
+.failrow {
+    background-color: LightPink ;
+    color: Maroon ;
+    font-weight: bold;
+}
+
+.passold {
+    background-color: PowderBlue ;
+    color: DarkSlateBlue ;
+}
+
+.passancient {
+    background-color: Thistle ;
+    color: Indigo ;
+    font-style: italic;
+}
+
+.errorrow {
+    background-color: White ;
+    color: Maroon ;
+    font-weight: bold;
+}
+
+.head {
+    color: white ;
+    background-color: black;
+}
+.badline {
+    background-color: DodgerBlue ;
+}
+
+.compile {
+    background-color: LightGray ;
+}
+
+.compilefail {
+    background-color: LightPink ;
+}
+
+.testinfo {
+    display: none;
+}
+
+.testinfoshow {
+    display: block;
+}
+
+td {
+    text-align: right;
+}
+
+table.rtresult tr td:first-child {
+    width: auto;
+    max-width: 20em;
+    word-wrap: normal;
+    min-width: 8em;
+}
+
+table.rtresult tr th:first-child {
+    width: auto;
+    max-width: 20em;
+    word-wrap: normal;
+    min-width: 8em;
+}
+
+table tr td:nth-child(2) {
+    text-align: center;
+    width: 11em ;
+}
+
+table tr th:nth-child(2) {
+    text-align: center;
+    width: 11em ;
+}
+
+table tr td:first-child + td + td {
+    text-align: left;
+    width: auto ;
+}
+
+table {
+    border-collapse: collapse;
+}
+th, td {
+    vertical-align: text-top;
+    border-bottom: 3px solid white;
+}
+
+th {
+    font-size: large;
+}
+
+/**********************************************************************/
+
+.compileinfo {
+    display: none;
+}
+
+.compileinfoshow {
+    display: block;
+    position: fixed;
+    background-color: black;
+    top: 5%;
+    left: 5%;
+    width: 90%;
+    height: 90%;
+    border: 3px solid black;
+    margin: 0;
+}
+
+.compileinfoshow tr {
+    position: absolute;
+    background-color: black;
+    color: white;
+    width: 100%;
+}
+
+.compilecontent {
+    font-family: monospace;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    word-wrap: break-word;
+    background-color: white;
+    color: black;
+    text-align: left;
+    width: 100%;
+}
+
+.compilehead {
+    font-size: large;
+    color: white ;
+    background-color: black;
+    text-align: center;
+    width: 90%;
+}
+
+.close {
+    background-color: black;
+    color: white;
+    width: 10%;
+    font-size: large;
+    text-align: left;
+}
