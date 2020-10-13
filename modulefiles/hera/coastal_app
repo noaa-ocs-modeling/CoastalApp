@@ -1,0 +1,39 @@
+#%Module######################################################################
+##
+##    NEMS coastal_app Prerequisites: hera
+
+##### rem by saeed ### proc ModulesHelp {} {
+##### rem by saeed ###   puts stderr "\tcit - loads modules required for building and running FV3 under NEMS on Theia"
+##### rem by saeed ###  }
+
+##### rem by saeed ###         module-whatis "loads NEMS FV3 prerequisites for Theia"
+
+# NOTE: the "module purge" and loading of the module command are
+# handled by the module-setup.sh (or .csh) script.
+
+##
+## load programming environment
+## this typically includes compiler, MPI and job scheduler
+##
+
+module load intel/18.0.5.274
+module load szip/2.1
+module load hdf5/1.10.4
+module load impi/2018.0.4
+module load netcdf/4.6.1
+
+#This below library is  for esmf 8.0 on Hera, compiled and tested successfully for NWM-NUOPC CAP  
+#module use /home/emc.nemspara/SOFT-hera/modulefiles
+
+# for current NEMS
+module load esmf/7.1.0r
+
+
+#module use /scratch2/NCEPDEV/nwprod/NCEPLIBS/modulefiles
+#module load w3nco/v2.0.6
+#module load w3emc/v2.0.5
+
+
+
+
+
