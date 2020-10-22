@@ -1,0 +1,12 @@
+#%Module######################################################################
+
+# This script is responsible for loading modules that are compatible with
+# the NUOPC Layer version used in NEMS.
+
+module use /work/07380/panvel/Modules/modulefiles
+export ESMFMKFILE=/work/07380/panvel/apps/intel/impi/esmf-7.1.0r/lib64/esmf.mk
+
+module load intel impi netcdf hdf5 impi-intel/esmf-7.1.0r
+
+export NETCDF=${TACC_NETCDF_DIR}
+export HDF5=${TACC_HDF5_DIR}
