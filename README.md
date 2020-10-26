@@ -5,7 +5,7 @@ coupling project to determine wind versus water percentage loss caused by a
 Named Storm Event. 
 
 ## Cloning
-    git clone --recursive https://github.com/moghimis/ADC-WW3-NWM-NEMS
+    git clone --recursive https://github.com/noaa-ocs-modeling/ADC-WW3-NWM-NEMS.git
 
 ## Requirements
 
@@ -57,7 +57,7 @@ Execute the build script:
 
 To collaborate and contribute to this repository follow below instructions:
 
-While in github GUI, https://github.com/moghimis/ADC-WW3-NWM-NEMS:
+While in github GUI, https://github.com/noaa-ocs-modeling/ADC-WW3-NWM-NEMS.git:
 
 1) Hit the "Fork" button located on the upper right corner of the GUI in order 
    to have your own copy of this repository into your own github repository.
