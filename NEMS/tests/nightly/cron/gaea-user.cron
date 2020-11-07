@@ -1,0 +1,1 @@
+53 15 * * * /lustre/f1/unswept/ncep/Ratko.Vasic/noscrub/multi-app-test/tests/nightly/run-from-gaea-user.tcsh ngt gaea checkout > /ncrc/home2/Ratko.Vasic/checkout.log 2>&1

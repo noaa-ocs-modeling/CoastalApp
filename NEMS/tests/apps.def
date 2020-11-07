@@ -1,0 +1,36 @@
+# List of valid platforms and the human-readable names of each.
+PLATFORM hera.intel        NAME Hera
+PLATFORM wcoss1            NAME WCOSS Phase 1
+PLATFORM wcoss2            NAME WCOSS Phase 2
+PLATFORM wcoss_cray        NAME WCOSS Cray
+PLATFORM wcoss_dell_p3     NAME WCOSS Phase 3
+
+# List of known apps and the compsets to run for each app.
+APP NEMSfv3gfs      COMPSETS -f
+APP FV3-GSDCHEM-WW3 COMPSETS -f
+APP FV3-MOM6-CICE5  COMPSETS -f
+APP FV3GFS-GSDCHEM  COMPSETS -f
+
+# URLs of each application's repository.  Default is gerrit:APPNAME
+APP NEMSfv3gfs      URL https://github.com/ufs-community/ufs-weather-model
+APP FV3-GSDCHEM-WW3 URL gerrit:EMC_FV3-GSDCHEM-WW3
+APP FV3-MOM6-CICE5  URL https://github.com/ufs-community/ufs-s2s-model
+APP FV3GFS-GSDCHEM  URL gerrit:EMC_FV3GFS-GSDCHEM
+
+# Shell expressions that generate scrub space for a given $username
+# on each platform.
+ON hera.intel        SCRUB /scratch1/NCEPDEV/nems/$username/scrub
+ON wcoss1            SCRUB /ptmpp1/$username
+ON wcoss2            SCRUB /ptmpd3/$username
+ON wcoss_cray        SCRUB /gpfs/hps2/ptmp/$username
+ON wcoss_dell_p3     SCRUB /gpfs/dell2/ptmp/$username
+
+# List of apps to run on each platform.
+ON hera.intel         APPS NEMSfv3gfs FV3-MOM6-CICE5 FV3-GSDCHEM-WW3
+ON wcoss1             APPS NEMSfv3gfs
+ON wcoss2             APPS NEMSfv3gfs FV3-GSDCHEM-WW3 
+ON wcoss_cray         APPS NEMSfv3gfs FV3GFS-GSDCHEM FV3-GSDCHEM-WW3
+ON wcoss_dell_p3      APPS NEMSfv3gfs FV3-GSDCHEM-WW3
+
+# Extra arguments to rt.sh for each platform
+ON hera.intel        EXTRA_ARGS --platform hera.intel
