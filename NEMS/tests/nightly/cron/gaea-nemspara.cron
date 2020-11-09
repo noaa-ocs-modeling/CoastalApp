@@ -1,2 +1,0 @@
-13 21 * * * /lustre/f1/unswept/ncep/Ratko.Vasic/noscrub/multi-app-test/tests/nightly/run-from-gaea-nemspara.bash ngt gaea test    > /ncrc/home2/emc.nemspara/nightly-rt-test.log 2>&1
-47  * * * * /lustre/f1/unswept/ncep/Ratko.Vasic/noscrub/multi-app-test/tests/nightly/run-from-gaea-nemspara.bash ngt gaea deliver > /ncrc/home2/emc.nemspara/nightly-rt-deliver.log 2>&1

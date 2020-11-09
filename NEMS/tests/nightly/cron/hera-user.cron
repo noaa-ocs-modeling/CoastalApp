@@ -1,3 +1,0 @@
-01 00 * * * /home/Ratko.Vasic/bin/scrubber > /home/Ratko.Vasic/logs/hera_scrubber.log
-
-00 22 * * * /scratch2/NCEPDEV/fv3-cam/Ratko.Vasic/multi-app-test/tests/nightly/run-from-hera-user.sh ngt hera.intel checkout > /scratch2/NCEPDEV/fv3-cam/Ratko.Vasic/hera-nightly-checkout.log 2>&1

@@ -1,4 +1,0 @@
-03 00 * * * mkdir -p /lfs3/projects/hfv3gfs/Ratko.Vasic/scrub
-
-14 18 * * * /lfs3/projects/hfv3gfs/Ratko.Vasic/noscrub/multi-app-test/tests/nightly/run-from-jet-user.sh ngt tujet      checkout > /lfs3/projects/hfv3gfs/Ratko.Vasic/scrub/tujet-nightly-checkout.log 2>&1
-14 18 * * * /lfs3/projects/hfv3gfs/Ratko.Vasic/noscrub/multi-app-test/tests/nightly/run-from-jet-user.sh ngt ujet.slurm checkout > /lfs3/projects/hfv3gfs/Ratko.Vasic/scrub/ujet-slurm-nightly-checkout.log 2>&1

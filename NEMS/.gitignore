@@ -1,7 +1,0 @@
-*.pyc
-__pycache__
-*.o
-*.mod
-*.x
-*.a
-*.tmp.*

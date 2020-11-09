@@ -1,4 +1,0 @@
-[submodule "tests/produtil/NCEPLIBS-pyprodutil"]
-	path = tests/produtil/NCEPLIBS-pyprodutil
-	url = https://github.com/NOAA-EMC/NCEPLIBS-pyprodutil
-	branch = port-2-hera

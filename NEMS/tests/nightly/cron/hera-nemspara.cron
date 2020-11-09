@@ -1,4 +1,0 @@
-03 00 * * * mkdir -p /scratch1/NCEPDEV/nems/emc.nemspara/scrub  /scratch1/NCEPDEV/stmp2/emc.nemspara/scrub
-
-40 22 * * * /scratch2/NCEPDEV/fv3-cam/Ratko.Vasic/multi-app-test/tests/nightly/run-from-hera-nemspara.sh ngt hera.intel test    > /home/emc.nemspara/hera-nightly-test.log 2>&1
-47 * * * *  /scratch2/NCEPDEV/fv3-cam/Ratko.Vasic/multi-app-test/tests/nightly/run-from-hera-nemspara.sh ngt hera.intel deliver > /home/emc.nemspara/hera-nightly-deliver.log 2>&1
