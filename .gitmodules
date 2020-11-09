@@ -10,10 +10,6 @@
 	path = WW3
 	url = https://github.com/awest-noaa/WW3.git
 	branch = nuopc_unstruc
-[submodule "NEMS"]
-	path = NEMS
-	url = https://github.com/moghimis/NEMS
-	branch = develop
 [submodule "ADCIRC"]
 	path = ADCIRC
 	url = git@github.com:GM-Ling/adcirc-cg.git
@@ -22,3 +18,7 @@
 	path = NWM
 	url = https://github.com/trimbleava/nwm_public_nuopc.git
 	branch = master
+[submodule "NEMS"]
+	path = NEMS
+	url = https://github.com/GM-Ling/NEMS.git
+	branch = nems_for_adc_v55
