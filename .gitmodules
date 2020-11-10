@@ -6,10 +6,6 @@
 	path = WW3DATA
 	url = https://github.com/moghimis/WW3DATA
 	branch = master
-[submodule "WW3"]
-	path = WW3
-	url = https://github.com/awest-noaa/WW3.git
-	branch = nuopc_unstruc
 [submodule "ADCIRC"]
 	path = ADCIRC
 	url = git@github.com:GM-Ling/adcirc-cg.git
@@ -25,3 +21,7 @@
 	path = NEMS
 	url = git@github.com:GM-Ling/NEMS.git
 	branch = nems_for_adc_v55
+[submodule "WW3"]
+	path = WW3
+	url = git@github.com:GM-Ling/WW3.git
+	branch = nd_ww3
