@@ -7,7 +7,7 @@
 
 
 # load modules
-source modulefiles/ndcrc/ESMF_NUOPC
+#source modulefiles/ndcrc/ESMF_NUOPC
 
 cd NEMS
 curdir=$PWD ;
@@ -21,7 +21,7 @@ export NETCDF=/opt/crc/n/netcdf/4.7.0/intel/18.0/
 export NETCDFHOME=/opt/crc/n/netcdf/4.7.0/intel/18.0/
 
 # location of ESMFMKFILE
-export ESMFMKFILE=/afs/crc.nd.edu/user/d/dwirasae/AlaskaProject/esmf_8/DEFAULTINSTALLDIR/lib/libO/Linux.intel.64.mvapich2.default/esmf.mk 
+export ESMFMKFILE=/pontus/gling/ADC_v55-WW3-NWM-NEMS/esmf_8/DEFAULTINSTALLDIR/lib/libO/Linux.intel.64.mvapich2.default/esmf.mk
 
 #clean up
 make -f GNUmakefile distclean_ADCIRC COMPONENTS="ADCIRC"
