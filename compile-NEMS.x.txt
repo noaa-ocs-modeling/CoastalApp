@@ -1,0 +1,25 @@
+Patch usage: patch -p1 < patch_name
+        example: patch -p1 < ADC-WW3-NWM-NEMS-GMLing.patch
+      to reverse it:
+        example: patch -p1 -R < ADC-WW3-NWM-NEMS-GMLing.patch
+
+1) Run the build.sh script as:
+     build.sh -h or, build.sh --help
+   to get the list of all options available to script.
+
+2) Example: Run the build.sh script as:
+     build.sh
+   to use the default settings
+
+3) Example: Run the build.sh script as:
+     build.sh -plat stampede -component "ADCIRC ATMESH
+   to use customized settings
+
+3) Example: Run the build.sh script as:
+     build.sh -c --component="ADCIRC ATMESH
+   to clean a previous compilation using "make clean"
+     build.sh -c 2 --component="ADCIRC ATMESH
+   to clean a previous compilation using "make distclean"
+
+Panagiotis Velissariou - 12/04/2020
+
