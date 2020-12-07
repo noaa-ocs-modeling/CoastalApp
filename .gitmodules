@@ -8,20 +8,17 @@
 	branch = master
 [submodule "ADCIRC"]
 	path = ADCIRC
-	url = https://github.com/GM-Ling/adcirc-cg.git
+	url = https://github.com/GM-Ling/adcirc-cg
 	branch = ND_v55_NEMS
 [submodule "NWM"]
 	path = NWM
-	url = https://github.com/trimbleava/nwm_public_nuopc.git
+	url = https://github.com/trimbleava/nwm_public_nuopc
 	branch = master
-[submodule "Submod"]
-	url = https://github.com/GM-Ling/ADC-WW3-NWM-NEMS.git
-	branch = v55_dev_gml
 [submodule "NEMS"]
 	path = NEMS
-	url = https://github.com/GM-Ling/NEMS.git
+	url = https://github.com/GM-Ling/NEMS
 	branch = nems_for_adc_v55
 [submodule "WW3"]
 	path = WW3
-	url = https://github.com/GM-Ling/WW3.git
+	url = https://github.com/GM-Ling/WW3
 	branch = nd_ww3
