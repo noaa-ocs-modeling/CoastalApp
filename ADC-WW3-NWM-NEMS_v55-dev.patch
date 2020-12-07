@@ -1,0 +1,4416 @@
+diff -uNrp ADC-WW3-NWM-NEMS-GMLing-12012020/ADCIRC/thirdparty/nuopc/adcirc.mk.install ADC-WW3-NWM-NEMS-GMLing-12012020-mods/ADCIRC/thirdparty/nuopc/adcirc.mk.install
+--- ADC-WW3-NWM-NEMS-GMLing-12012020/ADCIRC/thirdparty/nuopc/adcirc.mk.install	2020-11-15 08:41:52.000000000 -0600
++++ ADC-WW3-NWM-NEMS-GMLing-12012020-mods/ADCIRC/thirdparty/nuopc/adcirc.mk.install	1969-12-31 18:00:00.000000000 -0600
+@@ -1,6 +0,0 @@
+-# ESMF self-describing build dependency makefile fragment
+-
+-ESMF_DEP_FRONT     = adc_cap
+-ESMF_DEP_INCPATH   = /scratch2/COASTAL/coastal/save/Saeed.Moghimi/models/NEMS/tests/NSEModel_try_err_branches/hera/coastal_app_test/ADCIRC/cpl/nuopc /scratch2/COASTAL/coastal/save/Saeed.Moghimi/models/NEMS/tests/NSEModel_try_err_branches/hera/coastal_app_test/ADCIRC-INSTALL 
+-ESMF_DEP_CMPL_OBJS = 
+-ESMF_DEP_LINK_OBJS =  -L/scratch2/COASTAL/coastal/save/Saeed.Moghimi/models/NEMS/tests/NSEModel_try_err_branches/hera/coastal_app_test/ADCIRC-INSTALL -ladc /scratch2/COASTAL/coastal/save/Saeed.Moghimi/models/NEMS/tests/NSEModel_try_err_branches/hera/coastal_app_test/ADCIRC-INSTALL/libadc_cap.a  -L/scratch2/COASTAL/coastal/save/Saeed.Moghimi/models/NEMS/tests/NSEModel_try_err_branches/hera/coastal_app_test/ADCIRC/work/  /scratch2/COASTAL/coastal/save/Saeed.Moghimi/models/NEMS/tests/NSEModel_try_err_branches/hera/coastal_app_test/ADCIRC/work/libadc.a  
+diff -uNrp ADC-WW3-NWM-NEMS-GMLing-12012020/ADCIRC/thirdparty/nuopc/atmesh.mk.install ADC-WW3-NWM-NEMS-GMLing-12012020-mods/ADCIRC/thirdparty/nuopc/atmesh.mk.install
+--- ADC-WW3-NWM-NEMS-GMLing-12012020/ADCIRC/thirdparty/nuopc/atmesh.mk.install	2020-11-15 08:41:52.000000000 -0600
++++ ADC-WW3-NWM-NEMS-GMLing-12012020-mods/ADCIRC/thirdparty/nuopc/atmesh.mk.install	1969-12-31 18:00:00.000000000 -0600
+@@ -1,6 +0,0 @@
+-# ESMF self-describing build dependency makefile fragment
+-
+-ESMF_DEP_FRONT     = ATMESH    
+-ESMF_DEP_INCPATH   = /scratch4/COASTAL/coastal/save/Saeed.Moghimi/models/NEMS/tests/NSEModel_try_err_branches/HWRF2ADC_test02/ADCIRC/cpl/nuopc /scratch4/COASTAL/coastal/save/Saeed.Moghimi/models/NEMS/tests/NSEModel_try_err_branches/HWRF2ADC_test02/ATMESH-INSTALL 
+-ESMF_DEP_CMPL_OBJS = 
+-ESMF_DEP_LINK_OBJS =  -L/scratch4/COASTAL/coastal/save/Saeed.Moghimi/models/NEMS/tests/NSEModel_try_err_branches/HWRF2ADC_test02/ATMESH-INSTALL /scratch4/COASTAL/coastal/save/Saeed.Moghimi/models/NEMS/tests/NSEModel_try_err_branches/HWRF2ADC_test02/ATMESH-INSTALL/libatmesh_cap.a  
+diff -uNrp ADC-WW3-NWM-NEMS-GMLing-12012020/ADCIRC/thirdparty/nuopc/hwrfdata.mk.install ADC-WW3-NWM-NEMS-GMLing-12012020-mods/ADCIRC/thirdparty/nuopc/hwrfdata.mk.install
+--- ADC-WW3-NWM-NEMS-GMLing-12012020/ADCIRC/thirdparty/nuopc/hwrfdata.mk.install	2020-11-15 08:41:52.000000000 -0600
++++ ADC-WW3-NWM-NEMS-GMLing-12012020-mods/ADCIRC/thirdparty/nuopc/hwrfdata.mk.install	1969-12-31 18:00:00.000000000 -0600
+@@ -1,6 +0,0 @@
+-# ESMF self-describing build dependency makefile fragment
+-
+-ESMF_DEP_FRONT     = hwrf_cap  
+-ESMF_DEP_INCPATH   = /scratch4/COASTAL/coastal/save/Saeed.Moghimi/models/NEMS/tests/NSEModel_try_err_branches/HWRF2ADC_test02/ADCIRC/cpl/nuopc /scratch4/COASTAL/coastal/save/Saeed.Moghimi/models/NEMS/tests/NSEModel_try_err_branches/HWRF2ADC_test02/HWRFDATA-INSTALL 
+-ESMF_DEP_CMPL_OBJS = 
+-ESMF_DEP_LINK_OBJS =  -L/scratch4/COASTAL/coastal/save/Saeed.Moghimi/models/NEMS/tests/NSEModel_try_err_branches/HWRF2ADC_test02/HWRFDATA-INSTALL /scratch4/COASTAL/coastal/save/Saeed.Moghimi/models/NEMS/tests/NSEModel_try_err_branches/HWRF2ADC_test02/HWRFDATA-INSTALL/libhwrfdata_cap.a  
+diff -uNrp ADC-WW3-NWM-NEMS-GMLing-12012020/ADCIRC/thirdparty/nuopc/Makefile ADC-WW3-NWM-NEMS-GMLing-12012020-mods/ADCIRC/thirdparty/nuopc/Makefile
+--- ADC-WW3-NWM-NEMS-GMLing-12012020/ADCIRC/thirdparty/nuopc/Makefile	2020-11-15 08:41:52.000000000 -0600
++++ ADC-WW3-NWM-NEMS-GMLing-12012020-mods/ADCIRC/thirdparty/nuopc/Makefile	2020-12-07 01:59:57.000000000 -0600
+@@ -22,8 +22,8 @@ include $(ESMFMKFILE)
+ current_dir := $(shell pwd)
+ ADCDIR  := $(current_dir)/../..
+ 
+-INCDIRS := -I . -I$(ADCDIR)/work/odircp -I $(ADCDIR)/prep
+-LIBDIRS := -L . -L$(ADCDIR)/work 
++INCDIRS := -I. -I$(ADCDIR)/work/odircp -I$(ADCDIR)/prep
++LIBDIRS := -L. -L$(ADCDIR)/work 
+ LIBSS   := -ladc  -lnetcdf  -lnetcdff 
+ 
+ INCDIRS += -I${NETCDFHOME}/include/   
+@@ -73,7 +73,7 @@ esm1.x: esmApp.o esm.o wav.o adc_cap.o a
+ install: $(LIBRARY)
+ 	rm -f adcirc.mk.install
+ 	@echo "# ESMF self-describing build dependency makefile fragment" > adcirc.mk.install
+-	@echo "# src location Zeus: $pwd" >> adcirc.mk.install
++	@echo "# src location: $pwd" >> adcirc.mk.install
+ 	@echo  >> adcirc.mk.install
+ 	@echo "ESMF_DEP_FRONT     = adc_cap_mod" >> adcirc.mk.install
+ 	@echo "ESMF_DEP_INCPATH   = $(INSTALLDIR)" >> adcirc.mk.install
+diff -uNrp ADC-WW3-NWM-NEMS-GMLing-12012020/ADCIRC/thirdparty/nuopc/makefile.adc_cap.nuopc ADC-WW3-NWM-NEMS-GMLing-12012020-mods/ADCIRC/thirdparty/nuopc/makefile.adc_cap.nuopc
+--- ADC-WW3-NWM-NEMS-GMLing-12012020/ADCIRC/thirdparty/nuopc/makefile.adc_cap.nuopc	2020-11-15 08:41:52.000000000 -0600
++++ ADC-WW3-NWM-NEMS-GMLing-12012020-mods/ADCIRC/thirdparty/nuopc/makefile.adc_cap.nuopc	2020-12-07 01:59:57.000000000 -0600
+@@ -22,9 +22,9 @@ ifneq ($(origin ADCDIR), environment)
+   $(info Setting to $(ADCDIR) ) 
+ endif
+ 
+-#INCDIRS := -I . -I$(ADCDIR)/work -I$(ADCDIR)/prep
+-INCDIRS := -I . -I$(ADCDIR)/odircp -I$(ADCDIR)/prep
+-LIBDIRS := -L . -L$(ADCDIR) 
++#INCDIRS := -I. -I$(ADCDIR)/work -I$(ADCDIR)/prep
++INCDIRS := -I. -I$(ADCDIR)/work/odircp -I$(ADCDIR)/prep
++LIBDIRS := -L. -L$(ADCDIR) 
+ LIBSS   := -ladc  -lnetcdf  -lnetcdff -lhdf5 -lhdf5_fortran
+ 
+ INCDIRS += -I${NETCDFHOME}/include   
+diff -uNrp ADC-WW3-NWM-NEMS-GMLing-12012020/ADCIRC/thirdparty/nuopc/makefile.atmesh.nuopc ADC-WW3-NWM-NEMS-GMLing-12012020-mods/ADCIRC/thirdparty/nuopc/makefile.atmesh.nuopc
+--- ADC-WW3-NWM-NEMS-GMLing-12012020/ADCIRC/thirdparty/nuopc/makefile.atmesh.nuopc	2020-11-15 08:41:52.000000000 -0600
++++ ADC-WW3-NWM-NEMS-GMLing-12012020-mods/ADCIRC/thirdparty/nuopc/makefile.atmesh.nuopc	2020-12-07 01:59:57.000000000 -0600
+@@ -13,8 +13,8 @@ endif
+ include $(ESMFMKFILE)
+ 
+ 
+-INCDIRS := -I . 
+-LIBDIRS := -L . 
++INCDIRS := -I. 
++LIBDIRS := -L. 
+ LIBSS   :=  -lnetcdf  -lnetcdff -lhdf5 -lhdf5_fortran
+ 
+ INCDIRS += -I${NETCDFHOME}/include/   
+diff -uNrp ADC-WW3-NWM-NEMS-GMLing-12012020/ADCIRC/thirdparty/nuopc/makefile.hwrfdata.nuopc ADC-WW3-NWM-NEMS-GMLing-12012020-mods/ADCIRC/thirdparty/nuopc/makefile.hwrfdata.nuopc
+--- ADC-WW3-NWM-NEMS-GMLing-12012020/ADCIRC/thirdparty/nuopc/makefile.hwrfdata.nuopc	2020-11-15 08:41:52.000000000 -0600
++++ ADC-WW3-NWM-NEMS-GMLing-12012020-mods/ADCIRC/thirdparty/nuopc/makefile.hwrfdata.nuopc	2020-12-07 01:59:57.000000000 -0600
+@@ -13,8 +13,8 @@ endif
+ include $(ESMFMKFILE)
+ 
+ 
+-INCDIRS := -I . 
+-LIBDIRS := -L . 
++INCDIRS := -I. 
++LIBDIRS := -L. 
+ LIBSS   :=  -lnetcdf  -lnetcdff -lhdf5 -lhdf5_fortran
+ 
+ INCDIRS += -I${NETCDFHOME}/include/   
+diff -uNrp ADC-WW3-NWM-NEMS-GMLing-12012020/ADCIRC/thirdparty/nuopc/makefile.ww3data.nuopc ADC-WW3-NWM-NEMS-GMLing-12012020-mods/ADCIRC/thirdparty/nuopc/makefile.ww3data.nuopc
+--- ADC-WW3-NWM-NEMS-GMLing-12012020/ADCIRC/thirdparty/nuopc/makefile.ww3data.nuopc	2020-11-15 08:41:52.000000000 -0600
++++ ADC-WW3-NWM-NEMS-GMLing-12012020-mods/ADCIRC/thirdparty/nuopc/makefile.ww3data.nuopc	2020-12-07 01:59:57.000000000 -0600
+@@ -13,8 +13,8 @@ endif
+ include $(ESMFMKFILE)
+ 
+ 
+-INCDIRS := -I . 
+-LIBDIRS := -L . 
++INCDIRS := -I. 
++LIBDIRS := -L. 
+ LIBSS   :=  -lnetcdf  -lnetcdff -lhdf5 -lhdf5_fortran
+ 
+ INCDIRS += -I${NETCDFHOME}/include/   
+diff -uNrp ADC-WW3-NWM-NEMS-GMLing-12012020/ADCIRC/thirdparty/nuopc/ww3data.mk.install ADC-WW3-NWM-NEMS-GMLing-12012020-mods/ADCIRC/thirdparty/nuopc/ww3data.mk.install
+--- ADC-WW3-NWM-NEMS-GMLing-12012020/ADCIRC/thirdparty/nuopc/ww3data.mk.install	2020-11-15 08:41:52.000000000 -0600
++++ ADC-WW3-NWM-NEMS-GMLing-12012020-mods/ADCIRC/thirdparty/nuopc/ww3data.mk.install	1969-12-31 18:00:00.000000000 -0600
+@@ -1,6 +0,0 @@
+-# ESMF self-describing build dependency makefile fragment
+-
+-ESMF_DEP_FRONT     = wav  
+-ESMF_DEP_INCPATH   = /scratch4/COASTAL/coastal/save/Saeed.Moghimi/models/NEMS/tests/NSEModel_try_err_branches/HWRF2ADC_test02/ADCIRC/cpl/nuopc /scratch4/COASTAL/coastal/save/Saeed.Moghimi/models/NEMS/tests/NSEModel_try_err_branches/HWRF2ADC_test02/WW3DATA-INSTALL 
+-ESMF_DEP_CMPL_OBJS = 
+-ESMF_DEP_LINK_OBJS =  -L/scratch4/COASTAL/coastal/save/Saeed.Moghimi/models/NEMS/tests/NSEModel_try_err_branches/HWRF2ADC_test02/WW3DATA-INSTALL /scratch4/COASTAL/coastal/save/Saeed.Moghimi/models/NEMS/tests/NSEModel_try_err_branches/HWRF2ADC_test02/WW3DATA-INSTALL/libww3data_cap.a  
+diff -uNrp ADC-WW3-NWM-NEMS-GMLing-12012020/ADCIRC/work/cmplrflags.mk ADC-WW3-NWM-NEMS-GMLing-12012020-mods/ADCIRC/work/cmplrflags.mk
+--- ADC-WW3-NWM-NEMS-GMLing-12012020/ADCIRC/work/cmplrflags.mk	2020-11-15 08:41:52.000000000 -0600
++++ ADC-WW3-NWM-NEMS-GMLing-12012020-mods/ADCIRC/work/cmplrflags.mk	2020-12-07 01:59:57.000000000 -0600
+@@ -1,5 +1,5 @@
+ # SRCDIR is set in makefile or on the compile line
+-INCDIRS := -I . -I$(SRCDIR)/prep
++INCDIRS := -I. -I$(SRCDIR)/prep
+ 
+ ########################################################################
+ # Compiler flags for Linux operating system on 64bit x86 CPU
+@@ -324,7 +324,7 @@ ifeq ($(compiler),intel)
+         NETCDFHOME    :=/usr/local/packages/netcdf/4.2.1.1/INTEL-140-MVAPICH2-2.0
+      endif
+      ifeq ($(MACHINENAME),supermic)
+-        FLIBS      := $(FLIBS) -L /usr/local/packages/netcdf_fortran/4.2/INTEL-140-MVAPICH2-2.0/lib -lnetcdff -L/usr/local/packages/netcdf/4.2.1.1/INTEL-140-MVAPICH2-2.0/lib -lnetcdf -lnetcdf -liomp5 -lpthread
++        FLIBS      := $(FLIBS) -L/usr/local/packages/netcdf_fortran/4.2/INTEL-140-MVAPICH2-2.0/lib -lnetcdff -L/usr/local/packages/netcdf/4.2.1.1/INTEL-140-MVAPICH2-2.0/lib -lnetcdf -lnetcdf -liomp5 -lpthread
+         NETCDFHOME :=/usr/local/packages/netcdf/4.2.1.1/INTEL-140-MVAPICH2-2.0/include
+         FFLAGS1    :=$(FFLAGS1) -I/usr/local/packages/hdf5/1.8.12/INTEL-140-MVAPICH2-2.0/include
+      endif
+@@ -1431,7 +1431,7 @@ ifneq (,$(findstring sv1-unicos,$(MACHIN
+   DP  	        :=  -DREAL8 -DCRAY -DCSCA -DCMPI
+   DPRE	        :=  -DREAL8 -DCRAY
+   IMODS		:=  -p
+-  CFLAGS	:=  $(INCDIRS) -I ../Lib -O2 -DCRAY
++  CFLAGS	:=  $(INCDIRS) -I../Lib -O2 -DCRAY
+   FLIBS  	:=
+   MSGLIBS	:=  -lmpi
+   C_LDFLAGS     :=
+@@ -1462,7 +1462,7 @@ ifneq (,$(findstring x1-unicos,$(MACHINE
+   IMODS		:=  -p
+   CC            :=  cc
+   CCBE          :=  $(CC)
+-  CFLAGS	:=  $(INCDIRS) -I ../Lib -O2 -DCRAYX1 -UCRAY
++  CFLAGS	:=  $(INCDIRS) -I../Lib -O2 -DCRAYX1 -UCRAY
+   FLIBS  	:=
+   MSGLIBS	:=  -lmpi
+   C_LDFLAGS     :=
+@@ -1509,9 +1509,9 @@ ifneq (,$(findstring powerpc-darwin,$(MA
+   PPFC	        := f90
+   FC	        := f90
+   PFC	        := mpif77
+-  FFLAGS1	:=  $(INCDIRS) -w -O3 -m64 -cpu:g5 -f fixed -W132 -I . -DLINUX
+-  FFLAGS2	:=  $(INCDIRS) -w -O3 -m64 -cpu:g5 -N11 -f fixed -W132 -I .
+-  FFLAGS3	:=  $(INCDIRS) -w -O3 -m64 -cpu:g5 -N11 -f fixed -W132 -I .
++  FFLAGS1	:=  $(INCDIRS) -w -O3 -m64 -cpu:g5 -f fixed -W132 -I. -DLINUX
++  FFLAGS2	:=  $(INCDIRS) -w -O3 -m64 -cpu:g5 -N11 -f fixed -W132 -I.
++  FFLAGS3	:=  $(INCDIRS) -w -O3 -m64 -cpu:g5 -N11 -f fixed -W132 -I.
+   DA  	   	:=  -DREAL8 -DCSCA -DLINUX
+   DP  	   	:=  -DREAL8 -DCSCA -DCMPI -DLINUX
+   DPRE	   	:=  -DREAL8 -DLINUX
+@@ -1539,10 +1539,10 @@ ifneq (,$(findstring i386-darwin,$(MACHI
+   PPFC	        := ifort
+   FC	        := ifort
+   PFC	        := mpif77
+-  FFLAGS1       :=  $(INCDIRS) -nowarn -O3    -fixed -132 -check all -traceback -DLINUX -DNETCDF_DEBUG -I .
+-# FFLAGS1	:=  $(INCDIRS) -nowarn -O3    -fixed -132 -DIBM -I .
+-  FFLAGS2	:=  $(INCDIRS) -nowarn -O3    -fixed -132 -I .
+-  FFLAGS3	:=  $(INCDIRS) -nowarn -O3    -fixed -132 -I .
++  FFLAGS1       :=  $(INCDIRS) -nowarn -O3    -fixed -132 -check all -traceback -DLINUX -DNETCDF_DEBUG -I.
++# FFLAGS1	:=  $(INCDIRS) -nowarn -O3    -fixed -132 -DIBM -I.
++  FFLAGS2	:=  $(INCDIRS) -nowarn -O3    -fixed -132 -I.
++  FFLAGS3	:=  $(INCDIRS) -nowarn -O3    -fixed -132 -I.
+   DA  	   	:=  -DREAL8 -DCSCA -DLINUX
+   DP  	   	:=  -DREAL8 -DCSCA -DLINUX -DCMPI -DNETCDF_DEBUG
+   DPRE	   	:=  -DREAL8 -DLINUX
+diff -uNrp ADC-WW3-NWM-NEMS-GMLing-12012020/ADCIRC/work/makefile ADC-WW3-NWM-NEMS-GMLing-12012020-mods/ADCIRC/work/makefile
+--- ADC-WW3-NWM-NEMS-GMLing-12012020/ADCIRC/work/makefile	2020-11-15 08:41:52.000000000 -0600
++++ ADC-WW3-NWM-NEMS-GMLing-12012020-mods/ADCIRC/work/makefile	2020-12-07 01:59:57.000000000 -0600
+@@ -688,16 +688,14 @@ endif
+ ########################## Misc Commands ####################################
+ 
+ clean:
+-	rm -f odir*/*.o  odir*/*.mod sizes.o
+-	rm -f  ../thirdparty/swan/*.f ../thirdparty/swan/*.for ../thirdparty/swan/*.f90
++	rm -f *.o odir*/*.o  *.mod odir*/*.mod actualflags.txt
++	rm -f  ../thirdparty/swan/*.f ../thirdparty/swan/*.for ../thirdparty/swan/*.f90 .swanlastcompile
+ 	rm -f ../thirdparty/nuopc/*.o ../thirdparty/nuopc/*.mod 
+ 
+-clobber:
+-	rm -r -f odir*
++clobber: clean
++	rm -r -f odir* util/*
+ 	rm -f adcprep adcprep_be adcirc $(PARALLEL_ADCIRC) adcswan padcswan p15 owi22 build13 aswip \
+-           build12 buildstwave23 hot2asc inflate hstime sizes.o adcpost adccmp libadc.a
+-	rm -f  ../thirdparty/swan/*.f ../thirdparty/swan/*.for ../thirdparty/swan/*.f90 .swanlastcompile
+-	rm -f ../thirdparty/nuopc/*.o ../thirdparty/nuopc/*.mod 
++	      build12 buildstwave23 hot2asc inflate hstime sizes.o adcpost adccmp libadc.a
+ 
+ #	(cd ../thirdparty/nuopc && make distclean)
+ 
+diff -uNrp ADC-WW3-NWM-NEMS-GMLing-12012020/ADCIRC/work/makefile.non_pc ADC-WW3-NWM-NEMS-GMLing-12012020-mods/ADCIRC/work/makefile.non_pc
+--- ADC-WW3-NWM-NEMS-GMLing-12012020/ADCIRC/work/makefile.non_pc	2020-11-15 08:41:52.000000000 -0600
++++ ADC-WW3-NWM-NEMS-GMLing-12012020-mods/ADCIRC/work/makefile.non_pc	2020-12-07 01:59:57.000000000 -0600
+@@ -33,7 +33,7 @@ ifeq ($(BUILDTYPE),adcprep)
+   O_DIR:=odir1/
+   FFLAGS:= $(FFLAGS1) $(DPRE) $(IMODS) $(O_DIR) 
+   VPATH :=  ../prep 
+-  LIBS  :=  -L odir_metis -lmetis
++  LIBS  :=  -Lodir_metis -lmetis
+   PMSG_OBJ:=
+ endif
+ #                                      adcprep_be
+@@ -42,7 +42,7 @@ ifeq ($(BUILDTYPE),adcprep_be)
+   O_DIR:=odir2/
+   FFLAGS:= $(FFLAGS1) $(DPRE) $(IMODS) $(O_DIR) 
+   VPATH :=  ../prep 
+-  LIBS  := -L odir_metis_be -lmetis_be
++  LIBS  := -Lodir_metis_be -lmetis_be
+   PMSG_OBJ:=
+ endif
+ #                                      adcirc   
+diff -uNrp ADC-WW3-NWM-NEMS-GMLing-12012020/ADCIRC/work/make_nuopc.sh ADC-WW3-NWM-NEMS-GMLing-12012020-mods/ADCIRC/work/make_nuopc.sh
+--- ADC-WW3-NWM-NEMS-GMLing-12012020/ADCIRC/work/make_nuopc.sh	2020-11-15 08:41:52.000000000 -0600
++++ ADC-WW3-NWM-NEMS-GMLing-12012020-mods/ADCIRC/work/make_nuopc.sh	2020-12-07 01:59:57.000000000 -0600
+@@ -1,61 +1,102 @@
+ #!/bin/bash
+ 
+-## moghimis@gmail.com - 01/31/2020
+-## This script compiles ADCIRC model with a pre-selected sets of
+-## functionalities in NUOPC coupled mode in Hera computer.
+-# To run: ./make_nuopc esmf-impi-env.sh intel
+-
+-esmf_env=$1
+-comp_opt=$2
+-compiler=intel
+-
+-# environ required by ESMF/NUOPC
+-if [[ ! -z $esmf_env ]]; then
+-    echo "$0: Sourcing environ file $esmf_env"
+-    source $esmf_env
+-elif [[ ! -z $ESMFMKFILE ]]; then
+-    echo "$0: Setting environ for ESMFMKFILE"
++# Panagiotis Velissariou <panagiotis.velissariou@noaa.gov> - 12/05/2020
++# Original by: moghimis@gmail.com - 01/31/2020
++# This script compiles ADCIRC model with a pre-selected sets of
++## functionalities in NUOPC coupled mode.
++# Run it as: ./make_nuopc.sh some-env-module-file some-compiler-name   or,
++#            ./make_nuopc.sh some-compiler-name                        or,
++#            ./make_nuopc.sh
++# Note: some-env-module-file will be sourced from this bash script
++#       so it should be bash compatible file.
++
++
++# Get the directory where the script is located
++if [[ $(uname -s) == Darwin ]]; then
++  readonly scrNAME="$( basename "$(grealpath -s "${BASH_SOURCE[0]}")" )"
++  readonly scrDIR="$(cd "$(dirname "$(grealpath -s "${BASH_SOURCE[0]}")" )" && pwd -P)"
++else
++  readonly scrNAME="$( basename "$(realpath -s "${BASH_SOURCE[0]}")" )"
++  readonly scrDIR="$(cd "$(dirname "$(realpath -s "${BASH_SOURCE[0]}")" )" && pwd -P)"
++fi
++
++
++###====================
++### Get the script arguments: env. file and compiler
++###====================
++num_opt=${#}
++if [ ${num_opt} -ge 2 ]; then
++  esmf_env="${1}"
++  comp_opt="$( echo "${2}" | tr '[:upper:]' '[:lower:]' )"
++elif [ ${num_opt} -eq 1 ]; then
++  comp_opt="$( echo "${1}" | tr '[:upper:]' '[:lower:]' )"
+ else
+-    echo "$0: ESMFMKFILE enviorn is not set, can not continue!"
+-    exit 1
++  if [ -n ${NEMS_COMPILER:+1} ]; then
++    comp_opt="$( echo "${NEMS_COMPILER}" | tr '[:upper:]' '[:lower:]' )"
++  fi
++fi
++
++# Environment required by ESMF/NUOPC (OPTIONAL)
++if [ -n "${esmf_env:+1}" ]; then
++  if [ -f "${esmf_env}" ]; then
++    echo "${scrNAME} :: Sourcing the environment file: \"${esmf_env}\""
++    source ${esmf_env}
++  else
++    echo "${scrNAME} :: Using the the environment variable ESMFMKFILE"
++  fi
+ fi
+- 
+ 
+-if [[ ! -z $comp_opt ]]; then
+-    echo "$0: Setting compiler option to $comp_opt"
+-    export compiler=$comp_opt
++# Compiler to use (REQUIRED)
++case "${comp_opt}" in
++    gnu ) ;; #Do nothing
++  intel ) ;; #Do nothing
++    pgi ) ;; #Do nothing
++      * ) echo "${scrNAME} :: Compiler \"${comp_opt}\" is not supported"
++          echo "   Exiting ..."
++          exit 1
++          ;;
++esac
++###====================
++
++
++###====================
++### Set/Export the important environment variables
++###====================
++if [[ -n ${NETCDFHOME:+1} ]]; then
++  export NETCDFLAG=enable
++  export NETCDF4FLAG=enable
++  export NETCDF4_COMPRESSION=enable
+ else
+-    echo "$0: Setting compiler option by default to intel"
+-    export compiler=intel
++  echo "${scrNAME} :: NETCDFHOME is not defined. Define this environment variable before running this script."
++  echo "   Exiting ..."
++  exit 1
+ fi
+ 
+-export NETCDFLAG=enable
+-export NETCDF4FLAG=enable
+-export NETCDF4_COMPRESSION=enable
++export compiler=${compiler}
++export ADCDIR=${scrDIR}
++###====================
+ 
+-export ADCDIR=$(pwd)
+ 
+-# #make padcirc -d compiler=$compiler NETCDFLAG=enable NETCDF4FLAG=enable NETCDF4_COMPRESSION=enable
++#make padcirc -d compiler=$compiler NETCDFLAG=enable NETCDF4FLAG=enable NETCDF4_COMPRESSION=enable
+ export MAKELEVEL=0
+ make NETCDF=enable NETCDF4=enable libadc.a 
+ 
+-# build adcric nuopc
+-cd  ../thirdparty/nuopc
+-make -f makefile.adc_cap.nuopc nuopc
++### Build adcric nuopc
++pushd ${ADCDIR}/../thirdparty/nuopc >/dev/null 2>&1
++  make -f makefile.adc_cap.nuopc nuopc
++popd >/dev/null 2>&1
+ 
+-cd $ADCDIR
++### Build adcprep
+ make NETCDF=enable NETCDF4=enable adcprep
+ 
+-#
+-#build tide_fac exe
+-mkdir -p $ADCDIR/util
+-cd $ADCDIR/../util/estofs_tide_fac/
+-make
+-cp -f estofs_tide_fac $ADCDIR/util/tidefac
+-
+-
+-
+-
+-
+-
++### Build tide_fac exe
++if [ ! -d util ]; then
++  mkdir -p util
++else
++  [ -f util/tidefac ] && rm -f util/tidefac
++fi
+ 
++pushd ${ADCDIR}/../util/estofs_tide_fac >/dev/null 2>&1
++  make
++  cp -f estofs_tide_fac ${ADCDIR}/util/tidefac
++popd >/dev/null 2>&1
+diff -uNrp ADC-WW3-NWM-NEMS-GMLing-12012020/ADCIRC/work/make_nuopc.sh.orig ADC-WW3-NWM-NEMS-GMLing-12012020-mods/ADCIRC/work/make_nuopc.sh.orig
+--- ADC-WW3-NWM-NEMS-GMLing-12012020/ADCIRC/work/make_nuopc.sh.orig	1969-12-31 18:00:00.000000000 -0600
++++ ADC-WW3-NWM-NEMS-GMLing-12012020-mods/ADCIRC/work/make_nuopc.sh.orig	2020-12-07 01:59:57.000000000 -0600
+@@ -0,0 +1,61 @@
++#!/bin/bash
++
++## moghimis@gmail.com - 01/31/2020
++## This script compiles ADCIRC model with a pre-selected sets of
++## functionalities in NUOPC coupled mode in Hera computer.
++# To run: ./make_nuopc esmf-impi-env.sh intel
++
++esmf_env=$1
++comp_opt=$2
++compiler=intel
++
++# environ required by ESMF/NUOPC
++if [[ ! -z $esmf_env ]]; then
++    echo "$0: Sourcing environ file $esmf_env"
++    source $esmf_env
++elif [[ ! -z $ESMFMKFILE ]]; then
++    echo "$0: Setting environ for ESMFMKFILE"
++else
++    echo "$0: ESMFMKFILE enviorn is not set, can not continue!"
++    exit 1
++fi
++ 
++
++if [[ ! -z $comp_opt ]]; then
++    echo "$0: Setting compiler option to $comp_opt"
++    export compiler=$comp_opt
++else
++    echo "$0: Setting compiler option by default to intel"
++    export compiler=intel
++fi
++
++export NETCDFLAG=enable
++export NETCDF4FLAG=enable
++export NETCDF4_COMPRESSION=enable
++
++export ADCDIR=$(pwd)
++
++# #make padcirc -d compiler=$compiler NETCDFLAG=enable NETCDF4FLAG=enable NETCDF4_COMPRESSION=enable
++export MAKELEVEL=0
++make NETCDF=enable NETCDF4=enable libadc.a 
++
++# build adcric nuopc
++cd  ../thirdparty/nuopc
++make -f makefile.adc_cap.nuopc nuopc
++
++cd $ADCDIR
++make NETCDF=enable NETCDF4=enable adcprep
++
++#
++#build tide_fac exe
++mkdir -p $ADCDIR/util
++cd $ADCDIR/../util/estofs_tide_fac/
++make
++cp -f estofs_tide_fac $ADCDIR/util/tidefac
++
++
++
++
++
++
++
+diff -uNrp ADC-WW3-NWM-NEMS-GMLing-12012020/ATMESH/makefile.atmesh.nuopc ADC-WW3-NWM-NEMS-GMLing-12012020-mods/ATMESH/makefile.atmesh.nuopc
+--- ADC-WW3-NWM-NEMS-GMLing-12012020/ATMESH/makefile.atmesh.nuopc	2020-02-27 13:50:13.000000000 -0600
++++ ADC-WW3-NWM-NEMS-GMLing-12012020-mods/ATMESH/makefile.atmesh.nuopc	2020-12-07 01:59:57.000000000 -0600
+@@ -15,8 +15,8 @@ endif
+ include $(ESMFMKFILE)
+ 
+ 
+-INCDIRS := -I . 
+-LIBDIRS := -L . 
++INCDIRS := -I. 
++LIBDIRS := -L. 
+ LIBSS   :=  -lnetcdf  -lnetcdff -lhdf5 -lhdf5_fortran
+ 
+ INCDIRS += -I${NETCDFHOME}/include/   
+diff -uNrp ADC-WW3-NWM-NEMS-GMLing-12012020/build.sh ADC-WW3-NWM-NEMS-GMLing-12012020-mods/build.sh
+--- ADC-WW3-NWM-NEMS-GMLing-12012020/build.sh	2020-12-04 14:36:35.000000000 -0600
++++ ADC-WW3-NWM-NEMS-GMLing-12012020-mods/build.sh	2020-12-07 00:13:46.000000000 -0600
+@@ -1,43 +1,214 @@
+ #!/bin/bash
+ 
+-# Description : Script to compile NSEModel NEMS application
+-# Usage       : ./build.sh
+-# Date        : Feb 27, 2020
+-# Contact     : moghimis@gmail.com 
+-
+-# Check for env variables
+-if [ "${ROOTDIR}" == "" ]
+-    then 
+-    echo "ERROR - Your ROOTDIR environment variable is not set"
+-    exit 1
++###########################################################################
++### Author:  Panagiotis Velissariou <panagiotis.velissariou@noaa.gov>
++###
++### Version - 1.0 Fri Dec 04 2020
++###########################################################################
++
++
++###====================
++# Make sure that the current working directory is in the PATH
++[[ ! :$PATH: == *:".":* ]] && export PATH="${PATH}:."
++
++
++# Get the directory where the script is located
++scrNAME="${BASH_SOURCE[0]}"
++if [[ $(uname -s) == Darwin ]]; then
++#  readonly scrDIR="$(cd "$(dirname "$(greadlink -f -n "${BASH_SOURCE[0]}" )" )" && pwd -P)"
++  readonly scrDIR="$(cd "$(dirname "$(grealpath -s "${scrNAME}" )" )" && pwd -P)"
++else
++#  readonly scrDIR="$(cd "$(dirname "$(readlink -f -n "${BASH_SOURCE[0]}" )" )" && pwd -P)"
++  readonly scrDIR="$(cd "$(dirname "$(realpath -s "${scrNAME}")" )" && pwd -P)"
+ fi
+-if [ "${METIS_PATH}" == "" ]
+-    then 
+-    echo "ERROR - Your METIS_PATH environment variable for WW3 is not set"
+-    exit 1
++
++funcs="$( find ${scrDIR} -type f -name "functions_build" | head -n 1 )"
++if [ -f "${funcs}" ]; then
++  source "${funcs}"
+ else
+-    echo "METIS_PATH set to ${METIS_PATH}"
++  echo " ### ERROR :: in ${scrNAME}"
++  echo "     Cannot load the required file: ${funcs}"
++  echo "     Exiting now ..."
++  echo
++  exit 1
++fi
++
++unset funcs
++###====================
++
++
++#########
++# Call ParseArgs to get the user input.
++ParseArgs "${@}"
++
++
++##########
++# Set the variables for this script
++CLEAN=${MY_CLEAN:-0}
++
++[ -n "${MY_COMPILER:+1}" ] && COMPILER="$( toLOWER "${MY_COMPILER}" )"
++
++[ -n "${MY_COMPONENT:+1}" ] && COMPONENT="${MY_COMPONENT}"
++
++[ -n "${MY_OS:+1}" ] && OS="$( toLOWER "${MY_OS}" )"
++
++[ "${MY_PARMAKE:0}" -gt 1 ] && PARMAKE=${MY_PARMAKE}
++
++[ -n "${MY_PLATFORM:+1}" ] && PLATFORM="$( toLOWER "${MY_PLATFORM}" )"
++
++[ -n "${MY_OS:+1}" ] && OS="$( toLOWER "${MY_OS}" )"
++
++[ -n "${MY_VERBOSE:+1}" ] && VERBOSE="$( toLOWER "${MY_VERBOSE}" )"
++
++mod_file="envmodules${COMPILER:+_${COMPILER}}${PLATFORM:+.${PLATFORM}}"
++
++if [ -n "${COMPONENT:+1}" ]; then
++  comp_fname="$( strTrim "$( toLOWER "${COMPONENT}" )" )"
++  comp_fname="$( echo "${comp_fname}" | sed 's/ /_/g' )"
++fi
++##########
++
++
++##########
++# Get the project directories and perform a basic check on them
++readonly nemsDIR="${NEMS_DIR:-${scrDIR}/NEMS}"
++if [ ! -f "${nemsDIR}/NEMSAppBuilder" ]; then
++  echo "The project directory \"${nemsDIR}\" does not appear to contain NEMSAppBuilder."
++  echo "Is this the correct NEMS directory?"
++  echo "You might need to set the environment variable NEMS_DIR before running this script."
++  echo "Exiting ..."
++  exit 1
++fi
++
++readonly modsDIR="${NEMSMODS_DIR:-${scrDIR}/modulefiles}"
++if [ ! -f "${modsDIR}/${mod_file}" ]; then
++  echo "The modulefiles directory \"${modsDIR}\" does not appear to contain module: ${mod_file}."
++  echo "Is this the correct modulefiles directory?"
++  echo "You might need to set the environment variable NEMSMODS_DIR before running this script."
++  echo "Exiting ..."
++  exit 1
++fi
++##########
++
++
++##########
++# If the user requested to clean the build folder, do the cleaning end exit
++if [ ${CLEAN:-0} -ge 1 ]; then
++  echo "User requested to only clean the project. Cleaning ..."
++
++  pushd ${nemsDIR} >/dev/null 2>&1
++    [ ${CLEAN:-0} -eq 1 ] && compileNems clean
++    [ ${CLEAN:-0} -eq 2 ] && compileNems distclean
++  popd >/dev/null 2>&1
++
++  exit 0
++fi
++##########
++
++
++##########
++# Export some environment variables for NEMS
++export NEMS_COMPILER=${COMPILER}
++
++# Source the environment module
++source ${modsDIR}/${mod_file}
++
++component_ww3=":$( echo "${COMPONENT}" | sed 's/ /:/g' ):"
++if [[ :$component_ww3: == *:"WW3":* ]]; then
++  if [ -z "${METIS_PATH}" ]; then
++    echo "ERROR :: The METIS_PATH environment variable for WW3 is not set."
++    echo "   Set the METIS_PATH environment variable before running this script:"
++    echo "     METIS_PATH=\"path_to_compiled_metis\""
++    echo "Exiting ..."
++    exit 1
++  else
++    export METIS_PATH="${METIS_PATH}"
++  fi
++  export WW3_COMP="${COMPILER}"
+ fi
+ 
+-# Load modules
+-source ${ROOTDIR}/modulefiles/hera/ESMF_NUOPC
++##########
++
++
++##########
++# Get a final user response for the variables
++echo
++echo "The following variables are defined:"
++echo "    CLEAN          = ${CLEAN}"
++echo "    COMPILER       = ${COMPILER:-Undefined, Supported values are: [${MY_COMPILING_SYTEMS}]}"
++echo "    NEMS_COMPILER  = ${NEMS_COMPILER}"
++echo "    WW3_COMP       = ${WW3_COMP}"
++echo "    COMPONENTS     = ${COMPONENT:-Undefined, Supported values are: [${MY_COMPONENT_LIST}]}"
++echo "    OS             = ${OS}"
++echo "    PLATFORM       = ${PLATFORM}"
++echo "    VERBOSE        = ${VERBOSE}"
++echo
++echo "    METIS_PATH     = ${METIS_PATH}"
++echo "    HDF5HOME       = ${HDF5HOME}"
++echo "    NETCDFHOME     = ${NETCDFHOME}"
++echo "    NETCDF_INCDIR  = ${NETCDF_INCDIR}"
++echo "    NETCDF_LIBDIR  = ${NETCDF_LIBDIR}"
++echo
++echo "    ESMFMKFILE     = ${ESMFMKFILE}"
++echo
++
+ module list
+ 
+-echo "Building NEMS app in ${ROOTDIR}/NEMS"
+-cd ${ROOTDIR}/NEMS
++echo_response=
++while [ -z "${echo_response}" ] ; do
++  echo -n "Are these values correct? [y/n]: "
++  read echo_response
++  echo_response="$( getYesNo "${echo_response}" )"
++done
++
++if [ "${echo_response:-no}" = "no" ]; then
++  echo
++  echo "User responded: ${echo_response}"
++  echo "Exiting now ..."
++  echo
++  exit 1
++fi
++
++unset echo_response
++##########
++
++
++############################################################
++### START THE CALCULATIONS
++############################################################
++
++##########
++# Compile the project
++pushd ${nemsDIR} >/dev/null 2>&1
++  case ${CLEAN:-0} in
++    -1 )
++      compileNems clean
++      err=$?
++      ;;
++    -2 )
++      compileNems distclean
++      err=$?
++      ;;
++    -3 )
++      compileNems noclean
++      err=$?
++      ;;
++     * )
++      compileNems clean
++      err=$?
++      ;;
++  esac
++
++  if [ ${err} -eq 0 ]; then
++    compileNems build
++    err=$?
++  fi
++
++  if [  ${err} -eq 0 ]; then
++    if [ -f exe/NEMS.x ]; then
++      cp -p exe/NEMS.x exe/NEMS${comp_fname:+-${comp_fname}}.x
++    fi
++  fi
++popd >/dev/null 2>&1
+ 
+-# Clean up
+-make -f GNUmakefile distclean_ADCIRC COMPONENTS="ADCIRC"
+-make -f GNUmakefile distclean_WW3DATA COMPONENTS="WW3DATA"
+-make -f GNUmakefile distclean_ATMESH COMPONENTS="ATMESH"
+-make -f GNUmakefile distclean_WW3 COMPONENTS="WW3"
+-make -f GNUmakefile distclean_NWM COMPONENTS="NWM"
+-make -f GNUmakefile distclean_NEMS COMPONENTS="ADCIRC WW3 NWM ATMESH"
+-
+-# Make coupled NEMS app
+-#make -f GNUmakefile build COMPONENTS="ADCIRC NWM ATMESH"
+-#make -f GNUmakefile build COMPONENTS="ADCIRC WW3 ATMESH"
+-#make -f GNUmakefile build COMPONENTS="ADCIRC ATMESH WW3 NWM"
+-#make -f GNUmakefile build COMPONENTS="ADCIRC WW3DATA ATMESH"
+-#make -f GNUmakefile build COMPONENTS="ADCIRC ATMESH  NWM"
+-make -f GNUmakefile build COMPONENTS="ADCIRC WW3DATA ATMESH NWM"
++exit 0
+diff -uNrp ADC-WW3-NWM-NEMS-GMLing-12012020/build.sh.orig ADC-WW3-NWM-NEMS-GMLing-12012020-mods/build.sh.orig
+--- ADC-WW3-NWM-NEMS-GMLing-12012020/build.sh.orig	1969-12-31 18:00:00.000000000 -0600
++++ ADC-WW3-NWM-NEMS-GMLing-12012020-mods/build.sh.orig	2020-12-07 01:59:59.000000000 -0600
+@@ -0,0 +1,43 @@
++#!/bin/bash
++
++# Description : Script to compile NSEModel NEMS application
++# Usage       : ./build.sh
++# Date        : Feb 27, 2020
++# Contact     : moghimis@gmail.com 
++
++# Check for env variables
++if [ "${ROOTDIR}" == "" ]
++    then 
++    echo "ERROR - Your ROOTDIR environment variable is not set"
++    exit 1
++fi
++if [ "${METIS_PATH}" == "" ]
++    then 
++    echo "ERROR - Your METIS_PATH environment variable for WW3 is not set"
++    exit 1
++else
++    echo "METIS_PATH set to ${METIS_PATH}"
++fi
++
++# Load modules
++source ${ROOTDIR}/modulefiles/hera/ESMF_NUOPC
++module list
++
++echo "Building NEMS app in ${ROOTDIR}/NEMS"
++cd ${ROOTDIR}/NEMS
++
++# Clean up
++make -f GNUmakefile distclean_ADCIRC COMPONENTS="ADCIRC"
++make -f GNUmakefile distclean_WW3DATA COMPONENTS="WW3DATA"
++make -f GNUmakefile distclean_ATMESH COMPONENTS="ATMESH"
++make -f GNUmakefile distclean_WW3 COMPONENTS="WW3"
++make -f GNUmakefile distclean_NWM COMPONENTS="NWM"
++make -f GNUmakefile distclean_NEMS COMPONENTS="ADCIRC WW3 NWM ATMESH"
++
++# Make coupled NEMS app
++#make -f GNUmakefile build COMPONENTS="ADCIRC NWM ATMESH"
++#make -f GNUmakefile build COMPONENTS="ADCIRC WW3 ATMESH"
++#make -f GNUmakefile build COMPONENTS="ADCIRC ATMESH WW3 NWM"
++#make -f GNUmakefile build COMPONENTS="ADCIRC WW3DATA ATMESH"
++#make -f GNUmakefile build COMPONENTS="ADCIRC ATMESH  NWM"
++make -f GNUmakefile build COMPONENTS="ADCIRC WW3DATA ATMESH NWM"
+diff -uNrp ADC-WW3-NWM-NEMS-GMLing-12012020/compile-NEMS.x.txt ADC-WW3-NWM-NEMS-GMLing-12012020-mods/compile-NEMS.x.txt
+--- ADC-WW3-NWM-NEMS-GMLing-12012020/compile-NEMS.x.txt	1969-12-31 18:00:00.000000000 -0600
++++ ADC-WW3-NWM-NEMS-GMLing-12012020-mods/compile-NEMS.x.txt	2020-12-07 01:59:59.000000000 -0600
+@@ -0,0 +1,25 @@
++Patch usage: patch -p1 < patch_name
++        example: patch -p1 < ADC-WW3-NWM-NEMS-GMLing.patch
++      to reverse it:
++        example: patch -p1 -R < ADC-WW3-NWM-NEMS-GMLing.patch
++
++1) Run the build.sh script as:
++     build.sh -h or, build.sh --help
++   to get the list of all options available to script.
++
++2) Example: Run the build.sh script as:
++     build.sh
++   to use the default settings
++
++3) Example: Run the build.sh script as:
++     build.sh -plat stampede -component "ADCIRC ATMESH
++   to use customized settings
++
++3) Example: Run the build.sh script as:
++     build.sh -c --component="ADCIRC ATMESH
++   to clean a previous compilation using "make clean"
++     build.sh -c 2 --component="ADCIRC ATMESH
++   to clean a previous compilation using "make distclean"
++
++Panagiotis Velissariou - 12/04/2020
++
+diff -uNrp ADC-WW3-NWM-NEMS-GMLing-12012020/compile-NEMS.x.txt.old ADC-WW3-NWM-NEMS-GMLing-12012020-mods/compile-NEMS.x.txt.old
+--- ADC-WW3-NWM-NEMS-GMLing-12012020/compile-NEMS.x.txt.old	1969-12-31 18:00:00.000000000 -0600
++++ ADC-WW3-NWM-NEMS-GMLing-12012020-mods/compile-NEMS.x.txt.old	2020-12-07 01:59:59.000000000 -0600
+@@ -0,0 +1,33 @@
++1) First load all necessary modules
++module load intel
++module load impi
++module load netcdf
++module load hdf5
++
++module use /work/07380/panvel/Modules/modulefiles
++module load impi-intel/esmf-7.1.0r
++(OR: module load impi-intel/esmf-8.0.1)
++
++2) Set the following environment variables:
++export NETCDF=${TACC_NETCDF_DIR}
++export HDF5=${TACC_HDF5_DIR}
++export ESMFMKFILE=/work/07380/panvel/apps/intel/impi/esmf-7.1.0r/lib64/esmf.mk
++(OR: export ESMFMKFILE=/work/07380/panvel/apps/intel/impi/esmf-8.0.1/lib64/esmf.mk)
++
++3) Change directory into the NEMS directory and run make
++cd NEMS (if not in the NEMS directory)
++make -f GNUmakefile build COMPONENTS="ADCIRC WW3DATA ATMESH"
++
++The executable will be: NEMS/exe/NEMS.x
++
++To clean the generated files:
++cd NEMS (if not in the NEMS directory)
++make -f GNUmakefile clean COMPONENTS="ADCIRC WW3DATA ATMESH"
++
++OR to clean everything:
++cd NEMS (if not in the NEMS directory)
++make -f GNUmakefile distclean COMPONENTS="ADCIRC WW3DATA ATMESH"
++
++
++Panagiotis Velissariou - 10/18/2020
++
+diff -uNrp ADC-WW3-NWM-NEMS-GMLing-12012020/conf/configure.coastal_app.hera ADC-WW3-NWM-NEMS-GMLing-12012020-mods/conf/configure.coastal_app.hera
+--- ADC-WW3-NWM-NEMS-GMLing-12012020/conf/configure.coastal_app.hera	2020-12-01 01:08:10.000000000 -0600
++++ ADC-WW3-NWM-NEMS-GMLing-12012020-mods/conf/configure.coastal_app.hera	1969-12-31 18:00:00.000000000 -0600
+@@ -1,168 +0,0 @@
+-## NEMS configuration file
+-##
+-## Platform: Theia
+-## Compiler: Intel with IntelMPI
+-
+-SHELL=/bin/sh
+-
+-################################################################################
+-## Include the common configuration parts
+-
+-ifdef InNemsMakefile
+-include $(TOP)/conf/configure.nems.NUOPC
+-endif
+-
+-###################### PHYS_MODE ##### CHEM_MODE ###############################
+-#
+-#
+-#
+-
+-PHYS_MODE       =compile
+-CHEM_MODE       =compile
+-ifeq ($(PHYS_MODE),compile)
+-       PHYS_LIB = $(TOP)/atmos/gsm/gsmphys
+-       PHYS_INC = $(TOP)/atmos/gsm/gsmphys
+-       PHYS_DIR = $(TOP)/atmos/gsm/gsmphys
+-endif
+-ifeq ($(CHEM_MODE),compile)
+-        CHEM_LIB = $(TOP)/chem
+-        CHEM_INC = $(TOP)/chem/gocart/src/Config/
+-        CHEM_DIR = $(TOP)/chem
+-       CHEM_MOD = $(TOP)/chem/gocart/${ARCH}/include
+-      ESMADIR = chem/gocart
+-endif
+-
+-############
+-# commands #
+-############
+-FC = mpiifort
+-CC = mpiicc
+-CXX = mpiicpc
+-LD = mpiifort -mkl=sequential
+-
+-#########
+-# flags #
+-#########
+-# default is 64-bit OpenMP non-hydrostatic build using AVX2
+-DEBUG =
+-REPRO =
+-VERBOSE =
+-OPENMP = Y
+-AVX2 = Y
+-HYDRO = N
+-
+-include       $(ESMFMKFILE)
+-ESMF_INC    = $(ESMF_F90COMPILEPATHS)
+-
+-NCEPLIBS = $(BACIO_LIB4) $(SP_LIBd) $(W3EMC_LIBd) $(W3NCO_LIBd)
+-
+-##############################################
+-# Need to use at least GNU Make version 3.81 #
+-##############################################
+-need := 3.81
+-ok := $(filter $(need),$(firstword $(sort $(MAKE_VERSION) $(need))))
+-ifneq ($(need),$(ok))
+-$(error Need at least make version $(need).  Load module gmake/3.81)
+-endif
+-
+-NETCDF_ROOT = $(NETCDF)
+-INCLUDE = -I$(NETCDF_ROOT)/include
+-NETCDF_INC = -I$(NETCDF_ROOT)/include
+-ifneq ($(findstring netcdf/4,$(LOADEDMODULES)),)
+-  NETCDF_LIB += -L$(NETCDF)/lib -lnetcdff -lnetcdf
+-else
+-  NETCDF_LIB += -L$(NETCDF)/lib -lnetcdff -lnetcdf
+-endif
+-
+-FPPFLAGS := -fpp -Wp,-w $(INCLUDE)
+-CFLAGS := $(INCLUDE)
+-
+-FFLAGS := $(INCLUDE) -fno-alias -auto -safe-cray-ptr -ftz -assume byterecl -nowarn -sox -align array64byte
+-
+-ifeq ($(HYDRO),Y)
+-CPPDEFS += -Duse_libMPI -Duse_netCDF -DSPMD -DUSE_LOG_DIAG_FIELD_INFO -Duse_LARGEFILE -DUSE_GFSL63 -DGFS_PHYS
+-else
+-CPPDEFS += -Duse_libMPI -Duse_netCDF -DSPMD -DUSE_LOG_DIAG_FIELD_INFO -Duse_LARGEFILE -DUSE_GFSL63 -DGFS_PHYS -DMOIST_CAPPA -DUSE_COND
+-endif
+-
+-CPPDEFS += -DNEW_TAUCTMAX
+-
+-ifeq ($(32BIT),Y)
+-CPPDEFS += -DOVERLOAD_R4
+-FFLAGS += -i4 -real-size 32
+-else
+-FFLAGS += -i4 -real-size 64 -no-prec-div -no-prec-sqrt
+-endif
+-
+-ifeq ($(AVX2),Y)
+-FFLAGS += -xCORE-AVX2 -qno-opt-dynamic-align
+-CFLAGS += -xCORE-AVX2 -qno-opt-dynamic-align
+-else
+-FFLAGS += -xHOST -qno-opt-dynamic-align
+-CFLAGS += -xHOST -qno-opt-dynamic-align
+-endif
+-
+-FFLAGS_OPT = -O2 -debug minimal -fp-model source -qoverride-limits -qopt-prefetch=3
+-FFLAGS_REPRO = -O2 -debug minimal -fp-model source -qoverride-limits -g -traceback
+-FFLAGS_DEBUG = -g -O0 -check -check noarg_temp_created -check nopointer -warn -warn noerrors -fp-stack-check -fstack-protector-all -fpe0 -debug -traceback -ftrapuv
+-
+-TRANSCENDENTALS := -fast-transcendentals
+-FFLAGS_OPENMP = -qopenmp
+-FFLAGS_VERBOSE = -v -V -what
+-
+-CFLAGS += -D__IFC -sox -fp-model source
+-
+-CFLAGS_OPT = -O2 -debug minimal
+-CFLAGS_REPRO = -O2 -debug minimal
+-CFLAGS_OPENMP = -qopenmp
+-CFLAGS_DEBUG = -O0 -g -ftrapuv -traceback
+-
+-# Optional Testing compile flags.  Mutually exclusive from DEBUG, REPRO, and OPT
+-# *_TEST will match the production if no new option(s) is(are) to be tested.
+-FFLAGS_TEST = -O3 -debug minimal -fp-model source -qoverride-limits
+-CFLAGS_TEST = -O2
+-
+-LDFLAGS :=
+-LDFLAGS_OPENMP := -qopenmp
+-LDFLAGS_VERBOSE := -Wl,-V,--verbose,-cref,-M
+-
+-# start with blank LIBS
+-LIBS :=
+-
+-ifneq ($(REPRO),)
+-CFLAGS += $(CFLAGS_REPRO)
+-FFLAGS += $(FFLAGS_REPRO)
+-FAST :=
+-else ifneq ($(DEBUG),)
+-CFLAGS += $(CFLAGS_DEBUG)
+-FFLAGS += $(FFLAGS_DEBUG)
+-FAST :=
+-else ifneq ($(TEST),)
+-CFLAGS += $(CFLAGS_TEST)
+-FFLAGS += $(FFLAGS_TEST)
+-FAST :=
+-else
+-CFLAGS += $(CFLAGS_OPT)
+-FFLAGS += $(FFLAGS_OPT)
+-FAST := $(TRANSCENDENTALS)
+-endif
+-
+-ifneq ($(OPENMP),)
+-CFLAGS += $(CFLAGS_OPENMP)
+-FFLAGS += $(FFLAGS_OPENMP)
+-LDFLAGS += $(LDFLAGS_OPENMP)
+-endif
+-
+-ifneq ($(VERBOSE),)
+-CFLAGS += $(CFLAGS_VERBOSE)
+-FFLAGS += $(FFLAGS_VERBOSE)
+-LDFLAGS += $(LDFLAGS_VERBOSE)
+-endif
+-
+-LDFLAGS += $(LIBS)
+-
+-ifdef InNemsMakefile
+-FFLAGS += $(ESMF_INC)
+-CPPFLAGS += -traditional
+-EXTLIBS = $(NCEPLIBS) $(ESMF_LIB) $(LDFLAGS) $(NETCDF_LIB)
+-endif
+\ No newline at end of file
+diff -uNrp ADC-WW3-NWM-NEMS-GMLing-12012020/conf/configure.nems.hera.intel ADC-WW3-NWM-NEMS-GMLing-12012020-mods/conf/configure.nems.hera.intel
+--- ADC-WW3-NWM-NEMS-GMLing-12012020/conf/configure.nems.hera.intel	2020-12-01 01:08:10.000000000 -0600
++++ ADC-WW3-NWM-NEMS-GMLing-12012020-mods/conf/configure.nems.hera.intel	1969-12-31 18:00:00.000000000 -0600
+@@ -1,56 +0,0 @@
+-## NEMS configuration file
+-##
+-## Platform: Hera
+-## Compiler: Intel with IntelMPI
+-
+-SHELL           = /bin/sh
+-
+-################################################################################
+-## Include the common configuration parts
+-include         $(TOP)/conf/configure.nems.NUOPC
+-
+-################################################################################
+-## Other settings
+-
+-NETCDF_INC   = -I$(NETCDF)/include
+-NETCDF_LIB   = -L$(NETCDF)/lib -lnetcdf
+-
+-NEMSIO_INC   = -I${LIBDIR}/incmod/nemsio
+-NEMSIO_LIB   = -L${LIBDIR} -lnemsio
+-SYS_LIB      =
+-
+-EXTLIBS      = $(NEMSIO_LIB) \
+-               $(NETCDF_LIB) \
+-               $(ESMF_LIB)   \
+-               $(SYS_LIB) -lm
+-
+-EXTLIBS_POST = $(NEMSIO_LIB)  \
+-               $(ESMF_LIB)    \
+-               $(NETCDF_LIB)  \
+-               $(SYS_LIB)
+-###
+-FC          = mpiifort -g -qopenmp -mkl=sequential -align array32byte -lmkl_intel_lp64 -lmkl_core -lmkl_sequential -lpthread -qopenmp -convert big_endian -assume byterecl -mkl=sequential
+-F77         = mpiifort -g -qopenmp -mkl=sequential -align array32byte -lmkl_intel_lp64 -lmkl_core -lmkl_sequential -lpthread -qopenmp -convert big_endian -assume byterecl -mkl=sequential
+-FREE         = -free
+-FIXED        = -fixed
+-R8           = -r8
+-
+-FINCS        = $(ESMF_INC) $(NEMSIO_INC) $(NETCDF_INC)
+-#TRAPS        = -g -fno-inline -no-ip -traceback -ftrapuv -fpe0 -ftz -check all -check noarg_temp_created -fp-stack-check
+-
+-FFLAGS       = $(TRAPS) $(FINCS) -fp-model strict
+-
+-OPTS_NMM     = -g -fno-inline -no-ip -traceback -ftrapuv -fpe0 -ftz -check all -check noarg_temp_created -fp-stack-check $(FREE)
+-
+-FFLAGM_DEBUG =
+-
+-FFLAGS_NMM   = $(MACROS_NWM) $(OPTS_NMM) $(FFLAGS)
+-
+-FPP          = -fpp
+-CPP          = cpp -P -traditional
+-CPPFLAGS     = -DENABLE_SMP -DCHNK_RRTM=8 
+-
+-AR           = ar
+-ARFLAGS      = -r
+-
+-RM           = rm
+diff -uNrp ADC-WW3-NWM-NEMS-GMLing-12012020/conf/configure.nems.linux.gnu ADC-WW3-NWM-NEMS-GMLing-12012020-mods/conf/configure.nems.linux.gnu
+--- ADC-WW3-NWM-NEMS-GMLing-12012020/conf/configure.nems.linux.gnu	1969-12-31 18:00:00.000000000 -0600
++++ ADC-WW3-NWM-NEMS-GMLing-12012020-mods/conf/configure.nems.linux.gnu	2020-12-07 01:59:59.000000000 -0600
+@@ -0,0 +1,56 @@
++## NEMS configuration file
++##
++## Platform: Generic/Linux
++## Compiler: GNU with MPI   --- needs fixing
++
++SHELL           = /bin/sh
++
++################################################################################
++## Include the common configuration parts
++include         $(TOP)/conf/configure.nems.NUOPC
++
++################################################################################
++## Other settings
++
++NETCDF_INC   = -I$(NETCDF_INCDIR)
++NETCDF_LIB   = -L$(NETCDF_LIBDIR) -lnetcdf
++
++NEMSIO_INC   = -I${LIBDIR}/incmod/nemsio
++NEMSIO_LIB   = -L${LIBDIR} -lnemsio
++SYS_LIB      =
++
++EXTLIBS      = $(NEMSIO_LIB) \
++               $(NETCDF_LIB) \
++               $(ESMF_LIB)   \
++               $(SYS_LIB) -lm
++
++EXTLIBS_POST = $(NEMSIO_LIB)  \
++               $(ESMF_LIB)    \
++               $(NETCDF_LIB)  \
++               $(SYS_LIB)
++###
++FC          = mpif90 -g -ffree-line-length-none -fno-range-check -fbacktrace
++F77         = mpiifort -g -ffree-line-length-none -fno-range-check -fbacktrace
++FREE         = -free
++FIXED        = -fixed
++R8           = -r8
++
++FINCS        = $(ESMF_INC) $(NEMSIO_INC) $(NETCDF_INC)
++#TRAPS        = ???
++
++FFLAGS       = $(TRAPS) $(FINCS) -fp-model strict
++
++OPTS_NMM     = -g -ffree-line-length-none -fno-range-check -fbacktrace $(FREE)
++
++FFLAGM_DEBUG =
++
++FFLAGS_NMM   = $(MACROS_NWM) $(OPTS_NMM) $(FFLAGS)
++
++FPP          = -fpp
++CPP          = cpp -P -traditional
++CPPFLAGS     = -DENABLE_SMP -DCHNK_RRTM=8 
++
++AR           = ar
++ARFLAGS      = -r
++
++RM           = rm
+diff -uNrp ADC-WW3-NWM-NEMS-GMLing-12012020/conf/configure.nems.linux.intel ADC-WW3-NWM-NEMS-GMLing-12012020-mods/conf/configure.nems.linux.intel
+--- ADC-WW3-NWM-NEMS-GMLing-12012020/conf/configure.nems.linux.intel	1969-12-31 18:00:00.000000000 -0600
++++ ADC-WW3-NWM-NEMS-GMLing-12012020-mods/conf/configure.nems.linux.intel	2020-12-07 01:59:59.000000000 -0600
+@@ -0,0 +1,56 @@
++## NEMS configuration file
++##
++## Platform: Generic/Linux
++## Compiler: Intel with IntelMPI
++
++SHELL           = /bin/sh
++
++################################################################################
++## Include the common configuration parts
++include         $(TOP)/conf/configure.nems.NUOPC
++
++################################################################################
++## Other settings
++
++NETCDF_INC   = -I$(NETCDF_INCDIR)
++NETCDF_LIB   = -L$(NETCDF_LIBDIR) -lnetcdf
++
++NEMSIO_INC   = -I${LIBDIR}/incmod/nemsio
++NEMSIO_LIB   = -L${LIBDIR} -lnemsio
++SYS_LIB      =
++
++EXTLIBS      = $(NEMSIO_LIB) \
++               $(NETCDF_LIB) \
++               $(ESMF_LIB)   \
++               $(SYS_LIB) -lm
++
++EXTLIBS_POST = $(NEMSIO_LIB)  \
++               $(ESMF_LIB)    \
++               $(NETCDF_LIB)  \
++               $(SYS_LIB)
++###
++FC          = mpiifort -g -qopenmp -mkl=sequential -align array32byte -lmkl_intel_lp64 -lmkl_core -lmkl_sequential -lpthread -qopenmp -convert big_endian -assume byterecl -mkl=sequential
++F77         = mpiifort -g -qopenmp -mkl=sequential -align array32byte -lmkl_intel_lp64 -lmkl_core -lmkl_sequential -lpthread -qopenmp -convert big_endian -assume byterecl -mkl=sequential
++FREE         = -free
++FIXED        = -fixed
++R8           = -r8
++
++FINCS        = $(ESMF_INC) $(NEMSIO_INC) $(NETCDF_INC)
++#TRAPS        = -g -fno-inline -no-ip -traceback -ftrapuv -fpe0 -ftz -check all -check noarg_temp_created -fp-stack-check
++
++FFLAGS       = $(TRAPS) $(FINCS) -fp-model strict
++
++OPTS_NMM     = -g -fno-inline -no-ip -traceback -ftrapuv -fpe0 -ftz -check all -check noarg_temp_created -fp-stack-check $(FREE)
++
++FFLAGM_DEBUG =
++
++FFLAGS_NMM   = $(MACROS_NWM) $(OPTS_NMM) $(FFLAGS)
++
++FPP          = -fpp
++CPP          = cpp -P -traditional
++CPPFLAGS     = -DENABLE_SMP -DCHNK_RRTM=8 
++
++AR           = ar
++ARFLAGS      = -r
++
++RM           = rm
+diff -uNrp ADC-WW3-NWM-NEMS-GMLing-12012020/conf/configure.nems.linux.pgi ADC-WW3-NWM-NEMS-GMLing-12012020-mods/conf/configure.nems.linux.pgi
+--- ADC-WW3-NWM-NEMS-GMLing-12012020/conf/configure.nems.linux.pgi	1969-12-31 18:00:00.000000000 -0600
++++ ADC-WW3-NWM-NEMS-GMLing-12012020-mods/conf/configure.nems.linux.pgi	2020-12-07 01:59:59.000000000 -0600
+@@ -0,0 +1,56 @@
++## NEMS configuration file
++##
++## Platform: Generic/Linux
++## Compiler: PGI with MPI   --- needs fixing
++
++SHELL           = /bin/sh
++
++################################################################################
++## Include the common configuration parts
++include         $(TOP)/conf/configure.nems.NUOPC
++
++################################################################################
++## Other settings
++
++NETCDF_INC   = -I$(NETCDF_INCDIR)
++NETCDF_LIB   = -L$(NETCDF_LIBDIR) -lnetcdf
++
++NEMSIO_INC   = -I${LIBDIR}/incmod/nemsio
++NEMSIO_LIB   = -L${LIBDIR} -lnemsio
++SYS_LIB      =
++
++EXTLIBS      = $(NEMSIO_LIB) \
++               $(NETCDF_LIB) \
++               $(ESMF_LIB)   \
++               $(SYS_LIB) -lm
++
++EXTLIBS_POST = $(NEMSIO_LIB)  \
++               $(ESMF_LIB)    \
++               $(NETCDF_LIB)  \
++               $(SYS_LIB)
++###
++FC          = mpif90 -g -Mextend -Minform,inform -Mbounds
++F77         = mpif90 -g -Mextend -Minform,inform -Mbounds
++FREE         = -free
++FIXED        =
++R8           = -r8
++
++FINCS        = $(ESMF_INC) $(NEMSIO_INC) $(NETCDF_INC)
++#TRAPS        = -g -fno-inline -no-ip -traceback -ftrapuv -fpe0 -ftz -check all -check noarg_temp_created -fp-stack-check
++
++FFLAGS       = $(TRAPS) $(FINCS) -fp-model strict
++
++OPTS_NMM     = -g -Mextend -Minform,inform -Mbounds $(FREE)
++
++FFLAGM_DEBUG =
++
++FFLAGS_NMM   = $(MACROS_NWM) $(OPTS_NMM) $(FFLAGS)
++
++FPP          = -fpp
++CPP          = cpp -P -traditional
++CPPFLAGS     = -DENABLE_SMP -DCHNK_RRTM=8 
++
++AR           = ar
++ARFLAGS      = -r
++
++RM           = rm
+diff -uNrp ADC-WW3-NWM-NEMS-GMLing-12012020/conf/externals.nems ADC-WW3-NWM-NEMS-GMLing-12012020-mods/conf/externals.nems
+--- ADC-WW3-NWM-NEMS-GMLing-12012020/conf/externals.nems	1969-12-31 18:00:00.000000000 -0600
++++ ADC-WW3-NWM-NEMS-GMLing-12012020-mods/conf/externals.nems	2020-12-07 01:59:59.000000000 -0600
+@@ -0,0 +1,2 @@
++# Location of external components
++
+diff -uNrp ADC-WW3-NWM-NEMS-GMLing-12012020/conf/externals.nems.cheyenne ADC-WW3-NWM-NEMS-GMLing-12012020-mods/conf/externals.nems.cheyenne
+--- ADC-WW3-NWM-NEMS-GMLing-12012020/conf/externals.nems.cheyenne	1969-12-31 18:00:00.000000000 -0600
++++ ADC-WW3-NWM-NEMS-GMLing-12012020-mods/conf/externals.nems.cheyenne	2020-12-07 01:59:59.000000000 -0600
+@@ -0,0 +1,26 @@
++# Location of external components
++
++SATM_DIR=
++XATM_DIR=
++SLND_DIR=
++XLND_DIR=
++NOAH_DIR=
++NOAHMP_DIR=
++SICE_DIR=
++XICE_DIR=
++CICE_DIR=
++SOCN_DIR=
++XOCN_DIR=
++MOM5_DIR=
++HYCOM_DIR=
++POM_DIR=
++SWAV_DIR=
++XWAV_DIR=
++WW3_DIR=
++SIPM_DIR=
++XIPM_DIR=
++IPE_DIR=
++SHYD_DIR=
++XHYD_DIR=
++WRFHYDRO_DIR=
++LIS_DIR=
+diff -uNrp ADC-WW3-NWM-NEMS-GMLing-12012020/conf/externals.nems.gaea ADC-WW3-NWM-NEMS-GMLing-12012020-mods/conf/externals.nems.gaea
+--- ADC-WW3-NWM-NEMS-GMLing-12012020/conf/externals.nems.gaea	1969-12-31 18:00:00.000000000 -0600
++++ ADC-WW3-NWM-NEMS-GMLing-12012020-mods/conf/externals.nems.gaea	2020-12-07 01:59:59.000000000 -0600
+@@ -0,0 +1,26 @@
++# Location of external components
++
++SATM_DIR=
++XATM_DIR=
++SLND_DIR=
++XLND_DIR=
++NOAH_DIR=
++NOAHMP_DIR=
++SICE_DIR=
++XICE_DIR=
++CICE_DIR=
++SOCN_DIR=
++XOCN_DIR=
++MOM5_DIR=
++HYCOM_DIR=
++POM_DIR=
++SWAV_DIR=
++XWAV_DIR=
++WW3_DIR=
++SIPM_DIR=
++XIPM_DIR=
++IPE_DIR=
++SHYD_DIR=
++XHYD_DIR=
++WRFHYDRO_DIR=
++LIS_DIR=
+diff -uNrp ADC-WW3-NWM-NEMS-GMLing-12012020/conf/externals.nems.hera ADC-WW3-NWM-NEMS-GMLing-12012020-mods/conf/externals.nems.hera
+--- ADC-WW3-NWM-NEMS-GMLing-12012020/conf/externals.nems.hera	2020-12-04 14:36:35.000000000 -0600
++++ ADC-WW3-NWM-NEMS-GMLing-12012020-mods/conf/externals.nems.hera	2020-12-07 01:59:59.000000000 -0600
+@@ -1,4 +1,4 @@
+-# Location of external components on Theia
++# Location of external components
+ 
+ SATM_DIR=
+ XATM_DIR=
+diff -uNrp ADC-WW3-NWM-NEMS-GMLing-12012020/conf/externals.nems.jet ADC-WW3-NWM-NEMS-GMLing-12012020-mods/conf/externals.nems.jet
+--- ADC-WW3-NWM-NEMS-GMLing-12012020/conf/externals.nems.jet	1969-12-31 18:00:00.000000000 -0600
++++ ADC-WW3-NWM-NEMS-GMLing-12012020-mods/conf/externals.nems.jet	2020-12-07 01:59:59.000000000 -0600
+@@ -0,0 +1,26 @@
++# Location of external components
++
++SATM_DIR=
++XATM_DIR=
++SLND_DIR=
++XLND_DIR=
++NOAH_DIR=
++NOAHMP_DIR=
++SICE_DIR=
++XICE_DIR=
++CICE_DIR=
++SOCN_DIR=
++XOCN_DIR=
++MOM5_DIR=
++HYCOM_DIR=
++POM_DIR=
++SWAV_DIR=
++XWAV_DIR=
++WW3_DIR=
++SIPM_DIR=
++XIPM_DIR=
++IPE_DIR=
++SHYD_DIR=
++XHYD_DIR=
++WRFHYDRO_DIR=
++LIS_DIR=
+diff -uNrp ADC-WW3-NWM-NEMS-GMLing-12012020/conf/externals.nems.linux ADC-WW3-NWM-NEMS-GMLing-12012020-mods/conf/externals.nems.linux
+--- ADC-WW3-NWM-NEMS-GMLing-12012020/conf/externals.nems.linux	1969-12-31 18:00:00.000000000 -0600
++++ ADC-WW3-NWM-NEMS-GMLing-12012020-mods/conf/externals.nems.linux	2020-12-07 01:59:59.000000000 -0600
+@@ -0,0 +1,2 @@
++# Location of external components
++
+diff -uNrp ADC-WW3-NWM-NEMS-GMLing-12012020/conf/externals.nems.macosx ADC-WW3-NWM-NEMS-GMLing-12012020-mods/conf/externals.nems.macosx
+--- ADC-WW3-NWM-NEMS-GMLing-12012020/conf/externals.nems.macosx	1969-12-31 18:00:00.000000000 -0600
++++ ADC-WW3-NWM-NEMS-GMLing-12012020-mods/conf/externals.nems.macosx	2020-12-07 01:59:59.000000000 -0600
+@@ -0,0 +1,2 @@
++# Location of external components
++
+diff -uNrp ADC-WW3-NWM-NEMS-GMLing-12012020/conf/externals.nems.orion ADC-WW3-NWM-NEMS-GMLing-12012020-mods/conf/externals.nems.orion
+--- ADC-WW3-NWM-NEMS-GMLing-12012020/conf/externals.nems.orion	1969-12-31 18:00:00.000000000 -0600
++++ ADC-WW3-NWM-NEMS-GMLing-12012020-mods/conf/externals.nems.orion	2020-12-07 01:59:59.000000000 -0600
+@@ -0,0 +1,26 @@
++# Location of external components
++
++SATM_DIR=
++XATM_DIR=
++SLND_DIR=
++XLND_DIR=
++NOAH_DIR=
++NOAHMP_DIR=
++SICE_DIR=
++XICE_DIR=
++CICE_DIR=
++SOCN_DIR=
++XOCN_DIR=
++MOM5_DIR=
++HYCOM_DIR=
++POM_DIR=
++SWAV_DIR=
++XWAV_DIR=
++WW3_DIR=
++SIPM_DIR=
++XIPM_DIR=
++IPE_DIR=
++SHYD_DIR=
++XHYD_DIR=
++WRFHYDRO_DIR=
++LIS_DIR=
+diff -uNrp ADC-WW3-NWM-NEMS-GMLing-12012020/conf/externals.nems.stampede ADC-WW3-NWM-NEMS-GMLing-12012020-mods/conf/externals.nems.stampede
+--- ADC-WW3-NWM-NEMS-GMLing-12012020/conf/externals.nems.stampede	1969-12-31 18:00:00.000000000 -0600
++++ ADC-WW3-NWM-NEMS-GMLing-12012020-mods/conf/externals.nems.stampede	2020-12-07 01:59:59.000000000 -0600
+@@ -0,0 +1,26 @@
++# Location of external components
++
++SATM_DIR=
++XATM_DIR=
++SLND_DIR=
++XLND_DIR=
++NOAH_DIR=
++NOAHMP_DIR=
++SICE_DIR=
++XICE_DIR=
++CICE_DIR=
++SOCN_DIR=
++XOCN_DIR=
++MOM5_DIR=
++HYCOM_DIR=
++POM_DIR=
++SWAV_DIR=
++XWAV_DIR=
++WW3_DIR=
++SIPM_DIR=
++XIPM_DIR=
++IPE_DIR=
++SHYD_DIR=
++XHYD_DIR=
++WRFHYDRO_DIR=
++LIS_DIR=
+diff -uNrp ADC-WW3-NWM-NEMS-GMLing-12012020/conf/externals.nems.wcoss ADC-WW3-NWM-NEMS-GMLing-12012020-mods/conf/externals.nems.wcoss
+--- ADC-WW3-NWM-NEMS-GMLing-12012020/conf/externals.nems.wcoss	1969-12-31 18:00:00.000000000 -0600
++++ ADC-WW3-NWM-NEMS-GMLing-12012020-mods/conf/externals.nems.wcoss	2020-12-07 01:59:59.000000000 -0600
+@@ -0,0 +1,26 @@
++# Location of external components
++
++SATM_DIR=
++XATM_DIR=
++SLND_DIR=
++XLND_DIR=
++NOAH_DIR=
++NOAHMP_DIR=
++SICE_DIR=
++XICE_DIR=
++CICE_DIR=
++SOCN_DIR=
++XOCN_DIR=
++MOM5_DIR=
++HYCOM_DIR=
++POM_DIR=
++SWAV_DIR=
++XWAV_DIR=
++WW3_DIR=
++SIPM_DIR=
++XIPM_DIR=
++IPE_DIR=
++SHYD_DIR=
++XHYD_DIR=
++WRFHYDRO_DIR=
++LIS_DIR=
+diff -uNrp ADC-WW3-NWM-NEMS-GMLing-12012020/functions_build ADC-WW3-NWM-NEMS-GMLing-12012020-mods/functions_build
+--- ADC-WW3-NWM-NEMS-GMLing-12012020/functions_build	1969-12-31 18:00:00.000000000 -0600
++++ ADC-WW3-NWM-NEMS-GMLing-12012020-mods/functions_build	2020-12-06 23:42:47.000000000 -0600
+@@ -0,0 +1,556 @@
++#!/bin/bash-*-Shell-script-functions*-
++
++###########################################################################
++### Author:  Panagiotis Velissariou <panagiotis.velissariou@noaa.gov>
++###
++### Version - 1.0 Fri Dec 04 2020
++###########################################################################
++
++set +u
++
++MY_COMPILING_SYTEMS="gnu, intel, pgi"
++MY_COMPONENT_LIST="ADCIRC WW3DATA WW3 NWM ATMESH"
++
++##################################################
++### MODELLING SYSTEM BUILD FUNCTIONS
++##################################################
++
++###========================================
++### ParseArgs()
++### Usage:      ParseArgs args
++### Parameters: args = the script options
++### Returns:    0
++### Echoes:     NONE
++###
++### Gets the supplied options to the script.
++###========================================
++ParseArgs()
++{
++  local nm_func=$( basename ${BASH_SOURCE[${#BASH_SOURCE[@]}-1]} )
++
++  local opt_all opt_opt opt_arg opt_chk
++
++  local t_VAR
++  local ans0 ans ival intN
++  local all_evars
++
++  all_evars="MY_CLEAN MY_COMPILER MY_COMPONENT MY_OS MY_PARMAKE MY_PLATFORM MY_VERBOSE"
++
++  for ival in ${all_evars}; do unset __${ival}; done
++
++
++  __MY_CLEAN=0
++  __MY_COMPILER=intel
++  __MY_COMPONENT="ADCIRC WW3DATA ATMESH"
++  __MY_OS=
++  __MY_PARMAKE=1
++  __MY_PLATFORM=
++  __MY_VERBOSE=
++          
++
++  # -----
++  # Process the function options
++  opt_all=( c clean compiler component j os plat v verbose h help )
++  opt_all=":$( echo "${opt_all[@]/#/-} ${opt_all[@]/#/--}" | sed 's/ /:/g' ):"
++
++  unset __OPTION_LIST
++  while test $# -gt 0; do
++    case "${1}" in
++      -[^-]*=* | --[^-]*=* )
++        opt_opt="$( toLOWER "$( echo "${1}" | sed 's/=.*//' )" )"
++        len=$(( ${#opt_opt} + 1 ))
++        opt_arg="$( strTrim "$( echo "${1:${len}}" )" 2 )"
++        [ "$( echo "${opt_all}" | egrep -o ":${opt_arg}:" )" ] && \
++          opt_arg=
++        ;;
++      -[^-]* | --[^-]* )
++        opt_opt="$( toLOWER "${1}" )"
++        opt_chk="$( toLOWER "$( echo "${2}" | sed 's/=.*//' )" )"
++        if [ "$( echo "${opt_all}" | egrep -o ":${opt_chk}:" )" ]; then
++          opt_arg=
++        else
++          opt_arg="$( strTrim "$( echo "${2}" )" )"
++        fi
++        ;;
++      *)
++        opt_opt=
++        opt_arg=
++        ;;
++    esac
++
++    case "${opt_opt}" in
++      -c | --c | -clean | --clean )
++          checkFuncOpt "--clean"
++          if [ $? -eq 0 ]; then
++            __MY_CLEAN=1
++            if [ "X${opt_arg}" != "X" ]; then
++              if `isInteger "${opt_arg}"` ; then
++                __MY_CLEAN=$( echo "${opt_arg}" )
++                [ ${opt_arg} -le -3 ] && __MY_CLEAN=-3
++                [ ${opt_arg} -ge  2 ] && __MY_CLEAN=2
++              else
++                __MY_CLEAN=0
++                [ "$( getYesNo "${opt_arg}" )" = "yes" ] && __MY_CLEAN=1
++              fi
++            fi
++          fi
++        ;;
++      -compiler | --compiler )
++          checkFuncOpt "--compiler"
++          if [ $? -eq 0 ]; then
++            if [ "X${opt_arg}" != "X" ]; then
++              __MY_COMPILER="$( echo "${opt_arg}" | sed 's/[[:space:]]//g' )"
++            fi
++          fi
++        ;;
++      -component | --component )
++          checkFuncOpt "--component"
++          if [ $? -eq 0 ]; then
++            if [ "X${opt_arg}" != "X" ]; then
++              __MY_COMPONENT="$( strTrim "${opt_arg}" )"
++            fi
++          fi
++        ;;
++      -j | --j )
++          checkFuncOpt "--j"
++          if [ $? -eq 0 ]; then
++            if [ "X${opt_arg}" != "X" ]; then
++              __MY_PARMAKE=1
++              t_VAR="$( getPosInteger "${opt_arg}" )"
++              [ ! -z "${t_VAR}" ] && __MY_PARMAKE=${t_VAR}
++            fi
++          fi
++        ;;
++      -os | --os )
++          checkFuncOpt "--os"
++          if [ $? -eq 0 ]; then
++            if [ "X${opt_arg}" != "X" ]; then
++              __MY_OS="$( echo "${opt_arg}" | sed 's/[[:space:]]//g' )"
++            fi
++          fi
++        ;;
++      -plat | --plat )
++          checkFuncOpt "--plat"
++          if [ $? -eq 0 ]; then
++            if [ "X${opt_arg}" != "X" ]; then
++              __MY_PLATFORM="$( echo "${opt_arg}" | sed 's/[[:space:]]//g' )"
++            fi
++          fi
++        ;;
++      -v | --v | -verbose | --verbose )
++          checkFuncOpt "--verbose"
++          if [ $? -eq 0 ]; then
++            __MY_VERBOSE=b
++            if [ "X${opt_arg}" != "X" ]; then
++            __MY_VERBOSE="$( echo "$( strTrim "${opt_arg}" 2 )" | sed 's/[[:space:]]/,/g' )"
++            fi
++          fi
++        ;;
++      -h | -help | --h | --help )
++          UsageBuild ${nm_func}
++        ;;
++      *) ;; # DEFAULT
++    esac
++    shift
++    opt_opt= 
++    opt_arg=
++  done
++  unset __OPTION_LIST
++  # -----
++
++  __MY_COMPONENT="$( toUPPER "${__MY_COMPONENT}" )"
++
++  if [ -z "${__MY_OS}" ]; then
++    case "$(uname -s)" in
++      Darwin ) __MY_OS="macosx" ;;
++      Linux  ) __MY_OS="linux" ;;
++            *) __MY_OS="UNDEFINED";; # DEFAULT
++    esac
++  fi
++
++  # Export the values of all __* variables.
++  for ival in ${all_evars}
++  do
++    ans0="$( eval "echo \${$(echo ${ival}):-}" )"
++    ans="$( eval "echo \${$(echo __${ival}):-}" )"
++    ans=${ans:-${ans0:-}}
++
++    eval "${ival}=\${ans}"
++    export ${ival}
++
++    unset __${ival}
++  done
++
++  return 0
++}
++
++UsageBuild()
++{
++  local nm="$( basename ${0} )"
++
++  echo
++  echo "Usage: \"${nm}\" [{-|--}option1{=|space}[option_value1]] [{-|--}option2{=|space}[option_value2]] ..."
++  echo
++
++  echo "  -h|-help|--h|--help"
++  echo "    Show this help screen."
++  echo
++  #---
++  echo "  -c|--c|-clean|--clean [=|space] \"0|1|yes|no\" (OPTIONAL)."
++  echo "    Only clean the already compiled CMake build system."
++  echo "    Default: 0|no."
++  echo
++  #---
++  echo "  -compiler|--compiler [=|space] \"compiling_system\" (OPTIONAL)."
++  echo "    The compiling system to use (${MY_COMPILING_SYTEMS})."
++  echo "    Default: intel."
++  echo
++  #---
++  echo "  -component|--component [=|space] \"component_list\" (OPTIONAL)."
++  echo "    The component(s) to use (${MY_COMPONENT_LIST})."
++  echo "    Default: \"ADCIRC WW3DATA ATMESH\"."
++  echo
++  #---
++  echo "  -j|--j [=|space] \"N\" (OPTIONAL)."
++  echo "    Define the number of make jobs to run simultaneously."
++  echo "    Default: 1."
++  echo
++  #---
++  echo "  -os|--os [=|space] \"OS string\" (OPTIONAL)."
++  echo "    The name of the Operating system."
++  echo "    Supported OSes: linux macosx."
++  echo "    Default: current OS."
++  echo
++  #---
++  echo "  -plat|--plat [=|space] \"platform\" (OPTIONAL)."
++  echo "    The name of the compute HPC platform to consider."
++  echo "    Selecting a platform, environment modules specific to that platform are loaded"
++  echo "    and corresponding environment variables are set."
++  echo "    Supported platforms: cheyenne gaea hera jet orion stampede wcoss."
++  echo "    Default: none."
++  echo
++  #---
++  echo "  -v|--v|-verbose|--verbose [=|space] \"a,b,v,i,j,m,n\" (any combination, OPTIONAL)."
++  echo "    Enable verbosity in the make files during compilation."
++  echo "      a (all)      : all types of debugging output are enabled"
++  echo "      n (none)     : disable all debugging currently enabled"
++  echo "      b (basic)    : basic debugging and whether the build was successful or not"
++  echo "      v (verbose)  : a level above basic"
++  echo "      i (implicit) : prints messages describing the implicit rule searches for each target"
++  echo "      j (jobs)     : prints messages giving details on the invocation of specific sub-commands"
++  echo "      m (makefile) : enables messages while rebuilding makefiles"
++  echo "    Default:none."
++  echo
++  #---
++
++  exit 0
++}
++
++###========================================
++### checkFuncOpt()
++### Usage:      checkFuncOpt opt_name
++### Parameters:
++###   opt_name: The name of the option to a function
++###
++### Returns : Exits on error
++###
++### Exports : __OPTION_LIST
++###
++### Echoes  : NONE
++###
++### checkFuncOpt: Checks if an option to a function is already supplied.
++###========================================
++checkFuncOpt() {
++  local opt_inp opt_list
++
++  [ $# -eq 0 ] && return -1
++
++  opt_inp="$( strTrim "${1}" 2 )"
++  opt_inp="$( echo "${opt_inp}" | sed 's/^[-]*//' )"
++
++  opt_list="$( strTrim "${__OPTION_LIST}" 2 )"
++  [ -n ${opt_list:+1} ] && \
++    opt_list=":$( echo "${opt_list}" | sed 's/ /:/g' ):"
++
++  [ "$( echo "${opt_list}" | egrep -o ":${opt_inp}:" )" ] && return 1
++
++  __OPTION_LIST="${__OPTION_LIST} ${opt_inp}"
++  export __OPTION_LIST
++
++  return 0
++}
++
++###========================================
++### isInteger()
++### Usage:      isInteger var
++### Parameters: var
++### Returns:    1 if var is not an integer (0 is an integer as well)
++###             0 in any other case
++### Echoes:     NONE
++###========================================
++isInteger()
++{
++  local -i retval=1
++
++  [ $# -eq 0 ] && return ${retval}
++
++  if [ "${1:-UNDEF}" -eq "${1}" ] 2>/dev/null
++  then
++    retval=0
++  fi
++
++  return ${retval}
++}
++
++###========================================
++### getInteger()
++### Usage:      getInteger int
++### Parameters: int (int >=0 or, int < 0)
++### Returns:    1 if var is not an integer
++###             0 in any other case
++### Echoes:     int, if it is a valid integer (including 0),
++###             in any other case echoes an empty string
++###========================================
++getInteger()
++{
++  local -i retval=0
++  local echoval= minus=
++
++  # strip spaces, '+' signs and '-' signs
++  # if the first character of the string is '-', set the minus variable
++  echoval="$( echo "${1}" | sed 's/[[:space:]+]//g' )"
++  [ "X$( echo "${echoval:0:1}" )" = "X-" ] && minus="-"
++  echoval="${minus}$( echo "${echoval}" | sed 's/[[:space:]-]//g' )"
++
++  if isInteger ${echoval}; then
++    echoval="$(echo "scale=0; ${echoval} + 0" | bc -ql 2>/dev/null)"
++    retval=$?
++    echoval="${echoval:-0}"
++  else
++    echoval=
++    retval=1
++  fi
++
++  echo -n ${echoval}
++
++  return ${retval}
++}
++
++###========================================
++### getPosInteger()
++### Usage:      getPosInteger posint
++### Parameters: posint (posint >= 0)
++### Returns:    1 if var is not a positive integer
++###             0 in any other case
++### Echoes:     posint if it is a valid positive integer
++###             (including 0), in any other case echoes an
++###             empty string
++###========================================
++getPosInteger()
++{
++  local -i retval=0
++  local echoval=
++
++  echoval=$( getInteger "${1}" )
++  retval=$?
++
++  if [ ${retval} -ne 0 ] ; then
++    echoval=
++    retval=1
++  else
++    if [ ${echoval} -lt 0 ]; then
++      echoval=
++      retval=1
++    fi
++  fi
++
++  echo -n ${echoval}
++
++  return ${retval}
++}
++
++###========================================
++### getYesNo()
++### Usage:      getYesNo value
++### Parameters:
++###   value : The input value (the value of a parameter)
++###           The value of a bash parameter that is checked
++###           against TRUE/FALSE. If the value is one of:
++###             ">=1|y|yes|yea|yeah|yep"
++###           then the value of parameter is TRUE (answer = yes).
++###           If the value is one of:
++###             "<=0|n|no|not|nop|nope"
++###           then the value of parameter is FALSE (answer = no).
++###           If the value is empty then the value of parameter
++###           is FALSE (answer = no)
++###
++### Returns : NONE
++###
++### Exports : NONE
++###
++### Echoes  : A "yes" or "no" answer.
++###
++### getYesNo: Checks if a parameter is assigned a TRUE/FALSE value.
++###========================================
++getYesNo()
++{
++  local param answer
++  
++  param="$( echo "${1}" | tr '[:upper:]' '[:lower:]' )"
++
++  if [ "${param}" -eq "${param}" ] 2>/dev/null
++  then
++    [ ${param} -le 0 ] && param=0
++    [ ${param} -gt 0 ] && param=1
++  fi
++
++  case "${param}" in
++    1|y|yes|yea|yeah|yep) answer="yes" ;;
++     0|n|no|not|nop|nope) answer="no"  ;;
++                       *) answer=""    ;; # DEFAULT
++  esac
++
++  echo -n "${answer}"
++}
++
++###========================================
++### toUPPER()
++### Usage:      toUPPER string
++### Parameters:
++###   string : The string in to convert
++###
++### Returns : NONE
++###
++### Exports : NONE
++###
++### Echoes  : The input string converted to an all upper case string
++###
++### toUPPER: Converts a string to an all upper case string
++###========================================
++function toUPPER()
++{
++  echo "${1}" | tr '[:lower:]' '[:upper:]'
++}
++
++###========================================
++### toLOWER()
++### Usage:      toLOWER string
++### Parameters:
++###   string : The string in to convert
++###
++### Returns : NONE
++###
++### Exports : NONE
++###
++### Echoes  : The input string converted to an all lower case string
++###
++### toLOWER: Converts a string to an all lower case string
++###========================================
++function toLOWER()
++{
++  echo "${1}" | tr '[:upper:]' '[:lower:]'
++}
++
++###========================================
++### strESC()
++### Usage:      strESC string
++### Parameters:
++###   string : The input string
++###            The input string on which this function is applied
++###            to escape special characters used in bash/sed ...
++###
++### Returns : NONE
++###
++### Exports : NONE
++###
++### Echoes  : The modified string with its special characters escaped
++###
++### strESC: Escapes special characters in a string: "'()/[]*.
++###========================================
++strESC()
++{
++  echo -n "$( echo "${*}" | sed -e "s/[\"\'\(\)\/\*\!]/\\\&/g;s/\[/\\\&/g;s/\]/\\\&/g" )"
++}
++
++strESC1()
++{
++  echo -n "$( echo "${*}" | sed -e "s/[\&\/\*\!]/\\\&/g;s/\[/\\\&/g;s/\]/\\\&/g" )"
++}
++
++###========================================
++### strTrim()
++### Usage:      strTrim s1 flag
++### Parameters:
++###     s1 : The input string
++###   flag : Integer
++###          A value that controls the action of strTrim.
++###          If flag is zero or not present, trailing blanks are removed.
++###          Leading blanks are removed if it is equal to 1.
++###          Both are removed if it is equal to 2.
++###          In any other case, trailing blanks are removed.
++###
++### Returns : NONE
++###
++### Exports : NONE
++###
++### Echoes  : s1 with all leading and/or trailing
++###           white spaces removed.
++###
++### strTrim: Removes all leading and/or trailing white spaces
++###          from the input string
++###========================================
++function strTrim ()
++{
++  local trimFLG="${2:-0}"
++  local out_str=
++
++  case ${trimFLG} in
++    0) out_str="$(echo "${1}" | sed 's/[[:space:]]*$//')" ;;
++    1) out_str="$(echo "${1}" | sed 's/^[[:space:]]*//')" ;;
++    2) out_str="$(echo "${1}" | sed 's/^[[:space:]]*//;s/[[:space:]]*$//')" ;;
++    *) out_str="$(echo "${1}" | sed 's/[[:space:]]*$//')" ;;
++  esac
++
++  echo -n ${out_str}
++}
++
++compileNems() {
++  local cmp_type cmp_make cmp_comp cmp_mjob
++  local err=0
++
++  [ $# -eq 0 ] && return ${err}
++
++  cmp_type="$( toLOWER "${1}" )"
++  cmp_make=GNUmakefile
++  cmp_comp="${COMPONENT:+COMPONENTS=\"${COMPONENT}\"}"
++  cmp_mjob="${PARMAKE:+-j ${PARMAKE}}"
++  cmp_verb="${VERBOSE:+--debug=${VERBOSE}}"
++
++  case "${cmp_type}" in
++    "clean"|"distclean" )
++      if [ -f  "${cmp_make}" ]; then
++        echo
++        echo "compileNems :: Cleaning: make -f ${cmp_make} ${cmp_type} ${cmp_comp}"
++        eval "make ${cmp_verb} -f ${cmp_make} ${cmp_type} ${cmp_comp}"
++        err=$?
++      else
++        echo "compileNems :: Cleaning: no makefile found: makefile = ${cmp_make}"
++        err=1
++      fi
++      ;;
++    "build"|"compile" )
++      if [ -f  "${cmp_make}" ]; then
++        echo
++        echo "compileNems :: Compiling: make ${cmp_mjob} -f ${cmp_make} ${cmp_type} ${cmp_comp}"
++        eval "make ${cmp_verb} ${cmp_mjob} -f ${cmp_make} ${cmp_type} ${cmp_comp}"
++        err=$?
++      else
++        echo "compileNems :: Compiling: no makefile found: makefile = ${cmp_make}"
++        err=1
++      fi
++      ;;
++    * ) err=0 ;; # Do nothing
++  esac
++
++  return ${err}
++}
+diff -uNrp ADC-WW3-NWM-NEMS-GMLing-12012020/HOWTO ADC-WW3-NWM-NEMS-GMLing-12012020-mods/HOWTO
+--- ADC-WW3-NWM-NEMS-GMLing-12012020/HOWTO	2020-12-01 01:08:10.000000000 -0600
++++ ADC-WW3-NWM-NEMS-GMLing-12012020-mods/HOWTO	2020-12-07 01:59:57.000000000 -0600
+@@ -1,3 +1,5 @@
++Modified: Panagiotis Velissariou - 12/05/2020
++
+ ==================================
+ Coastal Act Team  - 9/13/2019
+ 
+@@ -591,7 +593,6 @@ build_NWM: $(nwm_mk)
+ 
+ 
+ env_file=$(NWM_SRCDIR)/setEnvar.sh
+-esmf_env=$(NWM_SRCDIR)/esmf-impi-env.sh
+ comp_opt=3
+ 
+ # HOW to source env here??
+diff -uNrp ADC-WW3-NWM-NEMS-GMLing-12012020/modulefiles/envmodules ADC-WW3-NWM-NEMS-GMLing-12012020-mods/modulefiles/envmodules
+--- ADC-WW3-NWM-NEMS-GMLing-12012020/modulefiles/envmodules	1969-12-31 18:00:00.000000000 -0600
++++ ADC-WW3-NWM-NEMS-GMLing-12012020-mods/modulefiles/envmodules	2020-12-07 01:59:59.000000000 -0600
+@@ -0,0 +1,26 @@
++#!/bin/bash-*-Shell-script-modules*-
++
++# This script is responsible for loading modules that are
++# compatible with the NUOPC Layer version used in NEMS.
++
++####################
++### (1) Load all needed environment modules.
++#module purge
++#module load intel impi
++#module load szip hdf5
++#module load netcdf
++
++#module load esmf
++
++
++####################
++### (2) Set some environments varaiables related to the loaded
++###     modules and required to compile the NEMS application properly.
++
++export HDF5HOME=
++export NETCDFHOME=
++
++export NETCDF_INCDIR=
++export NETCDF_LIBDIR=
++
++export ESMFMKFILE=
+diff -uNrp ADC-WW3-NWM-NEMS-GMLing-12012020/modulefiles/envmodules_gnu.cheyenne ADC-WW3-NWM-NEMS-GMLing-12012020-mods/modulefiles/envmodules_gnu.cheyenne
+--- ADC-WW3-NWM-NEMS-GMLing-12012020/modulefiles/envmodules_gnu.cheyenne	1969-12-31 18:00:00.000000000 -0600
++++ ADC-WW3-NWM-NEMS-GMLing-12012020-mods/modulefiles/envmodules_gnu.cheyenne	2020-12-07 01:59:59.000000000 -0600
+@@ -0,0 +1,33 @@
++#!/bin/bash-*-Shell-script-modules*-
++
++echo "envmodules :: The compiler option \"${COMPILER:-UNDEF}\" for platform \"${PLATFORM:-UNDEF}\" is not supported"
++echo "  Exiting ..."
++exit 1
++
++# This script is responsible for loading modules that are
++# compatible with the NUOPC Layer version used in NEMS.
++
++####################
++### (1) Load all needed environment modules.
++module purge
++#module load gcc impi
++#module load szip hdf5
++#module load netcdf
++#module load metis
++
++#module use /contrib/modulefiles
++#module load esmf
++
++
++####################
++### (2) Set some environments varaiables related to the loaded
++###     modules and required to compile the NEMS application properly.
++
++export HDF5HOME=${HDF5}
++export NETCDFHOME=${NETCDF}
++export METIS_PATH=${METIS}
++
++export NETCDF_INCDIR=${NETCDFHOME:+${NETCDFHOME}/include}
++export NETCDF_LIBDIR=${NETCDFHOME:+${NETCDFHOME}/lib}
++
++export ESMFMKFILE=${ESMFMKFILE}
+diff -uNrp ADC-WW3-NWM-NEMS-GMLing-12012020/modulefiles/envmodules_gnu.gaea ADC-WW3-NWM-NEMS-GMLing-12012020-mods/modulefiles/envmodules_gnu.gaea
+--- ADC-WW3-NWM-NEMS-GMLing-12012020/modulefiles/envmodules_gnu.gaea	1969-12-31 18:00:00.000000000 -0600
++++ ADC-WW3-NWM-NEMS-GMLing-12012020-mods/modulefiles/envmodules_gnu.gaea	2020-12-07 01:59:59.000000000 -0600
+@@ -0,0 +1,29 @@
++#!/bin/bash-*-Shell-script-modules*-
++
++# This script is responsible for loading modules that are
++# compatible with the NUOPC Layer version used in NEMS.
++
++####################
++### (1) Load all needed environment modules.
++module purge
++#module load gcc impi
++#module load szip hdf5
++#module load netcdf
++#module load metis
++
++#module use /contrib/modulefiles
++#module load esmf
++
++
++####################
++### (2) Set some environments varaiables related to the loaded
++###     modules and required to compile the NEMS application properly.
++
++export HDF5HOME=${HDF5}
++export NETCDFHOME=${NETCDF}
++export METIS_PATH=${METIS}
++
++export NETCDF_INCDIR=${NETCDFHOME:+${NETCDFHOME}/include}
++export NETCDF_LIBDIR=${NETCDFHOME:+${NETCDFHOME}/lib}
++
++export ESMFMKFILE=${ESMFMKFILE}
+diff -uNrp ADC-WW3-NWM-NEMS-GMLing-12012020/modulefiles/envmodules_gnu.hera ADC-WW3-NWM-NEMS-GMLing-12012020-mods/modulefiles/envmodules_gnu.hera
+--- ADC-WW3-NWM-NEMS-GMLing-12012020/modulefiles/envmodules_gnu.hera	1969-12-31 18:00:00.000000000 -0600
++++ ADC-WW3-NWM-NEMS-GMLing-12012020-mods/modulefiles/envmodules_gnu.hera	2020-12-07 01:59:59.000000000 -0600
+@@ -0,0 +1,29 @@
++#!/bin/bash-*-Shell-script-modules*-
++
++# This script is responsible for loading modules that are
++# compatible with the NUOPC Layer version used in NEMS.
++
++####################
++### (1) Load all needed environment modules.
++module purge
++#module load gcc impi
++#module load szip hdf5
++#module load netcdf
++#module load metis
++
++#module use /contrib/modulefiles
++#module load esmf
++
++
++####################
++### (2) Set some environments varaiables related to the loaded
++###     modules and required to compile the NEMS application properly.
++
++export HDF5HOME=${HDF5}
++export NETCDFHOME=${NETCDF}
++export METIS_PATH=${METIS}
++
++export NETCDF_INCDIR=${NETCDFHOME:+${NETCDFHOME}/include}
++export NETCDF_LIBDIR=${NETCDFHOME:+${NETCDFHOME}/lib}
++
++export ESMFMKFILE=${ESMFMKFILE}
+diff -uNrp ADC-WW3-NWM-NEMS-GMLing-12012020/modulefiles/envmodules_gnu.jet ADC-WW3-NWM-NEMS-GMLing-12012020-mods/modulefiles/envmodules_gnu.jet
+--- ADC-WW3-NWM-NEMS-GMLing-12012020/modulefiles/envmodules_gnu.jet	1969-12-31 18:00:00.000000000 -0600
++++ ADC-WW3-NWM-NEMS-GMLing-12012020-mods/modulefiles/envmodules_gnu.jet	2020-12-07 01:59:59.000000000 -0600
+@@ -0,0 +1,29 @@
++#!/bin/bash-*-Shell-script-modules*-
++
++# This script is responsible for loading modules that are
++# compatible with the NUOPC Layer version used in NEMS.
++
++####################
++### (1) Load all needed environment modules.
++module purge
++#module load gcc impi
++#module load szip hdf5
++#module load netcdf
++#module load metis
++
++#module use /contrib/modulefiles
++#module load esmf
++
++
++####################
++### (2) Set some environments varaiables related to the loaded
++###     modules and required to compile the NEMS application properly.
++
++export HDF5HOME=${HDF5}
++export NETCDFHOME=${NETCDF}
++export METIS_PATH=${METIS}
++
++export NETCDF_INCDIR=${NETCDFHOME:+${NETCDFHOME}/include}
++export NETCDF_LIBDIR=${NETCDFHOME:+${NETCDFHOME}/lib}
++
++export ESMFMKFILE=${ESMFMKFILE}
+diff -uNrp ADC-WW3-NWM-NEMS-GMLing-12012020/modulefiles/envmodules_gnu.linux ADC-WW3-NWM-NEMS-GMLing-12012020-mods/modulefiles/envmodules_gnu.linux
+--- ADC-WW3-NWM-NEMS-GMLing-12012020/modulefiles/envmodules_gnu.linux	1969-12-31 18:00:00.000000000 -0600
++++ ADC-WW3-NWM-NEMS-GMLing-12012020-mods/modulefiles/envmodules_gnu.linux	2020-12-07 01:59:59.000000000 -0600
+@@ -0,0 +1,28 @@
++#!/bin/bash-*-Shell-script-modules*-
++
++# This script is responsible for loading modules that are
++# compatible with the NUOPC Layer version used in NEMS.
++
++####################
++### (1) Load all needed environment modules.
++#module purge
++#module load gcc impi
++#module load szip hdf5
++#module load netcdf
++#module load metis
++
++#module load esmf
++
++
++####################
++### (2) Set some environments varaiables related to the loaded
++###     modules and required to compile the NEMS application properly.
++
++export HDF5HOME=${HDF5}
++export NETCDFHOME=${NETCDF}
++export METIS_PATH=${METIS}
++
++export NETCDF_INCDIR=${NETCDFHOME:+${NETCDFHOME}/include}
++export NETCDF_LIBDIR=${NETCDFHOME:+${NETCDFHOME}/lib}
++
++export ESMFMKFILE=${ESMFMKFILE}
+diff -uNrp ADC-WW3-NWM-NEMS-GMLing-12012020/modulefiles/envmodules_gnu.macosx ADC-WW3-NWM-NEMS-GMLing-12012020-mods/modulefiles/envmodules_gnu.macosx
+--- ADC-WW3-NWM-NEMS-GMLing-12012020/modulefiles/envmodules_gnu.macosx	1969-12-31 18:00:00.000000000 -0600
++++ ADC-WW3-NWM-NEMS-GMLing-12012020-mods/modulefiles/envmodules_gnu.macosx	2020-12-07 01:59:59.000000000 -0600
+@@ -0,0 +1,28 @@
++#!/bin/bash-*-Shell-script-modules*-
++
++# This script is responsible for loading modules that are
++# compatible with the NUOPC Layer version used in NEMS.
++
++####################
++### (1) Load all needed environment modules.
++#module purge
++#module load gcc impi
++#module load szip hdf5
++#module load netcdf
++#module load metis
++
++#module load esmf
++
++
++####################
++### (2) Set some environments varaiables related to the loaded
++###     modules and required to compile the NEMS application properly.
++
++export HDF5HOME=${HDF5}
++export NETCDFHOME=${NETCDF}
++export METIS_PATH=${METIS}
++
++export NETCDF_INCDIR=${NETCDFHOME:+${NETCDFHOME}/include}
++export NETCDF_LIBDIR=${NETCDFHOME:+${NETCDFHOME}/lib}
++
++export ESMFMKFILE=${ESMFMKFILE}
+diff -uNrp ADC-WW3-NWM-NEMS-GMLing-12012020/modulefiles/envmodules_gnu.orion ADC-WW3-NWM-NEMS-GMLing-12012020-mods/modulefiles/envmodules_gnu.orion
+--- ADC-WW3-NWM-NEMS-GMLing-12012020/modulefiles/envmodules_gnu.orion	1969-12-31 18:00:00.000000000 -0600
++++ ADC-WW3-NWM-NEMS-GMLing-12012020-mods/modulefiles/envmodules_gnu.orion	2020-12-07 01:59:59.000000000 -0600
+@@ -0,0 +1,28 @@
++#!/bin/bash-*-Shell-script-modules*-
++
++# This script is responsible for loading modules that are
++# compatible with the NUOPC Layer version used in NEMS.
++
++####################
++### (1) Load all needed environment modules.
++module purge
++module load gcc impi
++module load szip hdf5
++module load netcdf
++#module load metis - doesn't exist on orion
++
++module load esmf
++
++
++####################
++### (2) Set some environments varaiables related to the loaded
++###     modules and required to compile the NEMS application properly.
++
++export HDF5HOME=${HDF5_ROOT}
++export NETCDFHOME=${NETCDF_ROOT}
++export METIS_PATH=${METIS}
++
++export NETCDF_INCDIR=${NETCDF_INCLUDE_DIRS}
++export NETCDF_LIBDIR=${NETCDF_LIBRARY_DIRS}
++
++export ESMFMKFILE=${ESMFMKFILE}
+diff -uNrp ADC-WW3-NWM-NEMS-GMLing-12012020/modulefiles/envmodules_gnu.stampede ADC-WW3-NWM-NEMS-GMLing-12012020-mods/modulefiles/envmodules_gnu.stampede
+--- ADC-WW3-NWM-NEMS-GMLing-12012020/modulefiles/envmodules_gnu.stampede	1969-12-31 18:00:00.000000000 -0600
++++ ADC-WW3-NWM-NEMS-GMLing-12012020-mods/modulefiles/envmodules_gnu.stampede	2020-12-07 01:59:59.000000000 -0600
+@@ -0,0 +1,29 @@
++#!/bin/bash-*-Shell-script-modules*-
++
++# This script is responsible for loading modules that are
++# compatible with the NUOPC Layer version used in NEMS.
++
++####################
++### (1) Load all needed environment modules.
++module purge
++module load gcc impi
++module load hdf5
++module load netcdf
++module load metis
++
++module use /work/07380/panvel/Modules/modulefiles
++module load impi-intel/esmf-8.0.1
++
++
++####################
++### (2) Set some environments varaiables related to the loaded
++###     modules and required to compile the NEMS application properly.
++
++export HDF5HOME=${TACC_HDF5_DIR}
++export NETCDFHOME=${TACC_NETCDF_DIR}
++export METIS_PATH=${TACC_METIS_DIR}
++
++export NETCDF_INCDIR=${TACC_NETCDF_INC}
++export NETCDF_LIBDIR=${TACC_NETCDF_LIB}
++
++export ESMFMKFILE=${ESMFMKFILE}
+diff -uNrp ADC-WW3-NWM-NEMS-GMLing-12012020/modulefiles/envmodules_gnu.wcoss ADC-WW3-NWM-NEMS-GMLing-12012020-mods/modulefiles/envmodules_gnu.wcoss
+--- ADC-WW3-NWM-NEMS-GMLing-12012020/modulefiles/envmodules_gnu.wcoss	1969-12-31 18:00:00.000000000 -0600
++++ ADC-WW3-NWM-NEMS-GMLing-12012020-mods/modulefiles/envmodules_gnu.wcoss	2020-12-07 01:59:59.000000000 -0600
+@@ -0,0 +1,29 @@
++#!/bin/bash-*-Shell-script-modules*-
++
++# This script is responsible for loading modules that are
++# compatible with the NUOPC Layer version used in NEMS.
++
++####################
++### (1) Load all needed environment modules.
++module purge
++#module load gcc impi
++#module load szip hdf5
++#module load netcdf
++#module load metis
++
++#module use /contrib/modulefiles
++#module load esmf
++
++
++####################
++### (2) Set some environments varaiables related to the loaded
++###     modules and required to compile the NEMS application properly.
++
++export HDF5HOME=${HDF5}
++export NETCDFHOME=${NETCDF}
++export METIS_PATH=${METIS}
++
++export NETCDF_INCDIR=${NETCDFHOME:+${NETCDFHOME}/include}
++export NETCDF_LIBDIR=${NETCDFHOME:+${NETCDFHOME}/lib}
++
++export ESMFMKFILE=${ESMFMKFILE}
+diff -uNrp ADC-WW3-NWM-NEMS-GMLing-12012020/modulefiles/envmodules_intel.cheyenne ADC-WW3-NWM-NEMS-GMLing-12012020-mods/modulefiles/envmodules_intel.cheyenne
+--- ADC-WW3-NWM-NEMS-GMLing-12012020/modulefiles/envmodules_intel.cheyenne	1969-12-31 18:00:00.000000000 -0600
++++ ADC-WW3-NWM-NEMS-GMLing-12012020-mods/modulefiles/envmodules_intel.cheyenne	2020-12-07 01:59:59.000000000 -0600
+@@ -0,0 +1,33 @@
++#!/bin/bash-*-Shell-script-modules*-
++
++echo "envmodules :: The compiler option \"${COMPILER:-UNDEF}\" for platform \"${PLATFORM:-UNDEF}\" is not supported"
++echo "  Exiting ..."
++exit 1
++
++# This script is responsible for loading modules that are
++# compatible with the NUOPC Layer version used in NEMS.
++
++####################
++### (1) Load all needed environment modules.
++module purge
++#module load intel impi
++#module load szip hdf5
++#module load netcdf
++#module load metis
++
++#module use /contrib/modulefiles
++#module load esmf
++
++
++####################
++### (2) Set some environments varaiables related to the loaded
++###     modules and required to compile the NEMS application properly.
++
++export HDF5HOME=${HDF5}
++export NETCDFHOME=${NETCDF}
++export METIS_PATH=${METIS}
++
++export NETCDF_INCDIR=${NETCDFHOME:+${NETCDFHOME}/include}
++export NETCDF_LIBDIR=${NETCDFHOME:+${NETCDFHOME}/lib}
++
++export ESMFMKFILE=${ESMFMKFILE}
+diff -uNrp ADC-WW3-NWM-NEMS-GMLing-12012020/modulefiles/envmodules_intel.gaea ADC-WW3-NWM-NEMS-GMLing-12012020-mods/modulefiles/envmodules_intel.gaea
+--- ADC-WW3-NWM-NEMS-GMLing-12012020/modulefiles/envmodules_intel.gaea	1969-12-31 18:00:00.000000000 -0600
++++ ADC-WW3-NWM-NEMS-GMLing-12012020-mods/modulefiles/envmodules_intel.gaea	2020-12-07 01:59:59.000000000 -0600
+@@ -0,0 +1,29 @@
++#!/bin/bash-*-Shell-script-modules*-
++
++# This script is responsible for loading modules that are
++# compatible with the NUOPC Layer version used in NEMS.
++
++####################
++### (1) Load all needed environment modules.
++module purge
++#module load intel impi
++#module load szip hdf5
++#module load netcdf
++#module load metis
++
++#module use /contrib/modulefiles
++#module load esmf
++
++
++####################
++### (2) Set some environments varaiables related to the loaded
++###     modules and required to compile the NEMS application properly.
++
++export HDF5HOME=${HDF5}
++export NETCDFHOME=${NETCDF}
++export METIS_PATH=${METIS}
++
++export NETCDF_INCDIR=${NETCDFHOME:+${NETCDFHOME}/include}
++export NETCDF_LIBDIR=${NETCDFHOME:+${NETCDFHOME}/lib}
++
++export ESMFMKFILE=${ESMFMKFILE}
+diff -uNrp ADC-WW3-NWM-NEMS-GMLing-12012020/modulefiles/envmodules_intel.hera ADC-WW3-NWM-NEMS-GMLing-12012020-mods/modulefiles/envmodules_intel.hera
+--- ADC-WW3-NWM-NEMS-GMLing-12012020/modulefiles/envmodules_intel.hera	1969-12-31 18:00:00.000000000 -0600
++++ ADC-WW3-NWM-NEMS-GMLing-12012020-mods/modulefiles/envmodules_intel.hera	2020-12-07 01:59:59.000000000 -0600
+@@ -0,0 +1,29 @@
++#!/bin/bash-*-Shell-script-modules*-
++
++# This script is responsible for loading modules that are
++# compatible with the NUOPC Layer version used in NEMS.
++
++####################
++### (1) Load all needed environment modules.
++module purge
++module load intel impi
++module load szip hdf5
++module load netcdf
++module load metis
++
++module use /contrib/modulefiles
++module load esmf
++
++
++####################
++### (2) Set some environments varaiables related to the loaded
++###     modules and required to compile the NEMS application properly.
++
++export HDF5HOME=${HDF5}
++export NETCDFHOME=${NETCDF}
++export METIS_PATH=${METIS}
++
++export NETCDF_INCDIR=${NETCDFHOME:+${NETCDFHOME}/include}
++export NETCDF_LIBDIR=${NETCDFHOME:+${NETCDFHOME}/lib}
++
++export ESMFMKFILE=${ESMFMKFILE}
+diff -uNrp ADC-WW3-NWM-NEMS-GMLing-12012020/modulefiles/envmodules_intel.jet ADC-WW3-NWM-NEMS-GMLing-12012020-mods/modulefiles/envmodules_intel.jet
+--- ADC-WW3-NWM-NEMS-GMLing-12012020/modulefiles/envmodules_intel.jet	1969-12-31 18:00:00.000000000 -0600
++++ ADC-WW3-NWM-NEMS-GMLing-12012020-mods/modulefiles/envmodules_intel.jet	2020-12-07 01:59:59.000000000 -0600
+@@ -0,0 +1,29 @@
++#!/bin/bash-*-Shell-script-modules*-
++
++# This script is responsible for loading modules that are
++# compatible with the NUOPC Layer version used in NEMS.
++
++####################
++### (1) Load all needed environment modules.
++module purge
++#module load intel impi
++#module load szip hdf5
++#module load netcdf
++#module load metis
++
++#module use /contrib/modulefiles
++#module load esmf
++
++
++####################
++### (2) Set some environments varaiables related to the loaded
++###     modules and required to compile the NEMS application properly.
++
++export HDF5HOME=${HDF5}
++export NETCDFHOME=${NETCDF}
++export METIS_PATH=${METIS}
++
++export NETCDF_INCDIR=${NETCDFHOME:+${NETCDFHOME}/include}
++export NETCDF_LIBDIR=${NETCDFHOME:+${NETCDFHOME}/lib}
++
++export ESMFMKFILE=${ESMFMKFILE}
+diff -uNrp ADC-WW3-NWM-NEMS-GMLing-12012020/modulefiles/envmodules_intel.linux ADC-WW3-NWM-NEMS-GMLing-12012020-mods/modulefiles/envmodules_intel.linux
+--- ADC-WW3-NWM-NEMS-GMLing-12012020/modulefiles/envmodules_intel.linux	1969-12-31 18:00:00.000000000 -0600
++++ ADC-WW3-NWM-NEMS-GMLing-12012020-mods/modulefiles/envmodules_intel.linux	2020-12-07 01:59:59.000000000 -0600
+@@ -0,0 +1,28 @@
++#!/bin/bash-*-Shell-script-modules*-
++
++# This script is responsible for loading modules that are
++# compatible with the NUOPC Layer version used in NEMS.
++
++####################
++### (1) Load all needed environment modules.
++#module purge
++#module load intel impi
++#module load szip hdf5
++#module load netcdf
++#module load metis
++
++#module load esmf
++
++
++####################
++### (2) Set some environments varaiables related to the loaded
++###     modules and required to compile the NEMS application properly.
++
++export HDF5HOME=${HDF5}
++export NETCDFHOME=${NETCDF}
++export METIS_PATH=${METIS}
++
++export NETCDF_INCDIR=${NETCDFHOME:+${NETCDFHOME}/include}
++export NETCDF_LIBDIR=${NETCDFHOME:+${NETCDFHOME}/lib}
++
++export ESMFMKFILE=${ESMFMKFILE}
+diff -uNrp ADC-WW3-NWM-NEMS-GMLing-12012020/modulefiles/envmodules_intel.macosx ADC-WW3-NWM-NEMS-GMLing-12012020-mods/modulefiles/envmodules_intel.macosx
+--- ADC-WW3-NWM-NEMS-GMLing-12012020/modulefiles/envmodules_intel.macosx	1969-12-31 18:00:00.000000000 -0600
++++ ADC-WW3-NWM-NEMS-GMLing-12012020-mods/modulefiles/envmodules_intel.macosx	2020-12-07 01:59:59.000000000 -0600
+@@ -0,0 +1,28 @@
++#!/bin/bash-*-Shell-script-modules*-
++
++# This script is responsible for loading modules that are
++# compatible with the NUOPC Layer version used in NEMS.
++
++####################
++### (1) Load all needed environment modules.
++#module purge
++#module load intel impi
++#module load szip hdf5
++#module load netcdf
++#module load metis
++
++#module load esmf
++
++
++####################
++### (2) Set some environments varaiables related to the loaded
++###     modules and required to compile the NEMS application properly.
++
++export HDF5HOME=${HDF5}
++export NETCDFHOME=${NETCDF}
++export METIS_PATH=${METIS}
++
++export NETCDF_INCDIR=${NETCDFHOME:+${NETCDFHOME}/include}
++export NETCDF_LIBDIR=${NETCDFHOME:+${NETCDFHOME}/lib}
++
++export ESMFMKFILE=${ESMFMKFILE}
+diff -uNrp ADC-WW3-NWM-NEMS-GMLing-12012020/modulefiles/envmodules_intel.orion ADC-WW3-NWM-NEMS-GMLing-12012020-mods/modulefiles/envmodules_intel.orion
+--- ADC-WW3-NWM-NEMS-GMLing-12012020/modulefiles/envmodules_intel.orion	1969-12-31 18:00:00.000000000 -0600
++++ ADC-WW3-NWM-NEMS-GMLing-12012020-mods/modulefiles/envmodules_intel.orion	2020-12-07 01:59:59.000000000 -0600
+@@ -0,0 +1,28 @@
++#!/bin/bash-*-Shell-script-modules*-
++
++# This script is responsible for loading modules that are
++# compatible with the NUOPC Layer version used in NEMS.
++
++####################
++### (1) Load all needed environment modules.
++module purge
++module load intel impi
++module load szip hdf5
++module load netcdf
++#module load metis - doesn't exist on orion
++
++module load esmf
++
++
++####################
++### (2) Set some environments varaiables related to the loaded
++###     modules and required to compile the NEMS application properly.
++
++export HDF5HOME=${HDF5_ROOT}
++export NETCDFHOME=${NETCDF_ROOT}
++export METIS_PATH=${METIS}
++
++export NETCDF_INCDIR=${NETCDF_INCLUDE_DIRS}
++export NETCDF_LIBDIR=${NETCDF_LIBRARY_DIRS}
++
++export ESMFMKFILE=${ESMFMKFILE}
+diff -uNrp ADC-WW3-NWM-NEMS-GMLing-12012020/modulefiles/envmodules_intel.stampede ADC-WW3-NWM-NEMS-GMLing-12012020-mods/modulefiles/envmodules_intel.stampede
+--- ADC-WW3-NWM-NEMS-GMLing-12012020/modulefiles/envmodules_intel.stampede	1969-12-31 18:00:00.000000000 -0600
++++ ADC-WW3-NWM-NEMS-GMLing-12012020-mods/modulefiles/envmodules_intel.stampede	2020-12-07 01:59:59.000000000 -0600
+@@ -0,0 +1,29 @@
++#!/bin/bash-*-Shell-script-modules*-
++
++# This script is responsible for loading modules that are
++# compatible with the NUOPC Layer version used in NEMS.
++
++####################
++### (1) Load all needed environment modules.
++module purge
++module load intel impi
++module load hdf5
++module load netcdf
++module load metis
++
++module use /work/07380/panvel/Modules/modulefiles
++module load impi-intel/esmf-8.0.1
++
++
++####################
++### (2) Set some environments varaiables related to the loaded
++###     modules and required to compile the NEMS application properly.
++
++export HDF5HOME=${TACC_HDF5_DIR}
++export NETCDFHOME=${TACC_NETCDF_DIR}
++export METIS_PATH=${TACC_METIS_DIR}
++
++export NETCDF_INCDIR=${TACC_NETCDF_INC}
++export NETCDF_LIBDIR=${TACC_NETCDF_LIB}
++
++export ESMFMKFILE=${ESMFMKFILE}
+diff -uNrp ADC-WW3-NWM-NEMS-GMLing-12012020/modulefiles/envmodules_intel.wcoss ADC-WW3-NWM-NEMS-GMLing-12012020-mods/modulefiles/envmodules_intel.wcoss
+--- ADC-WW3-NWM-NEMS-GMLing-12012020/modulefiles/envmodules_intel.wcoss	1969-12-31 18:00:00.000000000 -0600
++++ ADC-WW3-NWM-NEMS-GMLing-12012020-mods/modulefiles/envmodules_intel.wcoss	2020-12-07 01:59:59.000000000 -0600
+@@ -0,0 +1,29 @@
++#!/bin/bash-*-Shell-script-modules*-
++
++# This script is responsible for loading modules that are
++# compatible with the NUOPC Layer version used in NEMS.
++
++####################
++### (1) Load all needed environment modules.
++module purge
++#module load intel impi
++#module load szip hdf5
++#module load netcdf
++#module load metis
++
++#module use /contrib/modulefiles
++#module load esmf
++
++
++####################
++### (2) Set some environments varaiables related to the loaded
++###     modules and required to compile the NEMS application properly.
++
++export HDF5HOME=${HDF5}
++export NETCDFHOME=${NETCDF}
++export METIS_PATH=${METIS}
++
++export NETCDF_INCDIR=${NETCDFHOME:+${NETCDFHOME}/include}
++export NETCDF_LIBDIR=${NETCDFHOME:+${NETCDFHOME}/lib}
++
++export ESMFMKFILE=${ESMFMKFILE}
+diff -uNrp ADC-WW3-NWM-NEMS-GMLing-12012020/modulefiles/envmodules_pgi.cheyenne ADC-WW3-NWM-NEMS-GMLing-12012020-mods/modulefiles/envmodules_pgi.cheyenne
+--- ADC-WW3-NWM-NEMS-GMLing-12012020/modulefiles/envmodules_pgi.cheyenne	1969-12-31 18:00:00.000000000 -0600
++++ ADC-WW3-NWM-NEMS-GMLing-12012020-mods/modulefiles/envmodules_pgi.cheyenne	2020-12-07 01:59:59.000000000 -0600
+@@ -0,0 +1,33 @@
++#!/bin/bash-*-Shell-script-modules*-
++
++echo "envmodules :: The compiler option \"${COMPILER:-UNDEF}\" for platform \"${PLATFORM:-UNDEF}\" is not supported"
++echo "  Exiting ..."
++exit 1
++
++# This script is responsible for loading modules that are
++# compatible with the NUOPC Layer version used in NEMS.
++
++####################
++### (1) Load all needed environment modules.
++module purge
++#module load pgi impi
++#module load szip hdf5
++#module load netcdf
++#module load metis
++
++#module use /contrib/modulefiles
++#module load esmf
++
++
++####################
++### (2) Set some environments varaiables related to the loaded
++###     modules and required to compile the NEMS application properly.
++
++export HDF5HOME=${HDF5}
++export NETCDFHOME=${NETCDF}
++export METIS_PATH=${METIS}
++
++export NETCDF_INCDIR=${NETCDFHOME:+${NETCDFHOME}/include}
++export NETCDF_LIBDIR=${NETCDFHOME:+${NETCDFHOME}/lib}
++
++export ESMFMKFILE=${ESMFMKFILE}
+diff -uNrp ADC-WW3-NWM-NEMS-GMLing-12012020/modulefiles/envmodules_pgi.gaea ADC-WW3-NWM-NEMS-GMLing-12012020-mods/modulefiles/envmodules_pgi.gaea
+--- ADC-WW3-NWM-NEMS-GMLing-12012020/modulefiles/envmodules_pgi.gaea	1969-12-31 18:00:00.000000000 -0600
++++ ADC-WW3-NWM-NEMS-GMLing-12012020-mods/modulefiles/envmodules_pgi.gaea	2020-12-07 01:59:59.000000000 -0600
+@@ -0,0 +1,30 @@
++#!/bin/bash-*-Shell-script-modules*-
++
++echo "envmodules :: The compiler option \"${COMPILER:-UNDEF}\" for platform \"${PLATFORM:-UNDEF}\" is not supported"
++echo "  Exiting ..."
++exit 1
++
++####################
++### (1) Load all needed environment modules.
++module purge
++#module load pgi impi
++#module load szip hdf5
++#module load netcdf
++#module load metis
++
++#module use /contrib/modulefiles
++#module load esmf
++
++
++####################
++### (2) Set some environments varaiables related to the loaded
++###     modules and required to compile the NEMS application properly.
++
++export HDF5HOME=${HDF5}
++export NETCDFHOME=${NETCDF}
++export METIS_PATH=${METIS}
++
++export NETCDF_INCDIR=${NETCDFHOME:+${NETCDFHOME}/include}
++export NETCDF_LIBDIR=${NETCDFHOME:+${NETCDFHOME}/lib}
++
++export ESMFMKFILE=${ESMFMKFILE}
+diff -uNrp ADC-WW3-NWM-NEMS-GMLing-12012020/modulefiles/envmodules_pgi.hera ADC-WW3-NWM-NEMS-GMLing-12012020-mods/modulefiles/envmodules_pgi.hera
+--- ADC-WW3-NWM-NEMS-GMLing-12012020/modulefiles/envmodules_pgi.hera	1969-12-31 18:00:00.000000000 -0600
++++ ADC-WW3-NWM-NEMS-GMLing-12012020-mods/modulefiles/envmodules_pgi.hera	2020-12-07 01:59:59.000000000 -0600
+@@ -0,0 +1,33 @@
++#!/bin/bash-*-Shell-script-modules*-
++
++echo "envmodules :: The compiler option \"${COMPILER:-UNDEF}\" for platform \"${PLATFORM:-UNDEF}\" is not supported"
++echo "  Exiting ..."
++exit 1
++
++# This script is responsible for loading modules that are
++# compatible with the NUOPC Layer version used in NEMS.
++
++####################
++### (1) Load all needed environment modules.
++module purge
++#module load pgi impi
++#module load szip hdf5
++#module load netcdf
++#module load metis
++
++#module use /contrib/modulefiles
++#module load esmf
++
++
++####################
++### (2) Set some environments varaiables related to the loaded
++###     modules and required to compile the NEMS application properly.
++
++export HDF5HOME=${HDF5}
++export NETCDFHOME=${NETCDF}
++export METIS_PATH=${METIS}
++
++export NETCDF_INCDIR=${NETCDFHOME:+${NETCDFHOME}/include}
++export NETCDF_LIBDIR=${NETCDFHOME:+${NETCDFHOME}/lib}
++
++export ESMFMKFILE=${ESMFMKFILE}
+diff -uNrp ADC-WW3-NWM-NEMS-GMLing-12012020/modulefiles/envmodules_pgi.jet ADC-WW3-NWM-NEMS-GMLing-12012020-mods/modulefiles/envmodules_pgi.jet
+--- ADC-WW3-NWM-NEMS-GMLing-12012020/modulefiles/envmodules_pgi.jet	1969-12-31 18:00:00.000000000 -0600
++++ ADC-WW3-NWM-NEMS-GMLing-12012020-mods/modulefiles/envmodules_pgi.jet	2020-12-07 01:59:59.000000000 -0600
+@@ -0,0 +1,33 @@
++#!/bin/bash-*-Shell-script-modules*-
++
++echo "envmodules :: The compiler option \"${COMPILER:-UNDEF}\" for platform \"${PLATFORM:-UNDEF}\" is not supported"
++echo "  Exiting ..."
++exit 1
++
++# This script is responsible for loading modules that are
++# compatible with the NUOPC Layer version used in NEMS.
++
++####################
++### (1) Load all needed environment modules.
++module purge
++#module load pgi impi
++#module load szip hdf5
++#module load netcdf
++#module load metis
++
++#module use /contrib/modulefiles
++#module load esmf
++
++
++####################
++### (2) Set some environments varaiables related to the loaded
++###     modules and required to compile the NEMS application properly.
++
++export HDF5HOME=${HDF5}
++export NETCDFHOME=${NETCDF}
++export METIS_PATH=${METIS}
++
++export NETCDF_INCDIR=${NETCDFHOME:+${NETCDFHOME}/include}
++export NETCDF_LIBDIR=${NETCDFHOME:+${NETCDFHOME}/lib}
++
++export ESMFMKFILE=${ESMFMKFILE}
+diff -uNrp ADC-WW3-NWM-NEMS-GMLing-12012020/modulefiles/envmodules_pgi.linux ADC-WW3-NWM-NEMS-GMLing-12012020-mods/modulefiles/envmodules_pgi.linux
+--- ADC-WW3-NWM-NEMS-GMLing-12012020/modulefiles/envmodules_pgi.linux	1969-12-31 18:00:00.000000000 -0600
++++ ADC-WW3-NWM-NEMS-GMLing-12012020-mods/modulefiles/envmodules_pgi.linux	2020-12-07 01:59:59.000000000 -0600
+@@ -0,0 +1,28 @@
++#!/bin/bash-*-Shell-script-modules*-
++
++# This script is responsible for loading modules that are
++# compatible with the NUOPC Layer version used in NEMS.
++
++####################
++### (1) Load all needed environment modules.
++#module purge
++#module load pgi impi
++#module load szip hdf5
++#module load netcdf
++#module load metis
++
++#module load esmf
++
++
++####################
++### (2) Set some environments varaiables related to the loaded
++###     modules and required to compile the NEMS application properly.
++
++export HDF5HOME=${HDF5}
++export NETCDFHOME=${NETCDF}
++export METIS_PATH=${METIS}
++
++export NETCDF_INCDIR=${NETCDFHOME:+${NETCDFHOME}/include}
++export NETCDF_LIBDIR=${NETCDFHOME:+${NETCDFHOME}/lib}
++
++export ESMFMKFILE=${ESMFMKFILE}
+diff -uNrp ADC-WW3-NWM-NEMS-GMLing-12012020/modulefiles/envmodules_pgi.macosx ADC-WW3-NWM-NEMS-GMLing-12012020-mods/modulefiles/envmodules_pgi.macosx
+--- ADC-WW3-NWM-NEMS-GMLing-12012020/modulefiles/envmodules_pgi.macosx	1969-12-31 18:00:00.000000000 -0600
++++ ADC-WW3-NWM-NEMS-GMLing-12012020-mods/modulefiles/envmodules_pgi.macosx	2020-12-07 01:59:59.000000000 -0600
+@@ -0,0 +1,28 @@
++#!/bin/bash-*-Shell-script-modules*-
++
++# This script is responsible for loading modules that are
++# compatible with the NUOPC Layer version used in NEMS.
++
++####################
++### (1) Load all needed environment modules.
++#module purge
++#module load pgi impi
++#module load szip hdf5
++#module load netcdf
++#module load metis
++
++#module load esmf
++
++
++####################
++### (2) Set some environments varaiables related to the loaded
++###     modules and required to compile the NEMS application properly.
++
++export HDF5HOME=${HDF5}
++export NETCDFHOME=${NETCDF}
++export METIS_PATH=${METIS}
++
++export NETCDF_INCDIR=${NETCDFHOME:+${NETCDFHOME}/include}
++export NETCDF_LIBDIR=${NETCDFHOME:+${NETCDFHOME}/lib}
++
++export ESMFMKFILE=${ESMFMKFILE}
+diff -uNrp ADC-WW3-NWM-NEMS-GMLing-12012020/modulefiles/envmodules_pgi.orion ADC-WW3-NWM-NEMS-GMLing-12012020-mods/modulefiles/envmodules_pgi.orion
+--- ADC-WW3-NWM-NEMS-GMLing-12012020/modulefiles/envmodules_pgi.orion	1969-12-31 18:00:00.000000000 -0600
++++ ADC-WW3-NWM-NEMS-GMLing-12012020-mods/modulefiles/envmodules_pgi.orion	2020-12-07 01:59:59.000000000 -0600
+@@ -0,0 +1,28 @@
++#!/bin/bash-*-Shell-script-modules*-
++
++# This script is responsible for loading modules that are
++# compatible with the NUOPC Layer version used in NEMS.
++
++####################
++### (1) Load all needed environment modules.
++module purge
++module load pgi impi
++module load szip hdf5
++module load netcdf
++#module load metis - doesn't exist on orion
++
++module load esmf
++
++
++####################
++### (2) Set some environments varaiables related to the loaded
++###     modules and required to compile the NEMS application properly.
++
++export HDF5HOME=${HDF5_ROOT}
++export NETCDFHOME=${NETCDF_ROOT}
++export METIS_PATH=${METIS}
++
++export NETCDF_INCDIR=${NETCDF_INCLUDE_DIRS}
++export NETCDF_LIBDIR=${NETCDF_LIBRARY_DIRS}
++
++export ESMFMKFILE=${ESMFMKFILE}
+diff -uNrp ADC-WW3-NWM-NEMS-GMLing-12012020/modulefiles/envmodules_pgi.stampede ADC-WW3-NWM-NEMS-GMLing-12012020-mods/modulefiles/envmodules_pgi.stampede
+--- ADC-WW3-NWM-NEMS-GMLing-12012020/modulefiles/envmodules_pgi.stampede	1969-12-31 18:00:00.000000000 -0600
++++ ADC-WW3-NWM-NEMS-GMLing-12012020-mods/modulefiles/envmodules_pgi.stampede	2020-12-07 01:59:59.000000000 -0600
+@@ -0,0 +1,33 @@
++#!/bin/bash-*-Shell-script-modules*-
++
++echo "envmodules :: The compiler option \"${COMPILER:-UNDEF}\" for platform \"${PLATFORM:-UNDEF}\" is not supported"
++echo "  Exiting ..."
++exit 1
++
++# This script is responsible for loading modules that are
++# compatible with the NUOPC Layer version used in NEMS.
++
++####################
++### (1) Load all needed environment modules.
++module purge
++#module load pgi impi
++#module load hdf5
++#module load netcdf
++#module load metis
++
++#module use /work/07380/panvel/Modules/modulefiles
++#module load impi-intel/esmf-8.0.1
++
++
++####################
++### (2) Set some environments varaiables related to the loaded
++###     modules and required to compile the NEMS application properly.
++
++export HDF5HOME=${TACC_HDF5_DIR}
++export NETCDFHOME=${TACC_NETCDF_DIR}
++export METIS_PATH=${TACC_METIS_DIR}
++
++export NETCDF_INCDIR=${TACC_NETCDF_INC}
++export NETCDF_LIBDIR=${TACC_NETCDF_LIB}
++
++export ESMFMKFILE=${ESMFMKFILE}
+diff -uNrp ADC-WW3-NWM-NEMS-GMLing-12012020/modulefiles/envmodules_pgi.wcoss ADC-WW3-NWM-NEMS-GMLing-12012020-mods/modulefiles/envmodules_pgi.wcoss
+--- ADC-WW3-NWM-NEMS-GMLing-12012020/modulefiles/envmodules_pgi.wcoss	1969-12-31 18:00:00.000000000 -0600
++++ ADC-WW3-NWM-NEMS-GMLing-12012020-mods/modulefiles/envmodules_pgi.wcoss	2020-12-07 01:59:59.000000000 -0600
+@@ -0,0 +1,33 @@
++#!/bin/bash-*-Shell-script-modules*-
++
++echo "envmodules :: The compiler option \"${COMPILER:-UNDEF}\" for platform \"${PLATFORM:-UNDEF}\" is not supported"
++echo "  Exiting ..."
++exit 1
++
++# This script is responsible for loading modules that are
++# compatible with the NUOPC Layer version used in NEMS.
++
++####################
++### (1) Load all needed environment modules.
++module purge
++#module load pgi impi
++#module load szip hdf5
++#module load netcdf
++#module load metis
++
++#module use /contrib/modulefiles
++#module load esmf
++
++
++####################
++### (2) Set some environments varaiables related to the loaded
++###     modules and required to compile the NEMS application properly.
++
++export HDF5HOME=${HDF5}
++export NETCDFHOME=${NETCDF}
++export METIS_PATH=${METIS}
++
++export NETCDF_INCDIR=${NETCDFHOME:+${NETCDFHOME}/include}
++export NETCDF_LIBDIR=${NETCDFHOME:+${NETCDFHOME}/lib}
++
++export ESMFMKFILE=${ESMFMKFILE}
+diff -uNrp ADC-WW3-NWM-NEMS-GMLing-12012020/modulefiles/hera/coastal_app ADC-WW3-NWM-NEMS-GMLing-12012020-mods/modulefiles/hera/coastal_app
+--- ADC-WW3-NWM-NEMS-GMLing-12012020/modulefiles/hera/coastal_app	2020-12-01 01:08:10.000000000 -0600
++++ ADC-WW3-NWM-NEMS-GMLing-12012020-mods/modulefiles/hera/coastal_app	1969-12-31 18:00:00.000000000 -0600
+@@ -1,39 +0,0 @@
+-#%Module######################################################################
+-##
+-##    NEMS coastal_app Prerequisites: hera
+-
+-##### rem by saeed ### proc ModulesHelp {} {
+-##### rem by saeed ###   puts stderr "\tcit - loads modules required for building and running FV3 under NEMS on Theia"
+-##### rem by saeed ###  }
+-
+-##### rem by saeed ###         module-whatis "loads NEMS FV3 prerequisites for Theia"
+-
+-# NOTE: the "module purge" and loading of the module command are
+-# handled by the module-setup.sh (or .csh) script.
+-
+-##
+-## load programming environment
+-## this typically includes compiler, MPI and job scheduler
+-##
+-
+-module load intel/18.0.5.274
+-module load szip/2.1
+-module load hdf5/1.10.4
+-module load impi/2018.0.4
+-module load netcdf/4.6.1
+-
+-#This below library is  for esmf 8.0 on Hera, compiled and tested successfully for NWM-NUOPC CAP  
+-#module use /home/emc.nemspara/SOFT-hera/modulefiles
+-
+-# for current NEMS
+-module load esmf/7.1.0r
+-
+-
+-#module use /scratch2/NCEPDEV/nwprod/NCEPLIBS/modulefiles
+-#module load w3nco/v2.0.6
+-#module load w3emc/v2.0.5
+-
+-
+-
+-
+-
+diff -uNrp ADC-WW3-NWM-NEMS-GMLing-12012020/modulefiles/hera/ESMF_NUOPC ADC-WW3-NWM-NEMS-GMLing-12012020-mods/modulefiles/hera/ESMF_NUOPC
+--- ADC-WW3-NWM-NEMS-GMLing-12012020/modulefiles/hera/ESMF_NUOPC	2020-12-01 01:08:10.000000000 -0600
++++ ADC-WW3-NWM-NEMS-GMLing-12012020-mods/modulefiles/hera/ESMF_NUOPC	1969-12-31 18:00:00.000000000 -0600
+@@ -1,17 +0,0 @@
+-#%Module######################################################################
+-
+-# This script is responsible for loading modules that are compatible with
+-# the NUOPC Layer version used in NEMS.
+-
+-module load intel/18.0.5.274
+-module load szip/2.1
+-module load hdf5/1.10.4
+-module load impi/2018.0.4
+-module load netcdf/4.6.1
+-
+-# Environment for ESMF v8.0.0 beta snapshot 48g
+-module use /home/emc.nemspara/SOFT-hera/modulefiles
+-module load esmf/8.0.0bs48g
+-#
+-
+-#
+diff -uNrp ADC-WW3-NWM-NEMS-GMLing-12012020/modulefiles/theia/theia_modules ADC-WW3-NWM-NEMS-GMLing-12012020-mods/modulefiles/theia/theia_modules
+--- ADC-WW3-NWM-NEMS-GMLing-12012020/modulefiles/theia/theia_modules	2020-12-01 01:08:10.000000000 -0600
++++ ADC-WW3-NWM-NEMS-GMLing-12012020-mods/modulefiles/theia/theia_modules	1969-12-31 18:00:00.000000000 -0600
+@@ -1,41 +0,0 @@
+-#%Module######################################################################
+-##
+-##    NEMS FV3 Prerequisites: Theia
+-
+-##proc ModulesHelp {} {
+-##  puts stderr "\tcit - loads modules required for building and running FV3 under NEMS on Theia"
+-##}
+-
+-##module-whatis "loads NEMS FV3 prerequisites for Theia"
+-
+-# NOTE: the "module purge" and loading of the module command are
+-# handled by the module-setup.sh (or .csh) script.
+-
+-##
+-## load programming environment
+-## this typically includes compiler, MPI and job scheduler
+-##
+-module load intel/15.1.133
+-module load impi/5.0.3.048
+-module load hdf5
+-module load netcdf/4.3.0
+-module load esmf/7.0.2
+-
+-## From old NEMS
+-#source /etc/profile
+-#module load intel/14.0.2 impi/4.1.3.048 netcdf/4.3.0
+-#module use /scratch4/NCEPDEV/nems/save/Gerhard.Theurich/Modulefiles
+-#module load esmf/7.0.0
+-#module use /scratch4/NCEPDEV/nems/save/Daniel.Rosen/Modulefiles/theia
+-#module load jasper/1.900.1 gribapi/1.12.3
+-
+-##
+-## load nwprod libraries
+-##
+-module use -a /scratch3/NCEPDEV/nwprod/lib/modulefiles
+-
+-#module load bacio/v2.0.1
+-#module load sp/v2.0.2
+-#module load ip/v2.0.0
+-module load w3nco/v2.0.6
+-module load w3emc/v2.0.5
+diff -uNrp ADC-WW3-NWM-NEMS-GMLing-12012020/NEMS/src/incmake/buildenv.mk ADC-WW3-NWM-NEMS-GMLing-12012020-mods/NEMS/src/incmake/buildenv.mk
+--- ADC-WW3-NWM-NEMS-GMLing-12012020/NEMS/src/incmake/buildenv.mk	2020-12-04 14:36:35.000000000 -0600
++++ ADC-WW3-NWM-NEMS-GMLing-12012020-mods/NEMS/src/incmake/buildenv.mk	2020-12-07 01:59:57.000000000 -0600
+@@ -60,12 +60,12 @@ endef
+ # Detect available build environments.
+ 
+ include $(call locate_incmake_file,env/app_extras/detect.mk)
+-include $(call locate_incmake_file,env/wcoss/detect.mk)
+-include $(call locate_incmake_file,env/rdhpcs/detect.mk)
+-include $(call locate_incmake_file,env/cisl/detect.mk)
+-include $(call locate_incmake_file,env/intel/detect.mk)
+-include $(call locate_incmake_file,env/tacc/detect.mk)
+-include $(call locate_incmake_file,env/lrz/detect.mk)
++#include $(call locate_incmake_file,env/wcoss/detect.mk)
++#include $(call locate_incmake_file,env/rdhpcs/detect.mk)
++#include $(call locate_incmake_file,env/cisl/detect.mk)
++#include $(call locate_incmake_file,env/intel/detect.mk)
++#include $(call locate_incmake_file,env/tacc/detect.mk)
++#include $(call locate_incmake_file,env/lrz/detect.mk)
+ include $(call locate_incmake_file,env/uname/detect.mk)
+ 
+ ifeq (,$(list_build_env))
+diff -uNrp ADC-WW3-NWM-NEMS-GMLing-12012020/NEMS/src/incmake/component_ADCIRC.mk ADC-WW3-NWM-NEMS-GMLing-12012020-mods/NEMS/src/incmake/component_ADCIRC.mk
+--- ADC-WW3-NWM-NEMS-GMLing-12012020/NEMS/src/incmake/component_ADCIRC.mk	2020-02-28 12:59:15.000000000 -0600
++++ ADC-WW3-NWM-NEMS-GMLing-12012020-mods/NEMS/src/incmake/component_ADCIRC.mk	2020-12-07 01:59:57.000000000 -0600
+@@ -12,7 +12,6 @@ ADCIRC_BINDIR?=$(ROOTDIR)/ADCIRC_INSTALL
+ $(call require_dir,$(ADCIRC_SRCDIR),ADCIRC source directory)
+ 
+ # ENV for ADCIRC - exchange with NEMS ENV
+-esmf_env=$(ADCIRC_SRCDIR)/work/esmf-impi-env.sh   # this is same as configure.nems, should be removed!
+ comp_option=intel                       
+ 
+ ADCIRC_ALL_OPTS= \
+@@ -28,8 +27,8 @@ build_ADCIRC: $(adcirc_mk)
+ 
+ 
+ $(adcirc_mk): configure $(CONFDIR)/configure.nems   
+-	+$(MODULE_LOGIC) ; cd $(ADCIRC_SRCDIR)/work; exec ./make_nuopc.sh $(esmf_env) $(comp_option) 
+-	+$(MODULE_LOGIC) ; cd $(ADCIRC_SRCDIR)/cpl/nuopc ; exec $(MAKE) $(ADCIRC_ALL_OPTS) -f makefile.adc_cap.nuopc nuopcinstall \
++	+$(MODULE_LOGIC) ; cd $(ADCIRC_SRCDIR)/work; exec ./make_nuopc.sh $(comp_option) 
++	+$(MODULE_LOGIC) ; cd $(ADCIRC_SRCDIR)/thirdparty/nuopc ; exec $(MAKE) $(ADCIRC_ALL_OPTS) -f makefile.adc_cap.nuopc nuopcinstall \
+           DESTDIR=/ "INSTDIR=$(ADCIRC_BINDIR)"
+ 	@echo ""
+ 	test -d "$(ADCIRC_BINDIR)"
+@@ -46,10 +45,11 @@ clean_ADCIRC:
+ 	@echo ""
+ 
+ distclean_ADCIRC: clean_ADCIRC
++	+cd $(ADCIRC_SRCDIR)/work ; exec $(MAKE) -k clobber
+ 	rm -rf $(ADCIRC_BINDIR)
+ 	@echo ""
+ 
+ distclean_NUOPC:
+-	+cd $(ADCIRC_SRCDIR)/cpl/nuopc ; exec rm -f *.o *.mod libadc_cap.a adcirc.mk
++	+cd $(ADCIRC_SRCDIR)/thirdparty/nuopc ; exec rm -f *.o *.mod libadc_cap.a adcirc.mk
+ 	rm -rf $(ADCIRC_BINDIR)
+ 	@echo ""
+diff -uNrp ADC-WW3-NWM-NEMS-GMLing-12012020/NEMS/src/incmake/component_NWM.mk ADC-WW3-NWM-NEMS-GMLing-12012020-mods/NEMS/src/incmake/component_NWM.mk
+--- ADC-WW3-NWM-NEMS-GMLing-12012020/NEMS/src/incmake/component_NWM.mk	2020-02-28 12:59:15.000000000 -0600
++++ ADC-WW3-NWM-NEMS-GMLing-12012020-mods/NEMS/src/incmake/component_NWM.mk	2020-12-07 01:59:57.000000000 -0600
+@@ -15,7 +15,6 @@ build_NWM: $(nwm_mk)
+ 
+ 
+ env_file=$(NWM_SRCDIR)/setEnvar.sh
+-esmf_env=$(NWM_SRCDIR)/esmf-impi-env.sh
+ comp_opt=3
+ 
+ # HOW to source env here??
+@@ -28,7 +27,7 @@ NWM_ALL_OPTS= \
+ 
+ $(nwm_mk): configure $(CONFDIR)/configure.nems
+ 	@echo ""
+-	+$(MODULE_LOGIC) ; cd $(NWM_SRCDIR) ; exec ./compile_nuopc_NoahMP.sh $(env_file) $(esmf_env) $(comp_opt)
++	+$(MODULE_LOGIC) ; cd $(NWM_SRCDIR) ; exec ./compile_nuopc_NoahMP.sh $(env_file) $(comp_opt)
+ 	+$(MODULE_LOGIC) ; cd $(NWM_SRCDIR)/CPL/NUOPC_cpl ; exec $(MAKE) -f Makefile nuopcinstall \
+ 	  $(NWM_ALL_OPTS) DESTDIR=/ "INSTDIR=$(NWM_BINDIR)" 
+ 	@echo ""
+diff -uNrp ADC-WW3-NWM-NEMS-GMLing-12012020/NWM/trunk/NDHMS/arc/macros.mpp.IBM.xlf90_r ADC-WW3-NWM-NEMS-GMLing-12012020-mods/NWM/trunk/NDHMS/arc/macros.mpp.IBM.xlf90_r
+--- ADC-WW3-NWM-NEMS-GMLing-12012020/NWM/trunk/NDHMS/arc/macros.mpp.IBM.xlf90_r	2020-07-14 07:38:14.000000000 -0500
++++ ADC-WW3-NWM-NEMS-GMLing-12012020-mods/NWM/trunk/NDHMS/arc/macros.mpp.IBM.xlf90_r	2020-12-07 01:59:58.000000000 -0600
+@@ -28,7 +28,7 @@ RMD		=	rm -f
+ COMPILER90=	mpxlf90_r
+ F90FLAGS  =     -O2 -qfree=f90 -c -w -qspill=20000 -qmaxmem=64000
+ LDFLAGS  =     -O2 -qfree=f90  -w -qspill=20000 -qmaxmem=64000
+-MODFLAG	=	-I./ -I ../MPP -I../../MPP -I ../mod
++MODFLAG	=	-I./ -I../MPP -I../../MPP -I../mod
+ LDFLAGS	=	
+ CPPINVOKE	=   -qpreprocess
+ LIBS 	=	
+diff -uNrp ADC-WW3-NWM-NEMS-GMLing-12012020/NWM/trunk/NDHMS/arc/macros.mpp.ifort ADC-WW3-NWM-NEMS-GMLing-12012020-mods/NWM/trunk/NDHMS/arc/macros.mpp.ifort
+--- ADC-WW3-NWM-NEMS-GMLing-12012020/NWM/trunk/NDHMS/arc/macros.mpp.ifort	2020-07-14 07:38:14.000000000 -0500
++++ ADC-WW3-NWM-NEMS-GMLing-12012020-mods/NWM/trunk/NDHMS/arc/macros.mpp.ifort	2020-12-07 01:59:58.000000000 -0600
+@@ -64,10 +64,10 @@ COMPILER90  = mpif90
+ FORMAT_FREE = -FR
+ BYTESWAPIO  = -convert big_endian
+ F90FLAGS    = -O2 -g -w -c -ftz -align all -fno-alias -fp-model precise $(FORMAT_FREE) $(BYTESWAPIO)
+-MODFLAG	    = -I./ -I ../../MPP -I ../MPP -I ../mod
++MODFLAG	    = -I./ -I../../MPP -I../MPP -I../mod
+ LDFLAGS	    =
+ CPPINVOKE   = -fpp
+-CPPFLAGS    = -DMPP_LAND -I ../Data_Rec $(HYDRO_D) $(SPATIAL_SOIL) $(NWM_META) $(WRF_HYDRO_NUDGING) $(OUTPUT_CHAN_CONN) $(PRECIP_DOUBLE) $(NCEP_WCOSS)
++CPPFLAGS    = -DMPP_LAND -I../Data_Rec $(HYDRO_D) $(SPATIAL_SOIL) $(NWM_META) $(WRF_HYDRO_NUDGING) $(OUTPUT_CHAN_CONN) $(PRECIP_DOUBLE) $(NCEP_WCOSS)
+ LIBS 	    =	
+ NETCDFINC   = $(NETCDF_INC)
+ NETCDFLIB   = -L$(NETCDF_LIB) -lnetcdff -lnetcdf
+diff -uNrp ADC-WW3-NWM-NEMS-GMLing-12012020/NWM/trunk/NDHMS/arc/macros.mpp.ifort.luna ADC-WW3-NWM-NEMS-GMLing-12012020-mods/NWM/trunk/NDHMS/arc/macros.mpp.ifort.luna
+--- ADC-WW3-NWM-NEMS-GMLing-12012020/NWM/trunk/NDHMS/arc/macros.mpp.ifort.luna	2020-07-14 07:38:14.000000000 -0500
++++ ADC-WW3-NWM-NEMS-GMLing-12012020-mods/NWM/trunk/NDHMS/arc/macros.mpp.ifort.luna	2020-12-07 01:59:58.000000000 -0600
+@@ -25,7 +25,7 @@
+ ##       alias impirun='/opt/openmpi-1.10.0-intel/bin/mpirun'
+ ##       alias iman='man -M/opt/openmpi+intel/man'
+ ##       # Bonus: Check your wrf hydro environment - up you to maintain to your needs.
+-##       alias henv='printenv | egrep -i "(HYDRO|NUDG|PRECIP|CHAN_CONN|^NETCDF|^LDFLAGS|^ifort)" | egrep -v PWD'
++##       alias henv='printenv | egrep -I"(HYDRO|NUDG|PRECIP|CHAN_CONN|^NETCDF|^LDFLAGS|^ifort)" | egrep -v PWD'
+ 
+ .IGNORE:
+ 
+@@ -93,10 +93,10 @@ COMPILER90  = ftn
+ FORMAT_FREE = -FR
+ BYTESWAPIO  = -convert big_endian
+ F90FLAGS    = -w -c -ftz -align all -fno-alias -fp-model precise $(FORMAT_FREE) $(BYTESWAPIO)
+-MODFLAG	    = -I./ -I ../../MPP -I ../MPP -I ../mod
++MODFLAG	    = -I./ -I../../MPP -I../MPP -I../mod
+ LDFLAGS	    = $(HDF5_LDFLAGS)
+ CPPINVOKE	= -fpp
+-CPPFLAGS    = -DMPP_LAND -I ../Data_Rec $(HYDRO_D) $(SPATIAL_SOIL) $(NWM_META) $(WRF_HYDRO_NUDGING) $(OUTPUT_CHAN_CONN) $(PRECIP_DOUBLE) $(NCEP_WCOSS)
++CPPFLAGS    = -DMPP_LAND -I../Data_Rec $(HYDRO_D) $(SPATIAL_SOIL) $(NWM_META) $(WRF_HYDRO_NUDGING) $(OUTPUT_CHAN_CONN) $(PRECIP_DOUBLE) $(NCEP_WCOSS)
+ LIBS 	    =$(Z_LIB)	
+ NETCDFINC   = $(NETCDF_INC)
+ NETCDFLIB   = -L$(NETCDF_LIB) -lnetcdff -lnetcdf
+diff -uNrp ADC-WW3-NWM-NEMS-GMLing-12012020/NWM/trunk/NDHMS/arc/macros.mpp.ifort.omp ADC-WW3-NWM-NEMS-GMLing-12012020-mods/NWM/trunk/NDHMS/arc/macros.mpp.ifort.omp
+--- ADC-WW3-NWM-NEMS-GMLing-12012020/NWM/trunk/NDHMS/arc/macros.mpp.ifort.omp	2020-07-14 07:38:14.000000000 -0500
++++ ADC-WW3-NWM-NEMS-GMLing-12012020-mods/NWM/trunk/NDHMS/arc/macros.mpp.ifort.omp	2020-12-07 01:59:58.000000000 -0600
+@@ -69,10 +69,10 @@ COMPILER90  = mpif90
+ FORMAT_FREE = -FR
+ BYTESWAPIO  = -convert big_endian
+ F90FLAGS    = -xHost -qopenmp -g -w -c -ftz -align all -fno-alias -fp-model strict $(FORMAT_FREE) $(BYTESWAPIO)
+-MODFLAG	    = -I./ -I ../../MPP -I ../MPP -I ../mod
++MODFLAG	    = -I./ -I../../MPP -I../MPP -I../mod
+ LDFLAGS	    = -qopenmp
+ CPPINVOKE   = -fpp
+-CPPFLAGS    = -DMPP_LAND -I ../Data_Rec $(HYDRO_D) $(SPATIAL_SOIL) $(WRFIO_NCD_LARGE_FILE_SUPPORT) $(NWM_META) $(WRF_HYDRO_NUDGING) $(OUTPUT_CHAN_CONN) $(PRECIP_DOUBLE) $(NCEP_WCOSS)
++CPPFLAGS    = -DMPP_LAND -I../Data_Rec $(HYDRO_D) $(SPATIAL_SOIL) $(WRFIO_NCD_LARGE_FILE_SUPPORT) $(NWM_META) $(WRF_HYDRO_NUDGING) $(OUTPUT_CHAN_CONN) $(PRECIP_DOUBLE) $(NCEP_WCOSS)
+ LIBS 	    = -qopenmp
+ NETCDFINC   = $(NETCDF_INC)
+ NETCDFLIB   = -L$(NETCDF_LIB) -lnetcdff -lnetcdf
+diff -uNrp ADC-WW3-NWM-NEMS-GMLing-12012020/NWM/trunk/NDHMS/arc/macros.mpp.ifort.summit_has ADC-WW3-NWM-NEMS-GMLing-12012020-mods/NWM/trunk/NDHMS/arc/macros.mpp.ifort.summit_has
+--- ADC-WW3-NWM-NEMS-GMLing-12012020/NWM/trunk/NDHMS/arc/macros.mpp.ifort.summit_has	2020-07-14 07:38:14.000000000 -0500
++++ ADC-WW3-NWM-NEMS-GMLing-12012020-mods/NWM/trunk/NDHMS/arc/macros.mpp.ifort.summit_has	2020-12-07 01:59:58.000000000 -0600
+@@ -69,10 +69,10 @@ COMPILER90  = mpiifort
+ FORMAT_FREE = -FR
+ BYTESWAPIO  = -convert big_endian
+ F90FLAGS    = -O2 -g -w -c -ftz -align all -fno-alias -fp-model precise $(FORMAT_FREE) $(BYTESWAPIO)
+-MODFLAG	    = -I./ -I ../../MPP -I ../MPP -I ../mod
++MODFLAG	    = -I./ -I../../MPP -I../MPP -I../mod
+ LDFLAGS	    =
+ CPPINVOKE	= -fpp
+-CPPFLAGS    = -DMPP_LAND -I ../Data_Rec $(HYDRO_D) $(SPATIAL_SOIL) $(WRFIO_NCD_LARGE_FILE_SUPPORT) $(NWM_META) $(WRF_HYDRO_NUDGING) $(OUTPUT_CHAN_CONN) $(PRECIP_DOUBLE) $(NCEP_WCOSS)
++CPPFLAGS    = -DMPP_LAND -I../Data_Rec $(HYDRO_D) $(SPATIAL_SOIL) $(WRFIO_NCD_LARGE_FILE_SUPPORT) $(NWM_META) $(WRF_HYDRO_NUDGING) $(OUTPUT_CHAN_CONN) $(PRECIP_DOUBLE) $(NCEP_WCOSS)
+ LIBS 	    =	
+ NETCDFINC   = $(NETCDF_INC)
+ NETCDFLIB   = -L$(NETCDF_LIB) -lnetcdff -lnetcdf
+diff -uNrp ADC-WW3-NWM-NEMS-GMLing-12012020/NWM/trunk/NDHMS/arc/macros.mpp.intel.cray_xc ADC-WW3-NWM-NEMS-GMLing-12012020-mods/NWM/trunk/NDHMS/arc/macros.mpp.intel.cray_xc
+--- ADC-WW3-NWM-NEMS-GMLing-12012020/NWM/trunk/NDHMS/arc/macros.mpp.intel.cray_xc	2020-07-14 07:38:14.000000000 -0500
++++ ADC-WW3-NWM-NEMS-GMLing-12012020-mods/NWM/trunk/NDHMS/arc/macros.mpp.intel.cray_xc	2020-12-07 01:59:58.000000000 -0600
+@@ -25,7 +25,7 @@
+ ##       alias impirun='/opt/openmpi-1.10.0-intel/bin/mpirun'
+ ##       alias iman='man -M/opt/openmpi+intel/man'
+ ##       # Bonus: Check your wrf hydro environment - up you to maintain to your needs.
+-##       alias henv='printenv | egrep -i "(HYDRO|NUDG|PRECIP|CHAN_CONN|^NETCDF|^LDFLAGS|^ifort)" | egrep -v PWD'
++##       alias henv='printenv | egrep -I"(HYDRO|NUDG|PRECIP|CHAN_CONN|^NETCDF|^LDFLAGS|^ifort)" | egrep -v PWD'
+ 
+ .IGNORE:
+ 
+@@ -87,10 +87,10 @@ COMPILER90  = ftn
+ FORMAT_FREE = -FR
+ BYTESWAPIO  = -convert big_endian
+ F90FLAGS    = -w -c -ftz -align all -fno-alias -fp-model precise $(FORMAT_FREE) $(BYTESWAPIO)
+-MODFLAG	    = -I./ -I ../../MPP -I ../MPP -I ../mod
++MODFLAG	    = -I./ -I../../MPP -I../MPP -I../mod
+ LDFLAGS	    =
+ CPP	        = -fpp
+-CPPFLAGS    = -DMPP_LAND -I ../Data_Rec $(HYDRO_D) $(SPATIAL_SOIL) $(WRFIO_NCD_LARGE_FILE_SUPPORT) $(WRF_HYDRO_NUDGING) $(OUTPUT_CHAN_CONN) $(PRECIP_DOUBLE)
++CPPFLAGS    = -DMPP_LAND -I../Data_Rec $(HYDRO_D) $(SPATIAL_SOIL) $(WRFIO_NCD_LARGE_FILE_SUPPORT) $(WRF_HYDRO_NUDGING) $(OUTPUT_CHAN_CONN) $(PRECIP_DOUBLE)
+ LIBS 	    =	
+ NETCDFINC   = $(NETCDF_INC)
+ NETCDFLIB   = -L$(NETCDF_LIB) -lnetcdff -lnetcdf
+diff -uNrp ADC-WW3-NWM-NEMS-GMLing-12012020/NWM/trunk/NDHMS/arc/macros.mpp.linux ADC-WW3-NWM-NEMS-GMLing-12012020-mods/NWM/trunk/NDHMS/arc/macros.mpp.linux
+--- ADC-WW3-NWM-NEMS-GMLing-12012020/NWM/trunk/NDHMS/arc/macros.mpp.linux	2020-07-14 07:38:14.000000000 -0500
++++ ADC-WW3-NWM-NEMS-GMLing-12012020-mods/NWM/trunk/NDHMS/arc/macros.mpp.linux	2020-12-07 01:59:58.000000000 -0600
+@@ -53,7 +53,7 @@ RMD		=	rm -f
+ COMPILER90=	mpif90
+ F90FLAGS  =     -Mfree -c -byteswapio -O2 -Kieee 
+ LDFLAGS  =      $(F90FLAGS)
+-MODFLAG	=	-I./ -I ../../MPP -I ../MPP -I ../mod 
++MODFLAG	=	-I./ -I../../MPP -I../MPP -I../mod 
+ LDFLAGS	=	
+ CPPINVOKE	=
+ CPPFLAGS	=  -DMPP_LAND -I../Data_Rec $(HYDRO_D) $(SPATIAL_SOIL) $(WRF_HYDRO_NUDGING) $(OUTPUT_CHAN_CONN) $(PRECIP_DOUBLE)
+diff -uNrp ADC-WW3-NWM-NEMS-GMLing-12012020/NWM/trunk/NDHMS/arc/macros.mpp.mpiifort ADC-WW3-NWM-NEMS-GMLing-12012020-mods/NWM/trunk/NDHMS/arc/macros.mpp.mpiifort
+--- ADC-WW3-NWM-NEMS-GMLing-12012020/NWM/trunk/NDHMS/arc/macros.mpp.mpiifort	2020-07-14 07:38:14.000000000 -0500
++++ ADC-WW3-NWM-NEMS-GMLing-12012020-mods/NWM/trunk/NDHMS/arc/macros.mpp.mpiifort	2020-12-07 01:59:59.000000000 -0600
+@@ -44,7 +44,7 @@ F90FLAGS	= -O2 -g -w -c -ftz -fno-alias
+ MODFLAG		= -I./ -I../../MPP -I../MPP -I../mod
+ LDFLAGS		= 
+ CPPINVOKE	= -fpp
+-CPPFLAGS	= -DMPP_LAND -I ../Data_Rec $(HYDRO_D)
++CPPFLAGS	= -DMPP_LAND -I../Data_Rec $(HYDRO_D)
+ LIBS		=	
+ NETCDFINC       = $(NETCDF)/include
+ NETCDFLIB       = -L$(NETCDF)/lib -lnetcdff -lnetcdf
+diff -uNrp ADC-WW3-NWM-NEMS-GMLing-12012020/NWM/trunk/NDHMS/arc/macros.seq.IBM.xlf90_r ADC-WW3-NWM-NEMS-GMLing-12012020-mods/NWM/trunk/NDHMS/arc/macros.seq.IBM.xlf90_r
+--- ADC-WW3-NWM-NEMS-GMLing-12012020/NWM/trunk/NDHMS/arc/macros.seq.IBM.xlf90_r	2020-07-14 07:38:14.000000000 -0500
++++ ADC-WW3-NWM-NEMS-GMLing-12012020-mods/NWM/trunk/NDHMS/arc/macros.seq.IBM.xlf90_r	2020-12-07 01:59:59.000000000 -0600
+@@ -29,7 +29,7 @@ RM		=	rm -f
+ RMD		=	rm -f
+ COMPILER90=	xlf90_r
+ F90FLAGS  =       -c -O2 -qfree=f90 -qmaxmem=819200
+-MODFLAG	=	-I./ -I ../../MPP -I ../MPP -I ../mod
++MODFLAG	=	-I./ -I../../MPP -I../MPP -I../mod
+ LDFLAGS	=	
+ CPP	=       cpp -C -P
+ CPPFLAGS	=       -I../Data_Rec $(HYDRO_D) 
+diff -uNrp ADC-WW3-NWM-NEMS-GMLing-12012020/NWM/trunk/NDHMS/arc/macros.seq.ifort ADC-WW3-NWM-NEMS-GMLing-12012020-mods/NWM/trunk/NDHMS/arc/macros.seq.ifort
+--- ADC-WW3-NWM-NEMS-GMLing-12012020/NWM/trunk/NDHMS/arc/macros.seq.ifort	2020-07-14 07:38:14.000000000 -0500
++++ ADC-WW3-NWM-NEMS-GMLing-12012020-mods/NWM/trunk/NDHMS/arc/macros.seq.ifort	2020-12-07 01:59:59.000000000 -0600
+@@ -46,10 +46,10 @@ COMPILER90=	ifort
+ ##F90FLAGS  =       -w -c -ffree-form -ffree-line-length-none -fconvert=big-endian -frecord-marker=4 
+ F90FLAGS  =       -w -c -ftz -align all -fno-alias -fp-model precise -FR -convert big_endian
+ 
+-MODFLAG	=	-I./  -I ../mod
++MODFLAG	=	-I./  -I../mod
+ LDFLAGS	=	
+ CPPINVOKE	=       -fpp
+-CPPFLAGS	=       -I ../Data_Rec $(HYDRO_D) $(SPATIAL_SOIL) $(WRF_HYDRO_NUDGING) $(OUTPUT_CHAN_CONN)
++CPPFLAGS	=       -I../Data_Rec $(HYDRO_D) $(SPATIAL_SOIL) $(WRF_HYDRO_NUDGING) $(OUTPUT_CHAN_CONN)
+ LIBS 	=	
+ NETCDFINC       =       $(NETCDF_INC)
+ NETCDFLIB       =       -L$(NETCDF_LIB) -lnetcdff -lnetcdf
+diff -uNrp ADC-WW3-NWM-NEMS-GMLing-12012020/NWM/trunk/NDHMS/arc/macros.seq.linux ADC-WW3-NWM-NEMS-GMLing-12012020-mods/NWM/trunk/NDHMS/arc/macros.seq.linux
+--- ADC-WW3-NWM-NEMS-GMLing-12012020/NWM/trunk/NDHMS/arc/macros.seq.linux	2020-07-14 07:38:14.000000000 -0500
++++ ADC-WW3-NWM-NEMS-GMLing-12012020-mods/NWM/trunk/NDHMS/arc/macros.seq.linux	2020-12-07 01:59:59.000000000 -0600
+@@ -47,10 +47,10 @@ RM		=	rm -f
+ COMPILER90=	pgf90 
+ F90FLAGS  =     -Mfree -Mfptrap -c -byteswapio -Ktrap=fp -O2 -Kieee
+ LDFLAGS  =      $(F90FLAGS)
+-MODFLAG	=	-I./ -I ../mod
++MODFLAG	=	-I./ -I../mod
+ LDFLAGS	=	
+ CPPINVOKE	=
+-CPPFLAGS	=       -I ../Data_Rec $(HYDRO_D) $(WRF_HYDRO) $(SPATIAL_SOIL) $(WRF_HYDRO_NUDGING) $(OUTPUT_CHAN_CONN)
++CPPFLAGS	=       -I../Data_Rec $(HYDRO_D) $(WRF_HYDRO) $(SPATIAL_SOIL) $(WRF_HYDRO_NUDGING) $(OUTPUT_CHAN_CONN)
+ LIBS 	=	
+ NETCDFINC       =       $(NETCDF_INC)
+ NETCDFLIB       =       -L$(NETCDF_LIB) -lnetcdff -lnetcdf
+diff -uNrp ADC-WW3-NWM-NEMS-GMLing-12012020/NWM/trunk/NDHMS/CMakeLists.txt ADC-WW3-NWM-NEMS-GMLing-12012020-mods/NWM/trunk/NDHMS/CMakeLists.txt
+--- ADC-WW3-NWM-NEMS-GMLing-12012020/NWM/trunk/NDHMS/CMakeLists.txt	2020-07-14 07:38:14.000000000 -0500
++++ ADC-WW3-NWM-NEMS-GMLing-12012020-mods/NWM/trunk/NDHMS/CMakeLists.txt	2020-12-07 01:59:57.000000000 -0600
+@@ -1,3 +1,5 @@
++# Modified: Panagiotis Velissariou - 12/05/2020
++
+ cmake_minimum_required (VERSION 2.8)
+ 
+ set (CMAKE_C_COMPILER "mpicc")
+@@ -52,7 +54,8 @@ if ("${HYDRO_LSM}" STREQUAL "")
+ endif ("${HYDRO_LSM}" STREQUAL "")
+ 
+ # Beheen 12/17/19
+-# source setEnvar.sh and source esmf-impi-env.sh
++# Panagiotis Velissariou 12/05/2020
++# source setEnvar.sh
+ # To run: cd cmakeBuild  rm -rf *; cmake -DNUOPCMODE=1 -DBUILD_PREC=r4 -DDBUG=on -Wno-dev ..  
+ #                                  make VERBOSE=1
+ # set user controled environment variable, NUOPC mode
+diff -uNrp ADC-WW3-NWM-NEMS-GMLing-12012020/NWM/trunk/NDHMS/compile_nuopc_NoahMP.sh ADC-WW3-NWM-NEMS-GMLing-12012020-mods/NWM/trunk/NDHMS/compile_nuopc_NoahMP.sh
+--- ADC-WW3-NWM-NEMS-GMLing-12012020/NWM/trunk/NDHMS/compile_nuopc_NoahMP.sh	2020-07-14 07:38:14.000000000 -0500
++++ ADC-WW3-NWM-NEMS-GMLing-12012020-mods/NWM/trunk/NDHMS/compile_nuopc_NoahMP.sh	2020-12-07 01:59:59.000000000 -0600
+@@ -1,51 +1,106 @@
+ #!/bin/bash
+ 
+-## This script takes three optional arguments:
+-## a file which sets the environment variables
+-## to use in the compile (clearning any inherited
+-## from the calling envionrment first). The template
+-## for this file is trunk/NDHMS/setEnvar.sh. Please
+-## copy that file to trunk/NDHMS, make copies
+-## for your favorite compile configurations, and
+-## pass the appropriate file name to this script
+-## as desired.
+-## a file, esmf-impi-env.sh, which sets the esmf 
+-## environment variables.
+-## copy this file from CPL/NUOPC_cpl if doesn't exists
+-## in NDHMS directory.
+-## compiler option for configure script
+-## ------------------- TO RUN
+-## ./compile_nuopc_NoahMP.sh setEnvar.sh esmf-impi-env.sh 3
+-## ------------------
+-
+-env_file=$1
+-esmf_env=$2
+-comp_opt=$3
+-
+-# ###########################
+-# Include ESMFMKFILE fragment
+-# ###########################
+-
+-if [[ ! -z $comp_opt ]]; then
+-    echo "configure: Running configure script with $comp_opt for the compile options."
+-    ./configure $comp_opt
++# Panagiotis Velissariou <panagiotis.velissariou@noaa.gov> - 12/05/2020
++# This script compiles ADCIRC model with a pre-selected sets of
++# functionalities in NUOPC coupled mode.
++# Run it as: ./compile_nuopc_NoahMP.sh some-env-file some-env-module-file some-compiler-name   or,
++#            ./compile_nuopc_NoahMP.sh some-env-file some-compiler-name                        or,
++#            ./compile_nuopc_NoahMP.sh some-compiler-name                                      or,
++#            ./compile_nuopc_NoahMP.sh
++# Note: some-env-module-file will be sourced from this bash script
++#       so it should be bash compatible file.
++
++###====================
++### The following lines are from the original script
++###====================
++# This script takes three optional arguments:
++# a file which sets the environment variables
++# to use in the compile (clearning any inherited
++# from the calling envionrment first). The template
++# for this file is trunk/NDHMS/setEnvar.sh. Please
++# copy that file to trunk/NDHMS, make copies
++# for your favorite compile configurations, and
++# pass the appropriate file name to this script
++# as desired.
++# a file, esmf-impi-env.sh, which sets the esmf 
++# environment variables.
++# copy this file from CPL/NUOPC_cpl if doesn't exists
++# in NDHMS directory.
++# compiler option for configure script
++#
++# TO RUN:
++# ./compile_nuopc_NoahMP.sh setEnvar.sh esmf-impi-env.sh 3
++###====================
++
++
++# Get the directory where the script is located
++if [[ $(uname -s) == Darwin ]]; then
++  readonly scrNAME="$( basename "$(grealpath -s "${BASH_SOURCE[0]}")" )"
++  readonly scrDIR="$(cd "$(dirname "$(grealpath -s "${BASH_SOURCE[0]}")" )" && pwd -P)"
+ else
+-    echo "configure: You must configure compiler option! Run ./configure"
+-    echo "configure: Input value of 3 - if running impi"
+-fi
+-
+-if [[ ! -z $esmf_env ]]; then
+-    echo "configure: Sourcing $esmf_env for the compile options."
+-    source $esmf_env
+-else
+-    echo "configure: Using the compile options in the calling environment for ESMFMKFILE."
++  readonly scrNAME="$( basename "$(realpath -s "${BASH_SOURCE[0]}")" )"
++  readonly scrDIR="$(cd "$(dirname "$(realpath -s "${BASH_SOURCE[0]}")" )" && pwd -P)"
+ fi
+ 
+ 
+-if [[ ! -z $env_file ]]; then
+-
+-    ## unset these in the env so we are not mixing
+-    ## and matching env vars and the sourced file.
++###====================
++### Get the script arguments: env. file and compiler
++###====================
++num_opt=${#}
++if [ ${num_opt} -ge 3 ]; then
++  env_file="${1}"
++  esmf_env="${2}"
++  comp_opt="${3}
++elif [ ${num_opt} -eq 2 ]; then
++  env_file="${1}"
++  comp_opt="${2}
++elif [ ${num_opt} -eq 1 ]; then
++  comp_opt="${1}"
++else
++  if [ -n ${NEMS_COMPILER:+1} ]; then
++    case "${comp_opt}" in
++                pgi ) comp_opt=1 ;;
++          gnu|gfort ) comp_opt=2 ;;
++        intel|ifort ) comp_opt=3 ;;
++               luna ) comp_opt=4 ;;
++          ifort_omp ) comp_opt=5 ;;
++      intel.cray_xc ) comp_opt=6 ;;
++                  0 ) ;;
++                  * ) echo "${scrNAME} :: Compiler option \"${comp_opt}\" is not supported"
++                      echo "   Exiting ..."
++                      exit 1
++                      ;;
++    esac
++    comp_opt="$( echo "${NEMS_COMPILER}" | tr '[:upper:]' '[:lower:]' )"
++  fi
++fi
++
++# Compiler to use (REQUIRED)
++case "${comp_opt}" in
++    0|1|2|3|4|5|6 ) ./configure ${comp_opt} ;;
++      * ) echo "${scrNAME} :: Compiler option \"${comp_opt}\" is not supported"
++          echo "   You must configure with compiler option! Run ./configure to see options"
++          echo "   You must use compiler option 3 - if running impi"
++          echo "   Exiting ..."
++          exit 1
++          ;;
++esac
++
++# Environment required by ESMF/NUOPC (OPTIONAL)
++if [ -n "${esmf_env:+1}" ]; then
++  if [ -f "${esmf_env}" ]; then
++    echo "${scrNAME} :: Sourcing the environment file: \"${esmf_env}\""
++    source ${esmf_env}
++  else
++    echo "${scrNAME} :: Using the compile options in the calling environment for ESMFMKFILE"
++  fi
++fi
++
++# Environment required by WRF_HYDRO/NoahMP (OPTIONAL)
++if [ -n "${env_file:+1}" ]; then
++  if [ -f "${env_file}" ]; then
++    # Unset these in the env so we are not mixing
++    # and matching env vars and the sourced file
+     unset WRF_HYDRO
+     unset HYDRO_D
+     unset RESERVOIR_D
+@@ -56,71 +111,70 @@ if [[ ! -z $env_file ]]; then
+     unset NWM_META
+     unset WRF_HYDRO_NUDGING
+ 
+-    echo "configure: Sourcing $env_file for the compile options."
+-    source $env_file
+-    
+-else
+-    echo "configure: Using the compile options in the calling environment."
++    echo "${scrNAME} :: Sourcing the environment file: \"${env_file}\""
++    source ${env_file}
++  else
++    echo "${scrNAME} :: Using the compile options in the calling environment"
++  fi
+ fi
+-
+-if [[ "$WRF_HYDRO" -ne 1 ]]; then
++if [[ "${WRF_HYDRO:-0}" -ne 1 ]]; then
+     echo
+-    echo "The WRF_HYDRO compile option is required to be 1 for compile_nuopc_NoahMP.sh"
++    echo "${scrNAME} :: The WRF_HYDRO compile option is required to be 1 for compile_nuopc_NoahMP.sh"
++    echo "   Exiting ..."
+     exit 1
+ fi
++###====================
++
+ 
+-if [[ -e "Makefile.nuopc" ]]; then  rm -f  Makefile.nuopc; fi
+-if [[ -e "Makefile.nuopc_with_main" ]]; then  rm -f  Makefile.nuopc_with_main; fi
++[ -e "Makefile.nuopc"           ] && rm -f  Makefile.nuopc
++[ -e "Makefile.nuopc_with_main" ] && rm -f Makefile.nuopc_with_main
+ 
+ if [ "${MAINAPP}" == "ON" ]; then
+     echo
+-    echo "Compiling NUOPC with mainApp ......"
++    echo "${scrNAME} :: Compiling NUOPC with mainApp ......"
+     cp CPL/NUOPC_cpl/Makefile.nuopc_with_main Makefile.nuopc
+ else
+     cp CPL/NUOPC_cpl/Makefile.nuopc Makefile.nuopc
+ fi
+ 
+-cd Land_models/NoahMP
+-if [[ -e "Makefile.NoahMP.nuopc" ]]; then  rm -f Makefile.NoahMP.nuopc ; fi
+-cp ../../CPL/NUOPC_cpl/Makefile.NoahMP.nuopc Makefile.NoahMP.nuopc
+-if [[ -e "IO_code/Makefile.IO_code.nuopc" ]]; then  rm -f  IO_code/Makefile.IO_code.nuopc; fi
+-cp ../../CPL/NUOPC_cpl/Makefile.IO_code.nuopc IO_code/Makefile.IO_code.nuopc
+-if [[ -e "MPP" ]]; then  rm -rf  MPP; fi
+-ln -sf ../../MPP .
+-cd ../..
++pushd Land_models/NoahMP >/dev/null 2>&1
++  [ -e "Makefile.NoahMP.nuopc" ] && rm -f Makefile.NoahMP.nuopc
++  cp ../../CPL/NUOPC_cpl/Makefile.NoahMP.nuopc Makefile.NoahMP.nuopc
++
++  [ -e "IO_code/Makefile.IO_code.nuopc" ] && rm -f IO_code/Makefile.IO_code.nuopc
++  cp ../../CPL/NUOPC_cpl/Makefile.IO_code.nuopc IO_code/Makefile.IO_code.nuopc
++
++  [ -e "MPP" ] && rm -rf  MPP
++  ln -sf ../../MPP .
++popd >/dev/null 2>&1
+ 
+ cat macros Land_models/NoahMP/hydro/user_build_options.bak  > Land_models/NoahMP/user_build_options
+ 
+ # make -f Makefile.nuopc nuopcclean
+ make -f Makefile.nuopc
+ 
+-if [[ $? -eq 0 ]]; then
+-    echo
+-    echo '*****************************************************************'
+-    echo "Make was successful"
+-else 
+-    echo
+-    echo '*****************************************************************'
+-    echo "Make NOT successful"
+-    exit 1
++if [ $? -eq 0 ]; then
++  echo
++  echo "${scrNAME} :: Make failed for Makefile.nuopc"
++  echo "   Exiting ..."
++  exit 1
+ fi
+ 
+ cp template/NoahMP/namelist.hrldas .
+ cp template/HYDRO/hydro.namelist .
+ 
+ if [ "$(cat .nwm_version)" == "none" ]; then
+-    # if it is not an nwm version, use the stock ones.
+-    cp Land_models/NoahMP/run/*TBL .
+-    cp template/HYDRO/HYDRO.TBL .
+-    cp template/HYDRO/CHANPARM.TBL .
++  # if it is not an nwm version, use the stock ones.
++  cp Land_models/NoahMP/run/*TBL .
++  cp template/HYDRO/HYDRO.TBL .
++  cp template/HYDRO/CHANPARM.TBL .
+ else
+     # If it's an nwm version (nwm release branch), then use these
+     cp template/WCOSS/TBLS/* .
+ fi
+-    
++
+ echo
+-echo '*****************************************************************'
+-echo "The environment variables used in the compile:"
++echo "${scrNAME} :: The environment variables used in the compile:"
+ grepStr="(WRF_HYDRO)|(HYDRO_D)|(SPATIAL_SOIL)|(WRF_HYDRO_RAPID)|(WRFIO_NCD_LARGE_FILE_SUPPORT)|(HYDRO_REALTIME)|(NCEP_WCOSS)|(WRF_HYDRO_NUDGING)|(NETCDF)"
+ printenv | egrep -w "${grepStr}" | sort
+ 
+diff -uNrp ADC-WW3-NWM-NEMS-GMLing-12012020/NWM/trunk/NDHMS/compile_nuopc_NoahMP.sh.orig ADC-WW3-NWM-NEMS-GMLing-12012020-mods/NWM/trunk/NDHMS/compile_nuopc_NoahMP.sh.orig
+--- ADC-WW3-NWM-NEMS-GMLing-12012020/NWM/trunk/NDHMS/compile_nuopc_NoahMP.sh.orig	1969-12-31 18:00:00.000000000 -0600
++++ ADC-WW3-NWM-NEMS-GMLing-12012020-mods/NWM/trunk/NDHMS/compile_nuopc_NoahMP.sh.orig	2020-12-07 01:59:59.000000000 -0600
+@@ -0,0 +1,127 @@
++#!/bin/bash
++
++## This script takes three optional arguments:
++## a file which sets the environment variables
++## to use in the compile (clearning any inherited
++## from the calling envionrment first). The template
++## for this file is trunk/NDHMS/setEnvar.sh. Please
++## copy that file to trunk/NDHMS, make copies
++## for your favorite compile configurations, and
++## pass the appropriate file name to this script
++## as desired.
++## a file, esmf-impi-env.sh, which sets the esmf 
++## environment variables.
++## copy this file from CPL/NUOPC_cpl if doesn't exists
++## in NDHMS directory.
++## compiler option for configure script
++## ------------------- TO RUN
++## ./compile_nuopc_NoahMP.sh setEnvar.sh esmf-impi-env.sh 3
++## ------------------
++
++env_file=$1
++esmf_env=$2
++comp_opt=$3
++
++# ###########################
++# Include ESMFMKFILE fragment
++# ###########################
++
++if [[ ! -z $comp_opt ]]; then
++    echo "configure: Running configure script with $comp_opt for the compile options."
++    ./configure $comp_opt
++else
++    echo "configure: You must configure compiler option! Run ./configure"
++    echo "configure: Input value of 3 - if running impi"
++fi
++
++if [[ ! -z $esmf_env ]]; then
++    echo "configure: Sourcing $esmf_env for the compile options."
++    source $esmf_env
++else
++    echo "configure: Using the compile options in the calling environment for ESMFMKFILE."
++fi
++
++
++if [[ ! -z $env_file ]]; then
++
++    ## unset these in the env so we are not mixing
++    ## and matching env vars and the sourced file.
++    unset WRF_HYDRO
++    unset HYDRO_D
++    unset RESERVOIR_D
++    unset SPATIAL_SOIL
++    unset WRF_HYDRO_RAPID
++    unset WRFIO_NCD_LARGE_FILE_SUPPORT
++    unset NCEP_WCOSS
++    unset NWM_META
++    unset WRF_HYDRO_NUDGING
++
++    echo "configure: Sourcing $env_file for the compile options."
++    source $env_file
++    
++else
++    echo "configure: Using the compile options in the calling environment."
++fi
++
++if [[ "$WRF_HYDRO" -ne 1 ]]; then
++    echo
++    echo "The WRF_HYDRO compile option is required to be 1 for compile_nuopc_NoahMP.sh"
++    exit 1
++fi
++
++if [[ -e "Makefile.nuopc" ]]; then  rm -f  Makefile.nuopc; fi
++if [[ -e "Makefile.nuopc_with_main" ]]; then  rm -f  Makefile.nuopc_with_main; fi
++
++if [ "${MAINAPP}" == "ON" ]; then
++    echo
++    echo "Compiling NUOPC with mainApp ......"
++    cp CPL/NUOPC_cpl/Makefile.nuopc_with_main Makefile.nuopc
++else
++    cp CPL/NUOPC_cpl/Makefile.nuopc Makefile.nuopc
++fi
++
++cd Land_models/NoahMP
++if [[ -e "Makefile.NoahMP.nuopc" ]]; then  rm -f Makefile.NoahMP.nuopc ; fi
++cp ../../CPL/NUOPC_cpl/Makefile.NoahMP.nuopc Makefile.NoahMP.nuopc
++if [[ -e "IO_code/Makefile.IO_code.nuopc" ]]; then  rm -f  IO_code/Makefile.IO_code.nuopc; fi
++cp ../../CPL/NUOPC_cpl/Makefile.IO_code.nuopc IO_code/Makefile.IO_code.nuopc
++if [[ -e "MPP" ]]; then  rm -rf  MPP; fi
++ln -sf ../../MPP .
++cd ../..
++
++cat macros Land_models/NoahMP/hydro/user_build_options.bak  > Land_models/NoahMP/user_build_options
++
++# make -f Makefile.nuopc nuopcclean
++make -f Makefile.nuopc
++
++if [[ $? -eq 0 ]]; then
++    echo
++    echo '*****************************************************************'
++    echo "Make was successful"
++else 
++    echo
++    echo '*****************************************************************'
++    echo "Make NOT successful"
++    exit 1
++fi
++
++cp template/NoahMP/namelist.hrldas .
++cp template/HYDRO/hydro.namelist .
++
++if [ "$(cat .nwm_version)" == "none" ]; then
++    # if it is not an nwm version, use the stock ones.
++    cp Land_models/NoahMP/run/*TBL .
++    cp template/HYDRO/HYDRO.TBL .
++    cp template/HYDRO/CHANPARM.TBL .
++else
++    # If it's an nwm version (nwm release branch), then use these
++    cp template/WCOSS/TBLS/* .
++fi
++    
++echo
++echo '*****************************************************************'
++echo "The environment variables used in the compile:"
++grepStr="(WRF_HYDRO)|(HYDRO_D)|(SPATIAL_SOIL)|(WRF_HYDRO_RAPID)|(WRFIO_NCD_LARGE_FILE_SUPPORT)|(HYDRO_REALTIME)|(NCEP_WCOSS)|(WRF_HYDRO_NUDGING)|(NETCDF)"
++printenv | egrep -w "${grepStr}" | sort
++
++exit 0
+diff -uNrp ADC-WW3-NWM-NEMS-GMLing-12012020/NWM/trunk/NDHMS/CPL/CLM_cpl/bat2.csh ADC-WW3-NWM-NEMS-GMLing-12012020-mods/NWM/trunk/NDHMS/CPL/CLM_cpl/bat2.csh
+--- ADC-WW3-NWM-NEMS-GMLing-12012020/NWM/trunk/NDHMS/CPL/CLM_cpl/bat2.csh	2020-07-14 07:38:14.000000000 -0500
++++ ADC-WW3-NWM-NEMS-GMLing-12012020-mods/NWM/trunk/NDHMS/CPL/CLM_cpl/bat2.csh	2020-12-07 01:59:57.000000000 -0600
+@@ -4,4 +4,4 @@ make -f Makefile.cpl
+ rm -f /d1/weiyu/scratch/merra_boulder/run/ccsm.exe
+ cd /d1/weiyu/scratch/merra_boulder/ccsm/obj
+ 
+-mpif90 -o /d1/weiyu/scratch/merra_boulder/run/ccsm.exe ccsm_comp_mod.o ccsm_driver.o map_atmatm_mct.o map_atmice_mct.o map_atmlnd_mct.o map_atmocn_mct.o map_glcglc_mct.o map_iceice_mct.o map_iceocn_mct.o map_lndlnd_mct.o map_ocnocn_mct.o map_rofocn_mct.o map_rofrof_mct.o map_snoglc_mct.o map_snosno_mct.o mrg_x2a_mct.o mrg_x2g_mct.o mrg_x2i_mct.o mrg_x2l_mct.o mrg_x2o_mct.o mrg_x2s_mct.o seq_avdata_mod.o seq_diag_mct.o seq_domain_mct.o seq_flux_mct.o seq_frac_mct.o seq_hist_mod.o seq_rearr_mod.o seq_rest_mod.o -L/d1/weiyu/scratch/merra_boulder/lib -latm -llnd -lice -locn -lglc -L/d1/weiyu/scratch/merra_boulder/lib -lcsm_share -lmct -lmpeu -lpio  -L/home/weiyu/netcdf/lib -lnetcdf -lnetcdff -L /raid/weiyu/LIS_trunk2/p61_NDHMS/routing/ndhms_wrf_hydro/trunk/NDHMS/lib -lHYDRO
++mpif90 -o /d1/weiyu/scratch/merra_boulder/run/ccsm.exe ccsm_comp_mod.o ccsm_driver.o map_atmatm_mct.o map_atmice_mct.o map_atmlnd_mct.o map_atmocn_mct.o map_glcglc_mct.o map_iceice_mct.o map_iceocn_mct.o map_lndlnd_mct.o map_ocnocn_mct.o map_rofocn_mct.o map_rofrof_mct.o map_snoglc_mct.o map_snosno_mct.o mrg_x2a_mct.o mrg_x2g_mct.o mrg_x2i_mct.o mrg_x2l_mct.o mrg_x2o_mct.o mrg_x2s_mct.o seq_avdata_mod.o seq_diag_mct.o seq_domain_mct.o seq_flux_mct.o seq_frac_mct.o seq_hist_mod.o seq_rearr_mod.o seq_rest_mod.o -L/d1/weiyu/scratch/merra_boulder/lib -latm -llnd -lice -locn -lglc -L/d1/weiyu/scratch/merra_boulder/lib -lcsm_share -lmct -lmpeu -lpio  -L/home/weiyu/netcdf/lib -lnetcdf -lnetcdff -L/raid/weiyu/LIS_trunk2/p61_NDHMS/routing/ndhms_wrf_hydro/trunk/NDHMS/lib -lHYDRO
+diff -uNrp ADC-WW3-NWM-NEMS-GMLing-12012020/NWM/trunk/NDHMS/CPL/CLM_cpl/cesm_cpl_compiling.csh ADC-WW3-NWM-NEMS-GMLing-12012020-mods/NWM/trunk/NDHMS/CPL/CLM_cpl/cesm_cpl_compiling.csh
+--- ADC-WW3-NWM-NEMS-GMLing-12012020/NWM/trunk/NDHMS/CPL/CLM_cpl/cesm_cpl_compiling.csh	2020-07-14 07:38:14.000000000 -0500
++++ ADC-WW3-NWM-NEMS-GMLing-12012020-mods/NWM/trunk/NDHMS/CPL/CLM_cpl/cesm_cpl_compiling.csh	2020-12-07 01:59:57.000000000 -0600
+@@ -1,4 +1,4 @@
+ #!/bin/csh -f
+ cd /raid/weiyu/scratch/clm4_ndhms/ccsm/obj
+ 
+-mpif90 -o /d1/weiyu/scratch/clm4_ndhms/run/ccsm.exe ccsm_comp_mod.o ccsm_driver.o map_atmatm_mct.o map_atmice_mct.o map_atmlnd_mct.o map_atmocn_mct.o map_glcglc_mct.o map_iceice_mct.o map_iceocn_mct.o map_lndlnd_mct.o map_ocnocn_mct.o map_rofocn_mct.o map_rofrof_mct.o map_snoglc_mct.o map_snosno_mct.o mrg_x2a_mct.o mrg_x2g_mct.o mrg_x2i_mct.o mrg_x2l_mct.o mrg_x2o_mct.o mrg_x2s_mct.o seq_avdata_mod.o seq_diag_mct.o seq_domain_mct.o seq_flux_mct.o seq_frac_mct.o seq_hist_mod.o seq_rearr_mod.o seq_rest_mod.o -L/d1/weiyu/scratch/clm4_ndhms/lib -latm -llnd -lice -locn -lglc -L/d1/weiyu/scratch/clm4_ndhms/lib -lcsm_share -lmct -lmpeu -lpio  -L/home/weiyu/netcdf/lib -lnetcdf -lnetcdff -L /d1/weiyu/LISv6.1/src/routing/NCAR_router/lib -lland -lNDHMS
++mpif90 -o /d1/weiyu/scratch/clm4_ndhms/run/ccsm.exe ccsm_comp_mod.o ccsm_driver.o map_atmatm_mct.o map_atmice_mct.o map_atmlnd_mct.o map_atmocn_mct.o map_glcglc_mct.o map_iceice_mct.o map_iceocn_mct.o map_lndlnd_mct.o map_ocnocn_mct.o map_rofocn_mct.o map_rofrof_mct.o map_snoglc_mct.o map_snosno_mct.o mrg_x2a_mct.o mrg_x2g_mct.o mrg_x2i_mct.o mrg_x2l_mct.o mrg_x2o_mct.o mrg_x2s_mct.o seq_avdata_mod.o seq_diag_mct.o seq_domain_mct.o seq_flux_mct.o seq_frac_mct.o seq_hist_mod.o seq_rearr_mod.o seq_rest_mod.o -L/d1/weiyu/scratch/clm4_ndhms/lib -latm -llnd -lice -locn -lglc -L/d1/weiyu/scratch/clm4_ndhms/lib -lcsm_share -lmct -lmpeu -lpio  -L/home/weiyu/netcdf/lib -lnetcdf -lnetcdff -L/d1/weiyu/LISv6.1/src/routing/NCAR_router/lib -lland -lNDHMS
+diff -uNrp ADC-WW3-NWM-NEMS-GMLing-12012020/NWM/trunk/NDHMS/CPL/CLM_cpl/Makefile ADC-WW3-NWM-NEMS-GMLing-12012020-mods/NWM/trunk/NDHMS/CPL/CLM_cpl/Makefile
+--- ADC-WW3-NWM-NEMS-GMLing-12012020/NWM/trunk/NDHMS/CPL/CLM_cpl/Makefile	2020-07-14 07:38:14.000000000 -0500
++++ ADC-WW3-NWM-NEMS-GMLing-12012020-mods/NWM/trunk/NDHMS/CPL/CLM_cpl/Makefile	2020-12-07 01:59:57.000000000 -0600
+@@ -5,11 +5,11 @@
+ 
+ CLMOBJPATH = /d1/weiyu/scratch/merra_boulder
+ 
+-CLM_MOD = -I $(CLMOBJPATH)/lnd/obj -I $(CLMOBJPATH)/lib/include
++CLM_MOD = -I$(CLMOBJPATH)/lnd/obj -I$(CLMOBJPATH)/lib/include
+ 
+ include ../../macros
+ 
+-MODFLAG =       -I./ -I ../../MPP -I ../../mod
++MODFLAG =       -I./ -I../../MPP -I../../mod
+ 
+ OBJS = \
+ 	module_clm_HYDRO.o \
+@@ -18,7 +18,7 @@ all:	$(OBJS)
+ 
+ .F.o:
+ 	@echo ""
+-	$(COMPILER90) $(CPPINVOKE) $(CPPFLAGS) -I$(NETCDFINC) -o $(@) $(F90FLAGS) $(MODFLAG) -I ../../mod $(CLM_MOD) $(*).F
++	$(COMPILER90) $(CPPINVOKE) $(CPPFLAGS) -I$(NETCDFINC) -o $(@) $(F90FLAGS) $(MODFLAG) -I../../mod $(CLM_MOD) $(*).F
+ 	@echo ""
+ 	ar -r ../../lib/libHYDRO.a $(@)
+ 
+diff -uNrp ADC-WW3-NWM-NEMS-GMLing-12012020/NWM/trunk/NDHMS/CPL/LIS_cpl/Makefile ADC-WW3-NWM-NEMS-GMLing-12012020-mods/NWM/trunk/NDHMS/CPL/LIS_cpl/Makefile
+--- ADC-WW3-NWM-NEMS-GMLing-12012020/NWM/trunk/NDHMS/CPL/LIS_cpl/Makefile	2020-07-14 07:38:14.000000000 -0500
++++ ADC-WW3-NWM-NEMS-GMLing-12012020-mods/NWM/trunk/NDHMS/CPL/LIS_cpl/Makefile	2020-12-07 01:59:57.000000000 -0600
+@@ -5,11 +5,11 @@
+ .SUFFIXES: .o .F
+ LIS_ROOT = ../../../..
+ 
+-LIS_MOD = -I ../../mod -I$(LIS_ROOT)/make
++LIS_MOD = -I../../mod -I$(LIS_ROOT)/make
+ include $(LIS_ROOT)/make/configure.lis
+ include ../../macros
+ 
+-MODFLAG =       -I./ -I ../../MPP -I ../../mod
++MODFLAG =       -I./ -I../../MPP -I../../mod
+ 
+ OBJS = \
+ 	module_lis_HYDRO.o\
+diff -uNrp ADC-WW3-NWM-NEMS-GMLing-12012020/NWM/trunk/NDHMS/CPL/Noah_cpl/Makefile ADC-WW3-NWM-NEMS-GMLing-12012020-mods/NWM/trunk/NDHMS/CPL/Noah_cpl/Makefile
+--- ADC-WW3-NWM-NEMS-GMLing-12012020/NWM/trunk/NDHMS/CPL/Noah_cpl/Makefile	2020-07-14 07:38:14.000000000 -0500
++++ ADC-WW3-NWM-NEMS-GMLing-12012020-mods/NWM/trunk/NDHMS/CPL/Noah_cpl/Makefile	2020-12-07 01:59:58.000000000 -0600
+@@ -7,7 +7,7 @@
+ 
+ include ../../macros
+ 
+-MODFLAG =       -I./ -I ../../MPP -I ../../mod
++MODFLAG =       -I./ -I../../MPP -I../../mod
+ 
+ OBJS = \
+ 	module_hrldas_HYDRO.o \
+diff -uNrp ADC-WW3-NWM-NEMS-GMLing-12012020/NWM/trunk/NDHMS/CPL/NoahMP_cpl/Makefile ADC-WW3-NWM-NEMS-GMLing-12012020-mods/NWM/trunk/NDHMS/CPL/NoahMP_cpl/Makefile
+--- ADC-WW3-NWM-NEMS-GMLing-12012020/NWM/trunk/NDHMS/CPL/NoahMP_cpl/Makefile	2020-07-14 07:38:14.000000000 -0500
++++ ADC-WW3-NWM-NEMS-GMLing-12012020-mods/NWM/trunk/NDHMS/CPL/NoahMP_cpl/Makefile	2020-12-07 01:59:58.000000000 -0600
+@@ -7,7 +7,7 @@
+ 
+ include ../../macros
+ 
+-MODFLAG =       -I./ -I ../../MPP -I ../../mod
++MODFLAG =       -I./ -I../../MPP -I../../mod
+ 
+ OBJS = \
+ 	module_hrldas_HYDRO.o \
+diff -uNrp ADC-WW3-NWM-NEMS-GMLing-12012020/NWM/trunk/NDHMS/CPL/NUOPC_cpl/CMakeLists.txt ADC-WW3-NWM-NEMS-GMLing-12012020-mods/NWM/trunk/NDHMS/CPL/NUOPC_cpl/CMakeLists.txt
+--- ADC-WW3-NWM-NEMS-GMLing-12012020/NWM/trunk/NDHMS/CPL/NUOPC_cpl/CMakeLists.txt	2020-07-14 07:38:14.000000000 -0500
++++ ADC-WW3-NWM-NEMS-GMLing-12012020-mods/NWM/trunk/NDHMS/CPL/NUOPC_cpl/CMakeLists.txt	2020-12-07 01:59:57.000000000 -0600
+@@ -1,6 +1,8 @@
++# Modified: Panagiotis Velissariou - 12/05/2020
++
+ cmake_minimum_required (VERSION 2.8)
+ 
+-# rm -rf *; cmake -DNUOPCMODE=1 -Wno-dev ..    must source setEnvar.sh and source esmf-impi-env.sh
++# rm -rf *; cmake -DNUOPCMODE=1 -Wno-dev ..    must source setEnvar.sh
+ 
+ add_library(hydro_noahmp_nuopc_cpl STATIC
+ 	NWM_ESMF_Extensions.F90  
+diff -uNrp ADC-WW3-NWM-NEMS-GMLing-12012020/NWM/trunk/NDHMS/CPL/NUOPC_cpl/esmf-impi-env.sh ADC-WW3-NWM-NEMS-GMLing-12012020-mods/NWM/trunk/NDHMS/CPL/NUOPC_cpl/esmf-impi-env.sh
+--- ADC-WW3-NWM-NEMS-GMLing-12012020/NWM/trunk/NDHMS/CPL/NUOPC_cpl/esmf-impi-env.sh	2020-12-04 14:36:35.000000000 -0600
++++ ADC-WW3-NWM-NEMS-GMLing-12012020-mods/NWM/trunk/NDHMS/CPL/NUOPC_cpl/esmf-impi-env.sh	1969-12-31 18:00:00.000000000 -0600
+@@ -1,50 +0,0 @@
+-# to set env for esmf/modules
+-# source this file: esmf-impi-env.sh
+-#
+-
+-# Path to libraries and includes and bins
+-module load intel/18.0.5.274 
+-module load szip/2.1  
+-module load hdf5/1.10.4 
+-module load impi/2018.0.4  
+-module load netcdf/4.6.1
+-
+-# /apps/intel/compilers_and_libraries_2018.3.222/linux/bin/intel64
+-# module load intel/14.0.2
+-
+-# /apps/szip/2.1/lib
+-# module load szip
+-
+-# /apps/hdf5/1.8.14-intel-impi
+-# module load hdf5
+-
+-# /apps/netcdf/4.4.0/intel/15.6.233
+-# module load netcdf/4.4.0
+-
+-# /apps/intel/impi/5.1.2.150/intel64/bin
+-# module load impi/5.1.2.150
+-
+-# Environment for ESMF v8.0.0 beta snapshot 40
+-module use /home/emc.nemspara/SOFT-hera/modulefiles
+-# module load intel/15.1.133 impi/5.1.1.109 netcdf/4.3.0 
+-# module load impi/5.1.1.109
+-#module load yaml-cpp 
+-module load esmf/8.0.0bs48g
+-
+-# latest version on Here
+-# module load yaml-cpp
+-# module --ignore-cache load "esmf/8.0.0bs42"
+-# module load esmf/7.1.0r
+-
+-# Environment for ESMF 
+-# export ESMF_DIR=/scratch2/COASTAL/coastal/save/Beheen.M.Trimble/esmf_v8.0_beta/INSTALL/esmf8.0.beta_impi18.0.4
+-# export ESMF_BOPT='g'
+-# export ESMF_COMM=intelmpi      # mpich, mpich2,lam, openmpi or intelmpi
+-# export ESMF_COMPILER='intel'
+-# export ESMF_ABI='64'
+-# export ESMF_OS='Linux'         # uname -s
+-
+-# export ESMFMKFILE=$ESMF_DIR/lib/esmf.mk
+-
+-# export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/scratch2/COASTAL/coastal/save/Beheen.M.Trimble/yaml-cpp-0.6.2/lib:$ESMF_DIR/lib
+-
+diff -uNrp ADC-WW3-NWM-NEMS-GMLing-12012020/NWM/trunk/NDHMS/CPL/NUOPC_cpl/Makefile ADC-WW3-NWM-NEMS-GMLing-12012020-mods/NWM/trunk/NDHMS/CPL/NUOPC_cpl/Makefile
+--- ADC-WW3-NWM-NEMS-GMLing-12012020/NWM/trunk/NDHMS/CPL/NUOPC_cpl/Makefile	2020-07-14 07:38:14.000000000 -0500
++++ ADC-WW3-NWM-NEMS-GMLing-12012020-mods/NWM/trunk/NDHMS/CPL/NUOPC_cpl/Makefile	2020-12-07 01:59:58.000000000 -0600
+@@ -163,8 +163,8 @@ NWM_NUOPC_Gluecode.o: NWM_NUOPC_Macros.h
+ 	@echo "Compiling $@..."
+ 	@echo
+ 	$(ESMF_F90COMPILER) -c $(ESMF_F90COMPILEOPTS) $(ESMF_F90COMPILEPATHS) $(ESMF_F90COMPILEFREECPP) $(ESMF_F90COMPILECPPFLAGS) -DESMF_VERSION_MAJOR=$(ESMF_VERSION_MAJOR) $< \
+-	-DESMF_VERSION_MAJOR=$(ESMF_VERSION_MAJOR) -I ../../Land_models/NoahMP/Utility_routines -I ../../Land_models/NoahMP/IO_code \
+-	-I ../../Land_models/NoahMP/phys -I ../../MPP -I ../../mod -I ../../OrchestratorLayer -I ../../Land_models/NoahMP/data_structures/
++	-DESMF_VERSION_MAJOR=$(ESMF_VERSION_MAJOR) -I../../Land_models/NoahMP/Utility_routines -I../../Land_models/NoahMP/IO_code \
++	-I../../Land_models/NoahMP/phys -I../../MPP -I../../mod -I../../OrchestratorLayer -I../../Land_models/NoahMP/data_structures/
+         
+ 
+ # #####################
+diff -uNrp ADC-WW3-NWM-NEMS-GMLing-12012020/NWM/trunk/NDHMS/CPL/NUOPC_cpl/Makefile.IO_code.nuopc ADC-WW3-NWM-NEMS-GMLing-12012020-mods/NWM/trunk/NDHMS/CPL/NUOPC_cpl/Makefile.IO_code.nuopc
+--- ADC-WW3-NWM-NEMS-GMLing-12012020/NWM/trunk/NDHMS/CPL/NUOPC_cpl/Makefile.IO_code.nuopc	2020-07-14 07:38:14.000000000 -0500
++++ ADC-WW3-NWM-NEMS-GMLing-12012020-mods/NWM/trunk/NDHMS/CPL/NUOPC_cpl/Makefile.IO_code.nuopc	2020-12-07 01:59:58.000000000 -0600
+@@ -24,13 +24,13 @@ module_NoahMP_hrldas_driver.o: module_No
+ 
+ module_hrldas_driver.o: ../../../OrchestratorLayer/orchestrator.o module_hrldas_driver.F
+ 	@echo ""
+-	$(COMPILERF90) $(CPPINVOKE) $(CPPFLAGS) $(CPPHRLDAS) -o $(@) -c $(F90FLAGS) $(FREESOURCE) $(MODFLAG) -I ../MPP -I. \
++	$(COMPILERF90) $(CPPINVOKE) $(CPPFLAGS) $(CPPHRLDAS) -o $(@) -c $(F90FLAGS) $(FREESOURCE) $(MODFLAG) -I../MPP -I. \
+ 	-I../phys -I../Utility_routines -I../../../mod -I../../../MPP -I../data_structures $(NETCDFMOD) $(*).F
+ 	@echo ""
+ 
+ module_hrldas_netcdf_io.o: module_hrldas_netcdf_io.F
+ 	@echo ""
+-	$(COMPILERF90) $(CPPINVOKE) $(CPPFLAGS) $(CPPHRLDAS) -o $(@) -c $(F90FLAGS) $(FREESOURCE) -I ../MPP -I ../../../mod -I../Utility_routines $(MODFLAG) $(NETCDFMOD) $(*).F
++	$(COMPILERF90) $(CPPINVOKE) $(CPPFLAGS) $(CPPHRLDAS) -o $(@) -c $(F90FLAGS) $(FREESOURCE) -I../MPP -I../../../mod -I../Utility_routines $(MODFLAG) $(NETCDFMOD) $(*).F
+ 	@echo ""
+ 
+ .F.o:
+diff -uNrp ADC-WW3-NWM-NEMS-GMLing-12012020/NWM/trunk/NDHMS/CPL/NUOPC_cpl/Makefile.mainApp ADC-WW3-NWM-NEMS-GMLing-12012020-mods/NWM/trunk/NDHMS/CPL/NUOPC_cpl/Makefile.mainApp
+--- ADC-WW3-NWM-NEMS-GMLing-12012020/NWM/trunk/NDHMS/CPL/NUOPC_cpl/Makefile.mainApp	2020-07-14 07:38:14.000000000 -0500
++++ ADC-WW3-NWM-NEMS-GMLing-12012020-mods/NWM/trunk/NDHMS/CPL/NUOPC_cpl/Makefile.mainApp	2020-12-07 01:59:58.000000000 -0600
+@@ -43,10 +43,10 @@ endif
+ 	$(ESMF_F90COMPILER) -c $(ESMF_F90COMPILEOPTS) $(ESMF_F90COMPILEPATHS) $(ESMF_F90COMPILEFREENOCPP) $<
+ 
+ %.o : %.F90
+-	$(ESMF_F90COMPILER) -c $(ESMF_F90COMPILEOPTS) $(ESMF_F90COMPILEPATHS) $(ESMF_F90COMPILEFREECPP) -I ../../mod -I. -DESMF_VERSION_MAJOR=$(ESMF_VERSION_MAJOR) -I ../../Land_models/NoahMP/Utility_routines -I ../../Land_models/NoahMP/IO_code -I ../../Land_models/NoahMP/phys -I ../../MPP $(ESMF_F90COMPILECPPFLAGS) $<
++	$(ESMF_F90COMPILER) -c $(ESMF_F90COMPILEOPTS) $(ESMF_F90COMPILEPATHS) $(ESMF_F90COMPILEFREECPP) -I../../mod -I. -DESMF_VERSION_MAJOR=$(ESMF_VERSION_MAJOR) -I../../Land_models/NoahMP/Utility_routines -I../../Land_models/NoahMP/IO_code -I../../Land_models/NoahMP/phys -I../../MPP $(ESMF_F90COMPILECPPFLAGS) $<
+ 
+ %.o : %.F
+-	$(ESMF_F90COMPILER) -c $(ESMF_F90COMPILEOPTS) $(ESMF_F90COMPILEPATHS) $(ESMF_F90COMPILEFREECPP) -I ../../mod -I. -DESMF_VERSION_MAJOR=$(ESMF_VERSION_MAJOR) -I ../../Land_models/NoahMP/Utility_routines -I ../../Land_models/NoahMP/IO_code -I ../../Land_models/NoahMP/phys -I ../../MPP $(ESMF_F90COMPILECPPFLAGS) $<
++	$(ESMF_F90COMPILER) -c $(ESMF_F90COMPILEOPTS) $(ESMF_F90COMPILEPATHS) $(ESMF_F90COMPILEFREECPP) -I../../mod -I. -DESMF_VERSION_MAJOR=$(ESMF_VERSION_MAJOR) -I../../Land_models/NoahMP/Utility_routines -I../../Land_models/NoahMP/IO_code -I../../Land_models/NoahMP/phys -I../../MPP $(ESMF_F90COMPILECPPFLAGS) $<
+ 
+ %.o : %.c
+ 	$(ESMF_CXXCOMPILER) -c $(ESMF_CXXCOMPILEOPTS) $(ESMF_CXXCOMPILEPATHSLOCAL) $(ESMF_CXXCOMPILEPATHS) $(ESMF_CXXCOMPILECPPFLAGS) $<
+diff -uNrp ADC-WW3-NWM-NEMS-GMLing-12012020/NWM/trunk/NDHMS/CPL/NUOPC_cpl/Readme.mainApp ADC-WW3-NWM-NEMS-GMLing-12012020-mods/NWM/trunk/NDHMS/CPL/NUOPC_cpl/Readme.mainApp
+--- ADC-WW3-NWM-NEMS-GMLing-12012020/NWM/trunk/NDHMS/CPL/NUOPC_cpl/Readme.mainApp	2020-07-14 07:38:14.000000000 -0500
++++ ADC-WW3-NWM-NEMS-GMLing-12012020-mods/NWM/trunk/NDHMS/CPL/NUOPC_cpl/Readme.mainApp	2020-12-07 01:59:58.000000000 -0600
+@@ -1,3 +1,5 @@
++Modified: Panagiotis Velissariou - 12/05/2020
++
+ ======================== Beheen - 6/26/2020
+ This is to do an independent nuopc testing between NWM and ADCIRC
+ with a simple main and nuopc driver, independent of NEMS. To do
+@@ -12,21 +14,19 @@ located at this directory: /scratch2/COA
+ 2) softlink to ADCIRC located at ADC-WW3-NWM-NEMS into NEMS_TEST
+ 3) softlink to NWM located at ADC-WW3-NWM-NEMS into NEMS_TEST
+ 4) fixed the makefile.hwrf.nuopc in NEMS_TEST/ADCIRC/cpl/nuopc to make it like other makefile.xxx.nuopc
+-5) cd ADCIRC/cpl/nuopc
+-   loaded m for modules (m is an alias in my .bashrc file)
+-   source esmf-impi-env.sh
++5) cd ADCIRC/cpl/nuopc - not anymore
+ 6) make -f makefile.atmesh.nuopc nuopc
+ 7) make -f makefile.ww3data.nuopc nuopc
+ 8) make -f makefile.hwrf.nuopc nuopc
+ 9) cd NEMS_TEST/ADCIRC/work
+-10) ./make_nuopc.sh esmf-impi-env.sh intel
++10) ./make_nuopc.sh intel
+    see produced results: 
+    work/libadc.a, work/adcprep, util/tidefac, 
+-   cpl/nuopc/libadc_cap.a cpl/nuopc/libatmesh_cap.a 
+-   cpl/nuopc/libww3data_cap.a cpl/nuopc/libatm_cap.a
++   thirdparty/nuopc/libadc_cap.a thirdparty/nuopc/libatmesh_cap.a 
++   thirdparty/nuopc/libww3data_cap.a thirdparty/nuopc/libatm_cap.a
+ 11)goto NWM directory ADC-WW3-NWM-NEMS/NWM/trunk/NDHMS
+ 12)make clean & make clean nuopc
+-13)./compile_nuopc_NoahMP.sh setEnvar.sh esmf-impi-env.sh 3
++13)./compile_nuopc_NoahMP.sh setEnvar.sh 3
+    see produced results:
+    nwm_esmf_extensions.mod
+    NWM_ESMF_Extensions.o
+@@ -64,31 +64,17 @@ Description: To test NWM in NUOPC couple
+   - mainApp.F90 - Main application cap.
+ 
+ The above source codes are to be compiled and then to be tested with NWM input files (parameters & forcing)
+- 	
+-Dependencies: 
+-  - ESMF v8.0.0 beta
+-  - module load intel/18.0.5.274
+-  - module load impi/2018.0.4
+-  - module load szip/2.1
+-  - module load hdf5/1.10.4
+-  - module load netcdf/4.6.1
+-  - module use /home/emc.nemspara/SOFT-hera/modulefiles
+-  - module load esmf/8.0.0bs48g
+-  See file esmf-impi-env.sh
+ 
+-  
+ Build: To compile follow below instructions:
+   - Go to trunk/NDHMS
+   - Set environment variable MAINAPP:
+     > export MAINAPP=ON
+-  - ./compile_nuopc_NoahMP.sh setEnvar.sh esmf-impi-env.sh 3
++  - ./compile_nuopc_NoahMP.sh setEnvar.sh 3
+   OR
+   - Set environment variable MAINAPP:
+     > MAINAPP=ON
+   - Set NWM required environment variable:
+     source setEnvar.sh 		==> located in trunk/NDHMS
+-  - Set environment variable ESMFMKFILE:
+-    source esmf-impi-env.sh 	==> located in trunk/NDHMS
+   - Configure compiler option:
+     ./configure
+     3            		==> enter option number 3
+diff -uNrp ADC-WW3-NWM-NEMS-GMLing-12012020/NWM/trunk/NDHMS/CPL/NUOPC_cpl/Readme.nuopc ADC-WW3-NWM-NEMS-GMLing-12012020-mods/NWM/trunk/NDHMS/CPL/NUOPC_cpl/Readme.nuopc
+--- ADC-WW3-NWM-NEMS-GMLing-12012020/NWM/trunk/NDHMS/CPL/NUOPC_cpl/Readme.nuopc	2020-07-14 07:38:14.000000000 -0500
++++ ADC-WW3-NWM-NEMS-GMLing-12012020-mods/NWM/trunk/NDHMS/CPL/NUOPC_cpl/Readme.nuopc	2020-12-07 01:59:58.000000000 -0600
+@@ -1,4 +1,5 @@
+ Beheen - 1/10/2020
++Panagiotis Velissariou - 12/05/2020
+ 
+ This directory contains 
+ 1) WRFHYDRO nuopc cap with dependencies (i.e. Makefile.wrfhydro, Readme.WRFHYDRO, ...)
+@@ -8,7 +9,7 @@ This directory contains
+ Note: below files are like templates used for compilation of NWM in nuopc mode 
+ with NEMS. Please do not remove:
+     1) Makefile.IO_code.nuopc  2) Makefile.NoahMP.nuopc  3) Makefile.nuopc
+-    4) esmf-impi-env.sh  5) setEnvar.sh
++    4) setEnvar.sh
+ 
+ NWM NUOPC files 
+ ==============
+diff -uNrp ADC-WW3-NWM-NEMS-GMLing-12012020/NWM/trunk/NDHMS/CPL/NUOPC_cpl/Readme.NWM ADC-WW3-NWM-NEMS-GMLing-12012020-mods/NWM/trunk/NDHMS/CPL/NUOPC_cpl/Readme.NWM
+--- ADC-WW3-NWM-NEMS-GMLing-12012020/NWM/trunk/NDHMS/CPL/NUOPC_cpl/Readme.NWM	2020-07-14 07:38:14.000000000 -0500
++++ ADC-WW3-NWM-NEMS-GMLing-12012020-mods/NWM/trunk/NDHMS/CPL/NUOPC_cpl/Readme.NWM	2020-12-07 01:59:58.000000000 -0600
+@@ -1,4 +1,6 @@
+ Beheen - 5/14/2019
++Panagiotis Velissariou - 12/05/2020
++
+ This version of NWM cap is a modified version of WRF_HYDRO cap developed 
+ by Daniel Rosen - NOAA Affiliate <daniel.rosen@noaa.gov>.
+ 
+@@ -16,10 +18,9 @@ This version is compiled as follow:
+ - created 3 other Makefiles to substitude with standalone Makefiles. A copy of these Makefiles are preserved
+   in CPL/NUOPC_cpl directory. The shell script copies each of these Makefiles into appropriate directories.
+   These makefiles are: Makefile.IO_code.nuopc  Makefile.NoahMP.nuopc  Makefile.nuopc
+-- While in trunk/NDHMS type: ./compile_nuopc_NoahMP.sh setEnvar.sh esmf-impi-env.sh 3
++- While in trunk/NDHMS type: ./compile_nuopc_NoahMP.sh setEnvar.sh 3
+   where:
+      setEnvar.sh sets up environment variables for NWM
+-     esmf-impi-env.sh setsup environment variables for ESMF/NUOPC
+      '3' sets up compiler options, which is input to ./configure script
+   when compilation is finished:
+      a library is created in CPL/NUOPC_cpl called libnwm_nuopc.a 
+@@ -32,16 +33,6 @@ This version is compiled as follow:
+   make nuopcdistclean
+   make dust
+ 
+-Note: below  modules are required that are being set with esmf-impi-env.sh
+-  module load mvapich2/2.1rc1
+-  module use /scratch4/NCEPDEV/nems/noscrub/emc.nemspara/soft/modulefiles
+-  module load esmf/7.1.0r-mvapich2
+-  module load hdf5/1.8.14
+-  module load intel/14.0.2
+-  module load netcdf/4.4.0
+-  module load  szip/2.1
+-
+-
+ This is new implementation of field dictionary in form of yaml - setup but not used yet.
+ URL to ESMF Yaml - comprehensive list of all fields: https://github.com/ESCOMP/NUOPCFieldDictionary/tree/cmeps?files=1
+ You need to request permission from Rocky Dunlap <dunlap@ucar.edu> to access this code. 
+diff -uNrp ADC-WW3-NWM-NEMS-GMLing-12012020/NWM/trunk/NDHMS/CPL/WRF_cpl/Makefile ADC-WW3-NWM-NEMS-GMLing-12012020-mods/NWM/trunk/NDHMS/CPL/WRF_cpl/Makefile
+--- ADC-WW3-NWM-NEMS-GMLing-12012020/NWM/trunk/NDHMS/CPL/WRF_cpl/Makefile	2020-07-14 07:38:14.000000000 -0500
++++ ADC-WW3-NWM-NEMS-GMLing-12012020-mods/NWM/trunk/NDHMS/CPL/WRF_cpl/Makefile	2020-12-07 01:59:58.000000000 -0600
+@@ -7,7 +7,7 @@
+ 
+ include ../../macros
+ 
+-MODFLAG =       -I./ -I ../../MPP -I ../../mod 
++MODFLAG =       -I./ -I../../MPP -I../../mod 
+ 
+ WRF_ROOT = ../../..
+ OBJS = \
+diff -uNrp ADC-WW3-NWM-NEMS-GMLing-12012020/NWM/trunk/NDHMS/esmf-impi-env.sh ADC-WW3-NWM-NEMS-GMLing-12012020-mods/NWM/trunk/NDHMS/esmf-impi-env.sh
+--- ADC-WW3-NWM-NEMS-GMLing-12012020/NWM/trunk/NDHMS/esmf-impi-env.sh	2020-12-04 14:36:35.000000000 -0600
++++ ADC-WW3-NWM-NEMS-GMLing-12012020-mods/NWM/trunk/NDHMS/esmf-impi-env.sh	1969-12-31 18:00:00.000000000 -0600
+@@ -1,50 +0,0 @@
+-# to set env for esmf/modules
+-# source this file: esmf-impi-env.sh
+-#
+-
+-# Path to libraries and includes and bins
+-module load intel/18.0.5.274 
+-module load szip/2.1  
+-module load hdf5/1.10.4 
+-module load impi/2018.0.4  
+-module load netcdf/4.6.1
+-
+-# /apps/intel/compilers_and_libraries_2018.3.222/linux/bin/intel64
+-# module load intel/14.0.2
+-
+-# /apps/szip/2.1/lib
+-# module load szip
+-
+-# /apps/hdf5/1.8.14-intel-impi
+-# module load hdf5
+-
+-# /apps/netcdf/4.4.0/intel/15.6.233
+-# module load netcdf/4.4.0
+-
+-# /apps/intel/impi/5.1.2.150/intel64/bin
+-# module load impi/5.1.2.150
+-
+-# Environment for ESMF v8.0.0 beta snapshot 40
+-module use /home/emc.nemspara/SOFT-hera/modulefiles
+-# module load intel/15.1.133 impi/5.1.1.109 netcdf/4.3.0 
+-# module load impi/5.1.1.109
+-#module load yaml-cpp 
+-module load esmf/8.0.0bs48g
+-
+-# latest version on Here
+-# module load yaml-cpp
+-# module --ignore-cache load "esmf/8.0.0bs42"
+-# module load esmf/7.1.0r
+-
+-# Environment for ESMF 
+-# export ESMF_DIR=/scratch2/COASTAL/coastal/save/Beheen.M.Trimble/esmf_v8.0_beta/INSTALL/esmf8.0.beta_impi18.0.4
+-# export ESMF_BOPT='g'
+-# export ESMF_COMM=intelmpi      # mpich, mpich2,lam, openmpi or intelmpi
+-# export ESMF_COMPILER='intel'
+-# export ESMF_ABI='64'
+-# export ESMF_OS='Linux'         # uname -s
+-
+-# export ESMFMKFILE=$ESMF_DIR/lib/esmf.mk
+-
+-# export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/scratch2/COASTAL/coastal/save/Beheen.M.Trimble/yaml-cpp-0.6.2/lib:$ESMF_DIR/lib
+-
+diff -uNrp ADC-WW3-NWM-NEMS-GMLing-12012020/NWM/trunk/NDHMS/Land_models/Noah/Run/Makefile ADC-WW3-NWM-NEMS-GMLing-12012020-mods/NWM/trunk/NDHMS/Land_models/Noah/Run/Makefile
+--- ADC-WW3-NWM-NEMS-GMLing-12012020/NWM/trunk/NDHMS/Land_models/Noah/Run/Makefile	2020-07-14 07:38:14.000000000 -0500
++++ ADC-WW3-NWM-NEMS-GMLing-12012020-mods/NWM/trunk/NDHMS/Land_models/Noah/Run/Makefile	2020-12-07 01:59:58.000000000 -0600
+@@ -21,7 +21,7 @@ all:	$(CMD)
+ Noah_hrldas_beta: $(OBJS)
+ 	@echo ""
+ # We have to include the modules built in ../IO_code 
+-	$(COMPILERF90) -o $(@) $(MODFLAG) -I ../IO_code $(OBJS) $(NETCDFLIB) $(HDF5LIB) -L../../../lib  -lHYDRO $(NETCDFLIB) $(LDFLAGS) $(LIBS)
++	$(COMPILERF90) -o $(@) $(MODFLAG) -I../IO_code $(OBJS) $(NETCDFLIB) $(HDF5LIB) -L../../../lib  -lHYDRO $(NETCDFLIB) $(LDFLAGS) $(LIBS)
+ 	@echo ""
+ 
+ # This command cleans up
+diff -uNrp ADC-WW3-NWM-NEMS-GMLing-12012020/NWM/trunk/NDHMS/Land_models/Noah/user_build_options ADC-WW3-NWM-NEMS-GMLing-12012020-mods/NWM/trunk/NDHMS/Land_models/Noah/user_build_options
+--- ADC-WW3-NWM-NEMS-GMLing-12012020/NWM/trunk/NDHMS/Land_models/Noah/user_build_options	2020-07-14 07:38:14.000000000 -0500
++++ ADC-WW3-NWM-NEMS-GMLing-12012020-mods/NWM/trunk/NDHMS/Land_models/Noah/user_build_options	2020-12-07 01:59:58.000000000 -0600
+@@ -58,7 +58,7 @@ RMD		=	rm -f
+ COMPILER90=	mpif90
+ F90FLAGS  =     -Mfree -c -byteswapio -g -Kieee -Mbounds
+ LDFLAGS  =      $(F90FLAGS)
+-MODFLAG	=	-I./ -I ../../MPP -I ../MPP -I ../mod 
++MODFLAG	=	-I./ -I../../MPP -I../MPP -I../mod 
+ LDFLAGS	=	
+ CPP	=       cpp
+ CPPFLAGS	=       -C -P -traditional -DMPP_LAND -I../Data_Rec $(HYDRO_D) $(SPATIAL_SOIL) $(WRFIO_NCD_LARGE_FILE_SUPPORT) $(WRF_HYDRO_NUDGING) $(OUTPUT_CHAN_CONN) $(PRECIP_DOUBLE)
+@@ -74,7 +74,7 @@ FREESOURCE      =
+ MODFLAG               =       -I
+ LIBJASPER       =       -ljpeg -L/scholar/kmanning/jasper/lib -ljasper
+ INCJASPER       =       -I/scholar/kmanning/jasper/include
+-NETCDFMOD       =       -I $(NETCDFINC)
++NETCDFMOD       =       -I$(NETCDFINC)
+ BZIP2           =       YES
+ BZIP2_LIB       =       -lbz2
+ BZIP2_INCLUDE   =       -I/usr/include
+diff -uNrp ADC-WW3-NWM-NEMS-GMLing-12012020/NWM/trunk/NDHMS/Land_models/Noah/user_build_options.bak ADC-WW3-NWM-NEMS-GMLing-12012020-mods/NWM/trunk/NDHMS/Land_models/Noah/user_build_options.bak
+--- ADC-WW3-NWM-NEMS-GMLing-12012020/NWM/trunk/NDHMS/Land_models/Noah/user_build_options.bak	2020-07-14 07:38:14.000000000 -0500
++++ ADC-WW3-NWM-NEMS-GMLing-12012020-mods/NWM/trunk/NDHMS/Land_models/Noah/user_build_options.bak	2020-12-07 01:59:58.000000000 -0600
+@@ -5,7 +5,7 @@ FREESOURCE      =
+ MODFLAG               =       -I
+ LIBJASPER       =       -ljpeg -L/scholar/kmanning/jasper/lib -ljasper
+ INCJASPER       =       -I/scholar/kmanning/jasper/include
+-NETCDFMOD       =       -I $(NETCDFINC)
++NETCDFMOD       =       -I$(NETCDFINC)
+ BZIP2           =       YES
+ BZIP2_LIB       =       -lbz2
+ BZIP2_INCLUDE   =       -I/usr/include
+diff -uNrp ADC-WW3-NWM-NEMS-GMLing-12012020/NWM/trunk/NDHMS/Land_models/Noah/user_build_options.gfort ADC-WW3-NWM-NEMS-GMLing-12012020-mods/NWM/trunk/NDHMS/Land_models/Noah/user_build_options.gfort
+--- ADC-WW3-NWM-NEMS-GMLing-12012020/NWM/trunk/NDHMS/Land_models/Noah/user_build_options.gfort	2020-07-14 07:38:14.000000000 -0500
++++ ADC-WW3-NWM-NEMS-GMLing-12012020-mods/NWM/trunk/NDHMS/Land_models/Noah/user_build_options.gfort	2020-12-07 01:59:58.000000000 -0600
+@@ -56,8 +56,8 @@
+   LIBS		=
+   LIBJASPER	=	-ljpeg -L/scholar/kmanning/jasper/lib -ljasper
+   INCJASPER	=	-I/scholar/kmanning/jasper/include
+-  NETCDFMOD	=	-I /d1/weiyu/gfortran/netcdf-3.6.3/include
+-  NETCDFLIB	=	-L /d1/weiyu/gfortran/netcdf-3.6.3/lib -lnetcdf
++  NETCDFMOD	=	-I/d1/weiyu/gfortran/netcdf-3.6.3/include
++  NETCDFLIB	=	-L/d1/weiyu/gfortran/netcdf-3.6.3/lib -lnetcdf
+   BZIP2		=	YES
+   BZIP2_LIB	=	-lbz2
+   BZIP2_INCLUDE	=	-I/usr/include
+diff -uNrp ADC-WW3-NWM-NEMS-GMLing-12012020/NWM/trunk/NDHMS/Land_models/NoahMP/hydro/Makefile_run ADC-WW3-NWM-NEMS-GMLing-12012020-mods/NWM/trunk/NDHMS/Land_models/NoahMP/hydro/Makefile_run
+--- ADC-WW3-NWM-NEMS-GMLing-12012020/NWM/trunk/NDHMS/Land_models/NoahMP/hydro/Makefile_run	2020-07-14 07:38:14.000000000 -0500
++++ ADC-WW3-NWM-NEMS-GMLing-12012020-mods/NWM/trunk/NDHMS/Land_models/NoahMP/hydro/Makefile_run	2020-12-07 01:59:58.000000000 -0600
+@@ -10,7 +10,7 @@ endif
+ include ../user_build_options
+ 
+ ifeq ($(WRF_HYDRO_RAPID),1)
+-PHDF5_INC=-I ${TACC_HDF5_INC}
++PHDF5_INC=-I${TACC_HDF5_INC}
+ RAPID_MACRO = ${TAO_FORTRAN_LIB} ${TAO_LIB} ${PETSC_LIB}
+ RAPID_LIB =  -lrapid
+ else
+diff -uNrp ADC-WW3-NWM-NEMS-GMLing-12012020/NWM/trunk/NDHMS/Land_models/NoahMP/hydro/user_build_options.bak ADC-WW3-NWM-NEMS-GMLing-12012020-mods/NWM/trunk/NDHMS/Land_models/NoahMP/hydro/user_build_options.bak
+--- ADC-WW3-NWM-NEMS-GMLing-12012020/NWM/trunk/NDHMS/Land_models/NoahMP/hydro/user_build_options.bak	2020-07-14 07:38:14.000000000 -0500
++++ ADC-WW3-NWM-NEMS-GMLing-12012020-mods/NWM/trunk/NDHMS/Land_models/NoahMP/hydro/user_build_options.bak	2020-12-07 01:59:58.000000000 -0600
+@@ -4,7 +4,7 @@ COMPILERF90 = $(COMPILER90)
+ FREESOURCE      =
+ LIBJASPER       =       -ljpeg -L/scholar/kmanning/jasper/lib -ljasper
+ INCJASPER       =       -I/scholar/kmanning/jasper/include
+-NETCDFMOD       =       -I $(NETCDFINC)
++NETCDFMOD       =       -I$(NETCDFINC)
+ BZIP2           =       YES
+ BZIP2_LIB       =       -lbz2
+ BZIP2_INCLUDE   =       -I/usr/include
+diff -uNrp ADC-WW3-NWM-NEMS-GMLing-12012020/NWM/trunk/NDHMS/Land_models/NoahMP/IO_code/Makefile ADC-WW3-NWM-NEMS-GMLing-12012020-mods/NWM/trunk/NDHMS/Land_models/NoahMP/IO_code/Makefile
+--- ADC-WW3-NWM-NEMS-GMLing-12012020/NWM/trunk/NDHMS/Land_models/NoahMP/IO_code/Makefile	2020-07-14 07:38:14.000000000 -0500
++++ ADC-WW3-NWM-NEMS-GMLing-12012020-mods/NWM/trunk/NDHMS/Land_models/NoahMP/IO_code/Makefile	2020-12-07 01:59:58.000000000 -0600
+@@ -25,15 +25,15 @@ module_NoahMP_hrldas_driver.o: module_No
+ 
+ main_hrldas_driver.o: ../../../OrchestratorLayer/orchestrator.o main_hrldas_driver.F
+ 	@echo ""
+-	$(COMPILERF90) $(CPPINVOKE) $(CPPFLAGS) $(CPPHRLDAS) -o $(@) -c $(F90FLAGS) $(LDFLAGS) $(FREESOURCE) -I ../MPP -I. \
++	$(COMPILERF90) $(CPPINVOKE) $(CPPFLAGS) $(CPPHRLDAS) -o $(@) -c $(F90FLAGS) $(LDFLAGS) $(FREESOURCE) -I../MPP -I. \
+ 	-I../phys -I../Utility_routines -I../../../mod -I../../../MPP -I../data_structures $(NETCDFMOD) $(*).F
+-#	$(COMPILERF90) -o $(@) -c $(F90FLAGS) $(FREESOURCE) -I ../MPP -I. \
++#	$(COMPILERF90) -o $(@) -c $(F90FLAGS) $(FREESOURCE) -I../MPP -I. \
+ #	-I../phys -I../Utility_routines $(NETCDFMOD) $(*).f90
+ 	@echo ""
+ 
+ module_hrldas_netcdf_io.o: module_hrldas_netcdf_io.F
+ 	@echo ""
+-	$(COMPILERF90) $(CPPINVOKE) $(CPPFLAGS) $(CPPHRLDAS) -o $(@) -c $(F90FLAGS) $(FREESOURCE) -I ../MPP -I ../../../mod -I../Utility_routines $(MODFLAG) $(NETCDFMOD) $(*).F
++	$(COMPILERF90) $(CPPINVOKE) $(CPPFLAGS) $(CPPHRLDAS) -o $(@) -c $(F90FLAGS) $(FREESOURCE) -I../MPP -I../../../mod -I../Utility_routines $(MODFLAG) $(NETCDFMOD) $(*).F
+ 	@echo ""
+ 
+ .F.o:
+diff -uNrp ADC-WW3-NWM-NEMS-GMLing-12012020/NWM/trunk/NDHMS/Land_models/NoahMP/IO_code/Makefile.IO_code.nuopc ADC-WW3-NWM-NEMS-GMLing-12012020-mods/NWM/trunk/NDHMS/Land_models/NoahMP/IO_code/Makefile.IO_code.nuopc
+--- ADC-WW3-NWM-NEMS-GMLing-12012020/NWM/trunk/NDHMS/Land_models/NoahMP/IO_code/Makefile.IO_code.nuopc	2020-07-14 07:38:14.000000000 -0500
++++ ADC-WW3-NWM-NEMS-GMLing-12012020-mods/NWM/trunk/NDHMS/Land_models/NoahMP/IO_code/Makefile.IO_code.nuopc	2020-12-07 01:59:58.000000000 -0600
+@@ -24,13 +24,13 @@ module_NoahMP_hrldas_driver.o: module_No
+ 
+ module_hrldas_driver.o: ../../../OrchestratorLayer/orchestrator.o module_hrldas_driver.F
+ 	@echo ""
+-	$(COMPILERF90) $(CPPINVOKE) $(CPPFLAGS) $(CPPHRLDAS) -o $(@) -c $(F90FLAGS) $(FREESOURCE) $(MODFLAG) -I ../MPP -I. \
++	$(COMPILERF90) $(CPPINVOKE) $(CPPFLAGS) $(CPPHRLDAS) -o $(@) -c $(F90FLAGS) $(FREESOURCE) $(MODFLAG) -I../MPP -I. \
+ 	-I../phys -I../Utility_routines -I../../../mod -I../../../MPP -I../data_structures $(NETCDFMOD) $(*).F
+ 	@echo ""
+ 
+ module_hrldas_netcdf_io.o: module_hrldas_netcdf_io.F
+ 	@echo ""
+-	$(COMPILERF90) $(CPPINVOKE) $(CPPFLAGS) $(CPPHRLDAS) -o $(@) -c $(F90FLAGS) $(FREESOURCE) -I ../MPP -I ../../../mod -I../Utility_routines $(MODFLAG) $(NETCDFMOD) $(*).F
++	$(COMPILERF90) $(CPPINVOKE) $(CPPFLAGS) $(CPPHRLDAS) -o $(@) -c $(F90FLAGS) $(FREESOURCE) -I../MPP -I../../../mod -I../Utility_routines $(MODFLAG) $(NETCDFMOD) $(*).F
+ 	@echo ""
+ 
+ .F.o:
+diff -uNrp ADC-WW3-NWM-NEMS-GMLing-12012020/NWM/trunk/NDHMS/Land_models/NoahMP/run/Makefile ADC-WW3-NWM-NEMS-GMLing-12012020-mods/NWM/trunk/NDHMS/Land_models/NoahMP/run/Makefile
+--- ADC-WW3-NWM-NEMS-GMLing-12012020/NWM/trunk/NDHMS/Land_models/NoahMP/run/Makefile	2020-07-14 07:38:14.000000000 -0500
++++ ADC-WW3-NWM-NEMS-GMLing-12012020-mods/NWM/trunk/NDHMS/Land_models/NoahMP/run/Makefile	2020-12-07 01:59:58.000000000 -0600
+@@ -8,7 +8,7 @@ endif
+ include ../user_build_options
+ 
+ ifeq ($(WRF_HYDRO_RAPID),1)
+-PHDF5_INC=-I ${TACC_HDF5_INC}
++PHDF5_INC=-I${TACC_HDF5_INC}
+ RAPID_MACRO = ${TAO_FORTRAN_LIB} ${TAO_LIB} ${PETSC_LIB} ${PHDF5_INC} \
+         -Wl,-rpath,${TACC_HDF5_LIB} -L${TACC_HDF5_LIB} -lhdf5 -lz 
+ RAPID_LIB =  -lrapid
+diff -uNrp ADC-WW3-NWM-NEMS-GMLing-12012020/NWM/trunk/NDHMS/Land_models/NoahMP/user_build_options ADC-WW3-NWM-NEMS-GMLing-12012020-mods/NWM/trunk/NDHMS/Land_models/NoahMP/user_build_options
+--- ADC-WW3-NWM-NEMS-GMLing-12012020/NWM/trunk/NDHMS/Land_models/NoahMP/user_build_options	2020-07-14 07:38:14.000000000 -0500
++++ ADC-WW3-NWM-NEMS-GMLing-12012020-mods/NWM/trunk/NDHMS/Land_models/NoahMP/user_build_options	2020-12-07 01:59:58.000000000 -0600
+@@ -64,10 +64,10 @@ COMPILER90  = mpif90
+ FORMAT_FREE = -FR
+ BYTESWAPIO  = -convert big_endian
+ F90FLAGS    = -O2 -g -w -c -ftz -align all -fno-alias -fp-model precise $(FORMAT_FREE) $(BYTESWAPIO)
+-MODFLAG	    = -I./ -I ../../MPP -I ../MPP -I ../mod
++MODFLAG	    = -I./ -I../../MPP -I../MPP -I../mod
+ LDFLAGS	    =
+ CPPINVOKE   = -fpp
+-CPPFLAGS    = -DMPP_LAND -I ../Data_Rec $(HYDRO_D) $(SPATIAL_SOIL) $(NWM_META) $(WRF_HYDRO_NUDGING) $(OUTPUT_CHAN_CONN) $(PRECIP_DOUBLE) $(NCEP_WCOSS)
++CPPFLAGS    = -DMPP_LAND -I../Data_Rec $(HYDRO_D) $(SPATIAL_SOIL) $(NWM_META) $(WRF_HYDRO_NUDGING) $(OUTPUT_CHAN_CONN) $(PRECIP_DOUBLE) $(NCEP_WCOSS)
+ LIBS 	    =	
+ NETCDFINC   = $(NETCDF_INC)
+ NETCDFLIB   = -L$(NETCDF_LIB) -lnetcdff -lnetcdf
+@@ -79,7 +79,7 @@ COMPILERF90 = $(COMPILER90)
+ FREESOURCE      =
+ LIBJASPER       =       -ljpeg -L/scholar/kmanning/jasper/lib -ljasper
+ INCJASPER       =       -I/scholar/kmanning/jasper/include
+-NETCDFMOD       =       -I $(NETCDFINC)
++NETCDFMOD       =       -I$(NETCDFINC)
+ BZIP2           =       YES
+ BZIP2_LIB       =       -lbz2
+ BZIP2_INCLUDE   =       -I/usr/include
+diff -uNrp ADC-WW3-NWM-NEMS-GMLing-12012020/NWM/trunk/NDHMS/Rapid_routing/makefile ADC-WW3-NWM-NEMS-GMLing-12012020-mods/NWM/trunk/NDHMS/Rapid_routing/makefile
+--- ADC-WW3-NWM-NEMS-GMLing-12012020/NWM/trunk/NDHMS/Rapid_routing/makefile	2020-07-14 07:38:14.000000000 -0500
++++ ADC-WW3-NWM-NEMS-GMLing-12012020-mods/NWM/trunk/NDHMS/Rapid_routing/makefile	2020-12-07 01:59:58.000000000 -0600
+@@ -32,8 +32,8 @@ include ${PETSC_DIR}/conf/rules
+ #*******************************************************************************
+ #Location of netCDF include and lib directories
+ #*******************************************************************************
+-NETCDF_LIB=-L ${TACC_NETCDF_LIB} -lnetcdf
+-NETCDF_INCLUDE=-I ${TACC_NETCDF_INC}
++NETCDF_LIB=-L${TACC_NETCDF_LIB} -lnetcdf
++NETCDF_INCLUDE=-I${TACC_NETCDF_INC}
+ 
+ 
+ #*******************************************************************************
+diff -uNrp ADC-WW3-NWM-NEMS-GMLing-12012020/NWM/trunk/NDHMS/Rapid_routing/makefile.cpl ADC-WW3-NWM-NEMS-GMLing-12012020-mods/NWM/trunk/NDHMS/Rapid_routing/makefile.cpl
+--- ADC-WW3-NWM-NEMS-GMLing-12012020/NWM/trunk/NDHMS/Rapid_routing/makefile.cpl	2020-07-14 07:38:14.000000000 -0500
++++ ADC-WW3-NWM-NEMS-GMLing-12012020-mods/NWM/trunk/NDHMS/Rapid_routing/makefile.cpl	2020-12-07 01:59:58.000000000 -0600
+@@ -29,8 +29,8 @@ include ${PETSC_DIR}/conf/rules
+ #*******************************************************************************
+ #Location of netCDF include and lib directories
+ #*******************************************************************************
+-NETCDF_LIB=-L ${TACC_NETCDF_LIB} -lnetcdf
+-NETCDF_INCLUDE=-I ${TACC_NETCDF_INC}
++NETCDF_LIB=-L${TACC_NETCDF_LIB} -lnetcdf
++NETCDF_INCLUDE=-I${TACC_NETCDF_INC}
+ 
+ #*******************************************************************************
+ #makefile instructions 
+diff -uNrp ADC-WW3-NWM-NEMS-GMLing-12012020/NWM/trunk/NDHMS/Rapid_routing/makefile.orig ADC-WW3-NWM-NEMS-GMLing-12012020-mods/NWM/trunk/NDHMS/Rapid_routing/makefile.orig
+--- ADC-WW3-NWM-NEMS-GMLing-12012020/NWM/trunk/NDHMS/Rapid_routing/makefile.orig	2020-07-14 07:38:14.000000000 -0500
++++ ADC-WW3-NWM-NEMS-GMLing-12012020-mods/NWM/trunk/NDHMS/Rapid_routing/makefile.orig	2020-12-07 01:59:58.000000000 -0600
+@@ -29,8 +29,8 @@ include ${PETSC_DIR}/conf/rules
+ #*******************************************************************************
+ #Location of netCDF include and lib directories
+ #*******************************************************************************
+-NETCDF_LIB=-L ${TACC_NETCDF_LIB} -lnetcdf
+-NETCDF_INCLUDE=-I ${TACC_NETCDF_INC}
++NETCDF_LIB=-L${TACC_NETCDF_LIB} -lnetcdf
++NETCDF_INCLUDE=-I${TACC_NETCDF_INC}
+ 
+ 
+ #*******************************************************************************
+diff -uNrp ADC-WW3-NWM-NEMS-GMLing-12012020/NWM/trunk/NDHMS/Readme.beheen ADC-WW3-NWM-NEMS-GMLing-12012020-mods/NWM/trunk/NDHMS/Readme.beheen
+--- ADC-WW3-NWM-NEMS-GMLing-12012020/NWM/trunk/NDHMS/Readme.beheen	2020-07-14 07:38:14.000000000 -0500
++++ ADC-WW3-NWM-NEMS-GMLing-12012020-mods/NWM/trunk/NDHMS/Readme.beheen	2020-12-07 01:59:58.000000000 -0600
+@@ -1,5 +1,6 @@
+ created: 11/12/19 - Beheen
+ modified: 12/17/19, 1/2/2020, 1/10/2020, 3/21/2020, 5/21/2020
++Panagiotis Velissariou - 12/05/2020
+ 
+ 11/12/19 - the version of NWM is latest, v2.1 from git repo:
+            git clone https://github.com/NCAR/wrf_hydro_nwm_public.git NWM
+diff -uNrp ADC-WW3-NWM-NEMS-GMLing-12012020/NWM/trunk/NDHMS/Routing/Reservoirs/Level_Pool/Makefile ADC-WW3-NWM-NEMS-GMLing-12012020-mods/NWM/trunk/NDHMS/Routing/Reservoirs/Level_Pool/Makefile
+--- ADC-WW3-NWM-NEMS-GMLing-12012020/NWM/trunk/NDHMS/Routing/Reservoirs/Level_Pool/Makefile	2020-07-14 07:38:14.000000000 -0500
++++ ADC-WW3-NWM-NEMS-GMLing-12012020-mods/NWM/trunk/NDHMS/Routing/Reservoirs/Level_Pool/Makefile	2020-12-07 01:59:58.000000000 -0600
+@@ -1,7 +1,7 @@
+ 
+ include ../../../macros
+ 
+-MODFLAG := -I ../../../MPP -I ../../../mod
++MODFLAG := -I../../../MPP -I../../../mod
+ 
+ %.o : %.F
+ 	$(COMPILER90) $(F90FLAGS) $(LDFLAGS) $(MODFLAG) -I$(NETCDFINC) $<
+diff -uNrp ADC-WW3-NWM-NEMS-GMLing-12012020/NWM/trunk/NDHMS/Routing/Reservoirs/Makefile ADC-WW3-NWM-NEMS-GMLing-12012020-mods/NWM/trunk/NDHMS/Routing/Reservoirs/Makefile
+--- ADC-WW3-NWM-NEMS-GMLing-12012020/NWM/trunk/NDHMS/Routing/Reservoirs/Makefile	2020-07-14 07:38:14.000000000 -0500
++++ ADC-WW3-NWM-NEMS-GMLing-12012020-mods/NWM/trunk/NDHMS/Routing/Reservoirs/Makefile	2020-12-07 01:59:58.000000000 -0600
+@@ -1,7 +1,7 @@
+ 
+ include ../../macros
+ 
+-MODFLAG := $(MODFLAG) -I ../../mod
++MODFLAG := $(MODFLAG) -I../../mod
+ 
+ %.o : %.F
+ 	$(COMPILER90) $(F90FLAGS) $(LDFLAGS) $(MODFLAG) -I$(NETCDFINC) $<
+diff -uNrp ADC-WW3-NWM-NEMS-GMLing-12012020/NWM/trunk/NDHMS/Routing/Reservoirs/Persistence_Level_Pool_Hybrid/Makefile ADC-WW3-NWM-NEMS-GMLing-12012020-mods/NWM/trunk/NDHMS/Routing/Reservoirs/Persistence_Level_Pool_Hybrid/Makefile
+--- ADC-WW3-NWM-NEMS-GMLing-12012020/NWM/trunk/NDHMS/Routing/Reservoirs/Persistence_Level_Pool_Hybrid/Makefile	2020-07-14 07:38:14.000000000 -0500
++++ ADC-WW3-NWM-NEMS-GMLing-12012020-mods/NWM/trunk/NDHMS/Routing/Reservoirs/Persistence_Level_Pool_Hybrid/Makefile	2020-12-07 01:59:58.000000000 -0600
+@@ -1,7 +1,7 @@
+ 
+ include ../../../macros
+ 
+-MODFLAG := -I ../../../MPP -I ../../../mod
++MODFLAG := -I../../../MPP -I../../../mod
+ 
+ %.o : %.F
+ 	$(COMPILER90) $(F90FLAGS) $(LDFLAGS) $(MODFLAG) -I$(NETCDFINC) $<
+diff -uNrp ADC-WW3-NWM-NEMS-GMLing-12012020/NWM/trunk/NDHMS/Routing/Reservoirs/RFC_Forecasts/Makefile ADC-WW3-NWM-NEMS-GMLing-12012020-mods/NWM/trunk/NDHMS/Routing/Reservoirs/RFC_Forecasts/Makefile
+--- ADC-WW3-NWM-NEMS-GMLing-12012020/NWM/trunk/NDHMS/Routing/Reservoirs/RFC_Forecasts/Makefile	2020-07-14 07:38:14.000000000 -0500
++++ ADC-WW3-NWM-NEMS-GMLing-12012020-mods/NWM/trunk/NDHMS/Routing/Reservoirs/RFC_Forecasts/Makefile	2020-12-07 01:59:58.000000000 -0600
+@@ -1,7 +1,7 @@
+ 
+ include ../../../macros
+ 
+-MODFLAG := -I ../../../MPP -I ../../../mod
++MODFLAG := -I../../../MPP -I../../../mod
+ 
+ %.o : %.F
+ 	$(COMPILER90) $(F90FLAGS) $(LDFLAGS) $(MODFLAG) -I$(NETCDFINC) $<
+diff -uNrp ADC-WW3-NWM-NEMS-GMLing-12012020/NWM/trunk/NDHMS/Routing/Subsurface/Makefile ADC-WW3-NWM-NEMS-GMLing-12012020-mods/NWM/trunk/NDHMS/Routing/Subsurface/Makefile
+--- ADC-WW3-NWM-NEMS-GMLing-12012020/NWM/trunk/NDHMS/Routing/Subsurface/Makefile	2020-07-14 07:38:14.000000000 -0500
++++ ADC-WW3-NWM-NEMS-GMLing-12012020-mods/NWM/trunk/NDHMS/Routing/Subsurface/Makefile	2020-12-07 01:59:58.000000000 -0600
+@@ -12,7 +12,7 @@ FFLAGS=-c -free -O3
+ 
+ FLFLAGS=
+ 
+-MODFLAG := $(MODFLAG) -I ../../mod
++MODFLAG := $(MODFLAG) -I../../mod
+ 
+ .PHONY: all mod test
+ 
+diff -uNrp ADC-WW3-NWM-NEMS-GMLing-12012020/WW3DATA/makefile.ww3data.nuopc ADC-WW3-NWM-NEMS-GMLing-12012020-mods/WW3DATA/makefile.ww3data.nuopc
+--- ADC-WW3-NWM-NEMS-GMLing-12012020/WW3DATA/makefile.ww3data.nuopc	2020-04-30 14:22:35.000000000 -0500
++++ ADC-WW3-NWM-NEMS-GMLing-12012020-mods/WW3DATA/makefile.ww3data.nuopc	2020-12-07 01:59:59.000000000 -0600
+@@ -15,8 +15,8 @@ endif
+ include $(ESMFMKFILE)
+ 
+ 
+-INCDIRS := -I . 
+-LIBDIRS := -L . 
++INCDIRS := -I. 
++LIBDIRS := -L. 
+ LIBSS   :=  -lnetcdf  -lnetcdff -lhdf5 -lhdf5_fortran
+ 
+ INCDIRS += -I${NETCDFHOME}/include/   

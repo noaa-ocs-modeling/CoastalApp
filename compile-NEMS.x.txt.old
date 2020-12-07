@@ -1,0 +1,33 @@
+1) First load all necessary modules
+module load intel
+module load impi
+module load netcdf
+module load hdf5
+
+module use /work/07380/panvel/Modules/modulefiles
+module load impi-intel/esmf-7.1.0r
+(OR: module load impi-intel/esmf-8.0.1)
+
+2) Set the following environment variables:
+export NETCDF=${TACC_NETCDF_DIR}
+export HDF5=${TACC_HDF5_DIR}
+export ESMFMKFILE=/work/07380/panvel/apps/intel/impi/esmf-7.1.0r/lib64/esmf.mk
+(OR: export ESMFMKFILE=/work/07380/panvel/apps/intel/impi/esmf-8.0.1/lib64/esmf.mk)
+
+3) Change directory into the NEMS directory and run make
+cd NEMS (if not in the NEMS directory)
+make -f GNUmakefile build COMPONENTS="ADCIRC WW3DATA ATMESH"
+
+The executable will be: NEMS/exe/NEMS.x
+
+To clean the generated files:
+cd NEMS (if not in the NEMS directory)
+make -f GNUmakefile clean COMPONENTS="ADCIRC WW3DATA ATMESH"
+
+OR to clean everything:
+cd NEMS (if not in the NEMS directory)
+make -f GNUmakefile distclean COMPONENTS="ADCIRC WW3DATA ATMESH"
+
+
+Panagiotis Velissariou - 10/18/2020
+
