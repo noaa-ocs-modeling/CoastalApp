@@ -1,0 +1,8 @@
+--- conf/externals.nems.hera	2020-12-04 14:36:35.000000000 -0600
++++ conf/externals.nems.hera	2020-12-09 22:33:55.670362901 -0600
+@@ -1,4 +1,4 @@
+-# Location of external components on Theia
++# Location of external components
+ 
+ SATM_DIR=
+ XATM_DIR=
