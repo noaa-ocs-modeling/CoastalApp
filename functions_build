@@ -158,8 +158,6 @@ ParseArgs()
   unset __OPTION_LIST
   # -----
 
-  __MY_COMPONENT="$( toUPPER "${__MY_COMPONENT}" )"
-
   if [ -z "${__MY_OS}" ]; then
     case "$(uname -s)" in
       Darwin ) __MY_OS="macosx" ;;
@@ -533,6 +531,10 @@ compileNems() {
         echo "compileNems :: Cleaning: make -f ${cmp_make} ${cmp_type} ${cmp_comp}"
         eval "make ${cmp_verb} -f ${cmp_make} ${cmp_type} ${cmp_comp}"
         err=$?
+        
+        if [ "${cmp_type}" == "distclean" ]; then
+          rm -f NEMS/exe/NEMS-*.x
+        fi
       else
         echo "compileNems :: Cleaning: no makefile found: makefile = ${cmp_make}"
         err=1
@@ -553,4 +555,57 @@ compileNems() {
   esac
 
   return ${err}
+}
+
+installNems() {
+  local cmp_comp icmp
+  local instdir
+  local CPBIN="/bin/cp -fpv"
+  local RMBIN="/bin/rm -fv"
+
+  instdir="ALLBIN_INSTALL"
+
+  cmp_comp="${COMPONENT}"
+
+  [ ! -d "${instdir}" ] && mkdir -p ${instdir}
+
+  for icmp in ${cmp_comp}
+  do
+    indir="${icmp}_INSTALL"
+    
+    if [ -d ${indir} ]; then
+      echo
+      echo "   --- Installing from: ${indir} to ${instdir} ---"
+      ${CPBIN} ${indir}/* ${instdir}/
+    fi
+
+    ###### Extra ADCIRC files
+    if [ "${icmp}" == "ADCIRC" ]; then
+      echo
+      echo "   --- Installing from: ${icmp} to ${instdir} ---"
+      for iprog in adcprep
+      do
+        prog="$( find ${icmp} -type f -name ${iprog} | head -1 )"
+        if [ -n "${prog:+1}" ]; then
+          ${CPBIN} ${prog} ${instdir}/
+        fi
+      done
+    fi
+    ######
+  done
+
+  ###### Install the NEMS/exe/NEMS* files
+  echo
+  echo "   --- Installing from: NEMS/exe to ${instdir} ---"
+  for iprog in NEMS/exe/NEMS-*.x
+  do
+    if [ -f "${iprog}" ]; then
+      ${CPBIN} ${iprog} ${instdir}/
+    fi
+  done
+
+  ###### Remove un-needed files from instdir
+  echo
+  echo "   --- Removing files that are not needed from: ${instdir} ---"
+  ${RMBIN} ${instdir}/*.mk ${instdir}/*.mod
 }

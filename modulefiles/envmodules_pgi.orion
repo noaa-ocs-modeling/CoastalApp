@@ -9,7 +9,6 @@ module purge
 module load pgi impi
 module load szip hdf5
 module load netcdf
-#module load metis - doesn't exist on orion
 
 module load esmf
 
@@ -20,8 +19,8 @@ module load esmf
 
 export HDF5HOME=${HDF5_ROOT}
 export NETCDFHOME=${NETCDF_ROOT}
-export METIS_PATH=${METIS}
 
+export NETCDF_CONFIG=${NETCDFHOME:+${NETCDFHOME}/bin/nc-config}
 export NETCDF_INCDIR=${NETCDF_INCLUDE_DIRS}
 export NETCDF_LIBDIR=${NETCDF_LIBRARY_DIRS}
 

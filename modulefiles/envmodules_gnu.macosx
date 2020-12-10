@@ -9,7 +9,6 @@
 #module load gcc impi
 #module load szip hdf5
 #module load netcdf
-#module load metis
 
 #module load esmf
 
@@ -20,8 +19,8 @@
 
 export HDF5HOME=${HDF5}
 export NETCDFHOME=${NETCDF}
-export METIS_PATH=${METIS}
 
+export NETCDF_CONFIG=${NETCDFHOME:+${NETCDFHOME}/bin/nc-config}
 export NETCDF_INCDIR=${NETCDFHOME:+${NETCDFHOME}/include}
 export NETCDF_LIBDIR=${NETCDFHOME:+${NETCDFHOME}/lib}
 

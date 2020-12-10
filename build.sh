@@ -48,7 +48,7 @@ CLEAN=${MY_CLEAN:-0}
 
 [ -n "${MY_COMPILER:+1}" ] && COMPILER="$( toLOWER "${MY_COMPILER}" )"
 
-[ -n "${MY_COMPONENT:+1}" ] && COMPONENT="${MY_COMPONENT}"
+[ -n "${MY_COMPONENT:+1}" ] && COMPONENT="$( toUPPER "${MY_COMPONENT}" )"
 
 [ -n "${MY_OS:+1}" ] && OS="$( toLOWER "${MY_OS}" )"
 
@@ -56,16 +56,18 @@ CLEAN=${MY_CLEAN:-0}
 
 [ -n "${MY_PLATFORM:+1}" ] && PLATFORM="$( toLOWER "${MY_PLATFORM}" )"
 
-[ -n "${MY_OS:+1}" ] && OS="$( toLOWER "${MY_OS}" )"
-
 [ -n "${MY_VERBOSE:+1}" ] && VERBOSE="$( toLOWER "${MY_VERBOSE}" )"
 
-mod_file="envmodules${COMPILER:+_${COMPILER}}${PLATFORM:+.${PLATFORM}}"
+modFILE="envmodules${COMPILER:+_${COMPILER}}${PLATFORM:+.${PLATFORM}}"
 
+# Customize the NEMS.x filename to include the component names
 if [ -n "${COMPONENT:+1}" ]; then
-  comp_fname="$( strTrim "$( toLOWER "${COMPONENT}" )" )"
-  comp_fname="$( echo "${comp_fname}" | sed 's/ /_/g' )"
+  compFNAME="$( strTrim "$( toLOWER "${COMPONENT}" )" )"
+  compFNAME="$( echo "${compFNAME}" | sed 's/ /_/g' )"
 fi
+
+# Export some environment variables for NEMS
+export NEMS_COMPILER=${COMPILER}
 ##########
 
 
@@ -80,9 +82,9 @@ if [ ! -f "${nemsDIR}/NEMSAppBuilder" ]; then
   exit 1
 fi
 
-readonly modsDIR="${NEMSMODS_DIR:-${scrDIR}/modulefiles}"
-if [ ! -f "${modsDIR}/${mod_file}" ]; then
-  echo "The modulefiles directory \"${modsDIR}\" does not appear to contain module: ${mod_file}."
+readonly modDIR="${NEMSMODS_DIR:-${scrDIR}/modulefiles}"
+if [ ! -f "${modDIR}/${modFILE}" ]; then
+  echo "The modulefiles directory \"${modDIR}\" does not appear to contain module: ${modFILE}."
   echo "Is this the correct modulefiles directory?"
   echo "You might need to set the environment variable NEMSMODS_DIR before running this script."
   echo "Exiting ..."
@@ -107,26 +109,15 @@ fi
 
 
 ##########
-# Export some environment variables for NEMS
-export NEMS_COMPILER=${COMPILER}
-
 # Source the environment module
-source ${modsDIR}/${mod_file}
+source ${modDIR}/${modFILE}
 
-component_ww3=":$( echo "${COMPONENT}" | sed 's/ /:/g' ):"
-if [[ :$component_ww3: == *:"WW3":* ]]; then
-  if [ -z "${METIS_PATH}" ]; then
-    echo "ERROR :: The METIS_PATH environment variable for WW3 is not set."
-    echo "   Set the METIS_PATH environment variable before running this script:"
-    echo "     METIS_PATH=\"path_to_compiled_metis\""
-    echo "Exiting ..."
-    exit 1
-  else
-    export METIS_PATH="${METIS_PATH}"
-  fi
+component_ww3="$( echo "${COMPONENT}" | sed 's/ /:/g' )"
+if [[ :${component_ww3}: == *:"WW3":* ]]; then
+  export WW3_CONFOPT="${COMPILER}"
   export WW3_COMP="${COMPILER}"
+  export WWATCH3_NETCDF=NC4
 fi
-
 ##########
 
 
@@ -137,13 +128,16 @@ echo "The following variables are defined:"
 echo "    CLEAN          = ${CLEAN}"
 echo "    COMPILER       = ${COMPILER:-Undefined, Supported values are: [${MY_COMPILING_SYTEMS}]}"
 echo "    NEMS_COMPILER  = ${NEMS_COMPILER}"
-echo "    WW3_COMP       = ${WW3_COMP}"
+if [[ :${component_ww3}: == *:"WW3":* ]]; then
+  echo "    WW3_CONFOPT    = ${WW3_CONFOPT}"
+  echo "    WW3_COMP       = ${WW3_COMP}"
+  echo "    WWATCH3_NETCDF = ${WWATCH3_NETCDF}"
+fi
 echo "    COMPONENTS     = ${COMPONENT:-Undefined, Supported values are: [${MY_COMPONENT_LIST}]}"
 echo "    OS             = ${OS}"
 echo "    PLATFORM       = ${PLATFORM}"
 echo "    VERBOSE        = ${VERBOSE}"
 echo
-echo "    METIS_PATH     = ${METIS_PATH}"
 echo "    HDF5HOME       = ${HDF5HOME}"
 echo "    NETCDFHOME     = ${NETCDFHOME}"
 echo "    NETCDF_INCDIR  = ${NETCDF_INCDIR}"
@@ -179,36 +173,42 @@ unset echo_response
 
 ##########
 # Compile the project
+compileERR=0
 pushd ${nemsDIR} >/dev/null 2>&1
   case ${CLEAN:-0} in
     -1 )
       compileNems clean
-      err=$?
+      compileERR=$?
       ;;
     -2 )
       compileNems distclean
-      err=$?
+      compileERR=$?
       ;;
     -3 )
       compileNems noclean
-      err=$?
+      compileERR=$?
       ;;
      * )
       compileNems clean
-      err=$?
+      compileERR=$?
       ;;
   esac
 
-  if [ ${err} -eq 0 ]; then
+  if [ ${compileERR} -eq 0 ]; then
     compileNems build
-    err=$?
+    compileERR=$?
   fi
 
-  if [  ${err} -eq 0 ]; then
+  if [  ${compileERR} -eq 0 ]; then
     if [ -f exe/NEMS.x ]; then
-      cp -p exe/NEMS.x exe/NEMS${comp_fname:+-${comp_fname}}.x
+      cp -p exe/NEMS.x exe/NEMS${compFNAME:+-${compFNAME}}.x
     fi
   fi
 popd >/dev/null 2>&1
+
+##########
+# Install all data, executables, libraries in a common directory
+[ ${compileERR:-0} -eq 0 ] && installNems
+##########
 
 exit 0
