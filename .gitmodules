@@ -1,24 +1,24 @@
 [submodule "ATMESH"]
 	path = ATMESH
-  	url = https://github.com/moghimis/ATMESH
-	branch = master
+  	url = https://github.com/noaa-ocs-modeling/ATMESH.git
+	branch = nd_adc-v55_dev
 [submodule "WW3DATA"]
 	path = WW3DATA
-	url = https://github.com/moghimis/WW3DATA
-	branch = master
+	url = https://github.com/noaa-ocs-modeling/WW3DATA.git
+	branch = nd_adc-v55_dev
 [submodule "ADCIRC"]
 	path = ADCIRC
-	url = https://github.com/GM-Ling/adcirc-cg.git
-	branch = ND_v55_NEMS
+	url = https://github.com/moghimis/adcirc-cg.git
+	branch = nd_adc-v55_dev
 [submodule "NWM"]
 	path = NWM
-	url = https://github.com/trimbleava/nwm_public_nuopc
-	branch = master
+	url = https://github.com/noaa-ocs-modeling/nwm_public_nuopc.git
+	branch = nd_adc-v55_dev
 [submodule "NEMS"]
 	path = NEMS
-	url = https://github.com/GM-Ling/NEMS.git
-	branch = nems_for_adc_v55
+	url = https://github.com/zacharyburnettNOAA/NEMS.git
+	branch = nd_adc-v55_dev
 [submodule "WW3"]
 	path = WW3
-	url = https://github.com/GM-Ling/WW3.git
+	url = https://github.com/noaa-ocs-modeling/WW3.git
 	branch = nd_ww3
