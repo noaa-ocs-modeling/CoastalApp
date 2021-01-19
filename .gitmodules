@@ -8,7 +8,7 @@
 	branch = master
 [submodule "ADCIRC"]
 	path = ADCIRC
-	url = https://github.com/GM-Ling/adcirc-cg
+	url = https://github.com/GM-Ling/adcirc-cg.git
 	branch = ND_v55_NEMS
 [submodule "NWM"]
 	path = NWM
@@ -16,9 +16,9 @@
 	branch = master
 [submodule "NEMS"]
 	path = NEMS
-	url = https://github.com/GM-Ling/NEMS
+	url = https://github.com/GM-Ling/NEMS.git
 	branch = nems_for_adc_v55
 [submodule "WW3"]
 	path = WW3
-	url = https://github.com/GM-Ling/WW3
+	url = https://github.com/GM-Ling/WW3.git
 	branch = nd_ww3
