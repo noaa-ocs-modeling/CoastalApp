@@ -1,0 +1,34 @@
+#!/bin/bash-*-Shell-script-modules*-
+#----------
+[[ "$0" == "bash" || "$0" == "-bash" ]] && retv=return || retv=exit
+echo "$(basename ${BASH_SOURCE[0]}) :: This environment is either not configured or not supported"
+echo "  Exiting ..."
+${retv} 1
+#----------
+
+# This script is responsible for loading modules that are
+# compatible with the NUOPC Layer version used in NEMS.
+
+####################
+### (1) Load all needed environment modules.
+module purge
+module load gcc impi
+module load szip hdf5
+module load netcdf
+
+module use /contrib/modulefiles
+module load esmf
+
+
+####################
+### (2) Set some environments varaiables related to the loaded
+###     modules and required to compile the NEMS application properly.
+
+export HDF5HOME=${HDF5}
+export NETCDFHOME=${NETCDF}
+
+export NETCDF_CONFIG=${NETCDFHOME:+${NETCDFHOME}/bin/nc-config}
+export NETCDF_INCDIR=${NETCDFHOME:+${NETCDFHOME}/include}
+export NETCDF_LIBDIR=${NETCDFHOME:+${NETCDFHOME}/lib}
+
+export ESMFMKFILE=${ESMFMKFILE}
