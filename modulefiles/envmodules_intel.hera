@@ -6,7 +6,7 @@
 ####################
 ### (1) Load all needed environment modules.
 module purge
-module load intel impi
+module load intel impi/2018.0.4
 module load szip hdf5
 module load netcdf
 
