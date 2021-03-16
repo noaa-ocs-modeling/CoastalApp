@@ -1,101 +1,118 @@
-## ADC-WW3-NWM-NEMS
+# ADC-WW3-NWM-NEMS
 
-ADC-WW3-NWM-NEMS is an ESMF application developed as part of the Coastal Act
-coupling project to determine wind versus water percentage loss caused by a 
-Named Storm Event. 
+ESMF application for building a NUOPC / NEMS application coupling ADCIRC, ATMESH, WW3 / WW3DATA, and NWM.
 
-## Cloning
-    git clone --recursive https://github.com/moghimis/ADC-WW3-NWM-NEMS
+`ADC-WW3-NWM-NEMS` was developed as part of the Coastal Act to help determination of wind versus water percentage loss caused
+by a Named Storm Event.
+
+```bash
+git clone --recursive https://github.com/noaa-ocs-modeling/ADC-WW3-NWM-NEMS
+cd ADC-WW3-NWM-NEMS
+```
+
+## Compilation
+
+```bash
+./build.sh --component "ADCIRC ATMESH WW3DATA" --plat hera --compiler intel --clean -2 
+```
+
+- `--component` can be any combination of
+    - `ADCIRC`
+    - `ATMESH`
+    - `WW3` / `WW3DATA`
+    - `NWM`
+- `--plat` can be any combination of
+    - `cheyenne`
+    - `gaea`
+    - `hera`
+    - `jet`
+    - `linux`
+    - `macosx`
+    - `orion`
+    - `stampede`
+    - `wcoss`
+- `--compiler` can be one of
+    - `intel`
+    - `gnu`
+    - `pgi`
+- `--clean` is optional, and can be one of
+    - `1` (`make clean`, default)
+    - `2` (`make distclean`)
+    - `-1` (`make clean` then build)
+    - `-2` (`make distclean` then build)
+
+#### adding a new platform / compiler to compilation script
+
+Environment files are stored in `modulefiles/` with the filename `envmodules_<COMPILER>.<PLATFORM>`
+
+To compile in your own system you should create a similar file, then run `build.sh` to compile.
 
 ## Requirements
 
-### Install ParMETIS
+#### installing ParMETIS for WW3
 
-Unstructured WW3 requires an installation of ParMETIS for domain decomposition. Download the code from this [link](http://glaros.dtc.umn.edu/gkhome/metis/parmetis/download)  
+Using unstructured WW3 requires an installation of ParMETIS for domain decomposition.
 
-To build ParMETIS:  
-
-    module purge  
-
-    module load intel impi  
-
-    setenv CFLAGS -fPIC  
-
-    make config cc=mpiicc cxx=mpiicc prefix=/path/to/your/parmetis/ | & tee config.out-rr  
-
-    make install | & tee make-install.out-rr  
-
-This adds `libparmetis.a` under `/path/to/your/parmetis/lib/libparmetis.a`  
-
-Set the path to ParMETIS:  
-
-    setenv METIS_PATH /path/to/your/parmetis  
-
-### Set module files based on your HPC
-
-For a list of additional requirements and versions, see:
-
-    modulefiles/hera/ESMF_NUOPC
-
-
-## Compile
-
-Set the following environment variable:
-
-- `ROOTDIR`: The directory of your choice where the repository has been cloned
-
-In the build script `build.sh`, select desired components for which to build the app, e.g.:
-
-    make -f GNUmakefile build COMPONENTS="ADCIRC WW3 ATMESH"
-
-Execute the build script:
-
-    ./build.sh
-
+1. [download the code here](http://glaros.dtc.umn.edu/gkhome/metis/parmetis/download)
+2. build ParMETIS
+    ```bash
+    module purge
+    module load intel impi
+    setenv CFLAGS -fPIC
+    make config cc=mpiicc cxx=mpiicc prefix=/path/to/your/parmetis/ | & tee config.out-rr
+    make install | & tee make-install.out-rr
+    ```
+   This adds `libparmetis.a` under `/path/to/your/parmetis/lib/libparmetis.a`.
+3. set the path to ParMETIS
+    ```bash
+    setenv METIS_PATH /path/to/your/parmetis
+    ```
 
 ## Collaboration
 
 To collaborate and contribute to this repository follow below instructions:
 
-While in github GUI, https://github.com/moghimis/ADC-WW3-NWM-NEMS:
+1. go to https://github.com/noaa-ocs-modeling/ADC-WW3-NWM-NEMS
+2. create a fork (click `Fork` on the upper right corner), and fork to your account.
+3. clone your forked repository
+   ```bash
+   git clone --recursive https://github.com/<ACCOUNT>/ADC-WW3-NWM-NEMS
+   ```
+4. edit the files locally
+   ```bash
+   git status
+   ```
+5. commit changes
+   ```bash
+   git commit -a -m "describe what you changed"
+   ```
+6. push your changes to GitHub
+   ```bash
+   git push
+   ```
+7. enter your GitHub username/password if asked
+8. create a pull request with descriptions of changes at
+   ```
+   https://github.com/noaa-ocs-modeling/ADC-WW3-NWM-NEMS/compare/<BRANCH>...<ACCOUNT>:<BRANCH>
+   ```
 
-1) Hit the "Fork" button located on the upper right corner of the GUI in order 
-   to have your own copy of this repository into your own github repository.
-2) Your github username displays with a message "Where should we fork ..." . 
-   Click on your username to fork it into your account. 
-3) You should see the source codes in your own github repository with the same 
-   name as the forked reopsitory.
+## Citations
 
-Next you should create your local version of your forked repository. 
-Go to your local directoy and clone the the repository:
+```
+Moghimi, S., Van der Westhuysen, A., Abdolali, A., Myers, E., Vinogradov, S., 
+   Ma, Z., Liu, F., Mehra, A., & Kurkowski, N. (2020). Development of an ESMF 
+   Based Flexible Coupling Application of ADCIRC and WAVEWATCH III for High 
+   Fidelity Coastal Inundation Studies. Journal of Marine Science and 
+   Engineering, 8(5), 308. https://doi.org/10.3390/jmse8050308
 
-1) git clone --recursive https://github.com/<your_github_repo_name>/ADC-WW3-NWM-NEMS
-2) do your collaboration edition and when finished 
-3) git add .
-4) git commit -m "describe what you changed"
-5) git push origin master - to push your changes into your github
-6) enter your github username/password if asked
+Moghimi, S., Vinogradov, S., Myers, E. P., Funakoshi, Y., Van der Westhuysen, 
+   A. J., Abdolali, A., Ma, Z., & Liu, F. (2019). Development of a Flexible 
+   Coupling Interface for ADCIRC model for Coastal Inundation Studies. NOAA 
+   Technical Memorandum, NOS CS(41). 
+   https://repository.library.noaa.gov/view/noaa/20609/
 
-While in your github repository GUI:
-
-1) push the "New pull request" button 
-2) hit the "Create pull request" button
-3) the request goes to originated repository, where your changes are reviewed and 
-   merged or rejected.
-
-### Setup and compilation
-
-This application contains a module file tailored for the intended computer system.
-To compile in your own system you should create a similar file.  The setup module
-file, is located at modulefile/hera/ESMF_NUOPC. Also, for your  convenience there
-is a "HOWTO" that explains in detail about the usage of this application.
-
-
-## Cite
-
-Moghimi, S.; Van der Westhuysen, A.; Abdolali, A.; Myers, E.; Vinogradov, S.; Ma, Z.; Liu, F.; Mehra, A.; Kurkowski, N. Development of an ESMF Based Flexible Coupling Application of ADCIRC and WAVEWATCH III for High Fidelity Coastal Inundation Studies. J. Mar. Sci. Eng. 2020, 8, 308.  https://doi.org/10.3390/jmse8050308
-
-Development of a Flexible Coupling Framework for Coastal Inundation Studies, 2020 S Moghimi, A van der Westhuysen, A Abdolali, E Myers, S Vinogradov
-https://arxiv.org/abs/2003.12652
-
-Development of a Flexible Coupling Interface for ADCIRC Model for Coastal Inundation Studies, 2019 Saeed Moghimi, Sergey Vinogradov, Edward P Myers, Yuji Funakoshi, Andre J Van der Westhuysen, Ali Abdolali, Zaizhong Ma, Fei Liu https://repository.library.noaa.gov/view/noaa/20609/
+Moghimi, S., Westhuysen, A., Abdolali, A., Myers, E., Vinogradov, S., Ma, Z., 
+   Liu, F., Mehra, A., & Kurkowski, N. (2020). Development of a Flexible 
+   Coupling Framework for Coastal Inundation Studies. 
+   https://arxiv.org/abs/2003.12652
+```
