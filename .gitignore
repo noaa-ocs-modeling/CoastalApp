@@ -26,6 +26,9 @@
 *.a
 *.lib
 
+# intermediate build files
+*_INSTALL/
+
 # Executables
 *.exe
 *.out
