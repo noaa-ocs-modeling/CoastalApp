@@ -22,24 +22,25 @@ cd ADC-WW3-NWM-NEMS
     - `WW3` / `WW3DATA`
     - `NWM`
 - `--plat` can be any combination of
-    - `cheyenne`
-    - `gaea`
     - `hera`
+    - `stampede`
     - `jet`
+    - `orion`
+    - `wcoss`
+    - `gaea`
+    - `cheyenne`
     - `linux`
     - `macosx`
-    - `orion`
-    - `stampede`
-    - `wcoss`
 - `--compiler` can be one of
     - `intel`
     - `gnu`
     - `pgi`
 - `--clean` is optional, and can be one of
-    - `1` (`make clean`, default)
-    - `2` (`make distclean`)
-    - `-1` (`make clean` then build)
-    - `-2` (`make distclean` then build)
+    - ` ` (`make clean` and exit)
+    - `1` (`make clean` and exit)
+    - `2` (`make clobber` and exit)
+    - `-1` (`make clean` and build)
+    - `-2` (`make clobber` and build)
 
 #### adding a new platform / compiler to compilation script
 
