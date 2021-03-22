@@ -24,9 +24,9 @@ cd ADC-WW3-NWM-NEMS
 - `--plat` can be any combination of
     - `hera`
     - `stampede`
-    - `jet`
-    - `orion`
     - `wcoss`
+    - `orion`
+    - `jet`
     - `gaea`
     - `cheyenne`
     - `linux`
