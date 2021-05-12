@@ -2,8 +2,7 @@
 
 ESMF application for building a NUOPC / NEMS application coupling ADCIRC, ATMESH, WW3 / WW3DATA, and NWM.
 
-`ADC-WW3-NWM-NEMS` was developed as part of the Coastal Act to help determination of wind versus water percentage loss caused
-by a Named Storm Event.
+`ADC-WW3-NWM-NEMS` is an ESMF application developed as part of the Coastal Act coupling project to determine wind versus water percentage loss caused by a Named Storm Event. 
 
 ```bash
 git clone --recursive https://github.com/noaa-ocs-modeling/ADC-WW3-NWM-NEMS
