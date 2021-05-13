@@ -1,0 +1,101 @@
+###########################################################################
+### NEMS Build System
+### PlatformFuncs :: Utility functions
+###
+### Author: Panagiotis Velissariou <panagiotis.velissariou@noaa.gov>
+###########################################################################
+
+get_env_hdf5()
+{
+#  if [ "${_found_hdf5:-FALSE}" = "FALSE" ]; then
+    _found_hdf5=FALSE
+    if [ -n "${HDF5:+1}" ]; then
+      HDF5="${HDF5}"
+      export HDF5HOME="${HDF5}"
+      HDF5_DIR="${HDF5}"
+      HDF5_PATH="${HDF5}"
+      HDF5_ROOT="${HDF5}"
+      _found_hdf5=TRUE
+    else
+      for _var in DIR HOME PATH ROOT
+      do
+        _var_val="$(eval "echo \"\$HDF5${_var}\"")"
+        if [ -n "${_var_val:+1}" ]; then
+          HDF5="${_var_val}"
+          export HDF5HOME="${_var_val}"
+          HDF5_DIR="${_var_val}"
+          HDF5_PATH="${_var_val}"
+          HDF5_ROOT="${_var_val}"
+          _found_hdf5=TRUE
+          break
+        else
+          _var_val="$(eval "echo \"\$HDF5_${_var}\"")"
+          if [ -n "${_var_val:+1}" ]; then
+            HDF5="${_var_val}"
+            export HDF5HOME="${_var_val}"
+            HDF5_DIR="${_var_val}"
+            HDF5_PATH="${_var_val}"
+            HDF5_ROOT="${_var_val}"
+            _found_hdf5=TRUE
+            break
+          fi
+        fi
+      done
+    fi
+    unset _name _var _var_val
+#  fi
+
+  return 0
+}
+
+
+get_env_netcdf()
+{
+#  if [ "${_found_netcdf:-FALSE}" = "FALSE" ]; then
+    export _found_netcdf=FALSE
+    for _name in NETCDF NETCDF4 NetCDF NetCDF4
+    do
+      if [ "${_found_netcdf}" = "TRUE" ]; then
+        break
+      fi
+
+      _var_val="$(eval "echo \"\$${_name}\"")"
+      if [ -n "${_var_val:+1}" ]; then
+        export NETCDF="${_var_val}"
+        export NETCDFHOME="${_var_val}"
+        export NETCDF_DIR="${_var_val}"
+        export NETCDF_PATH="${_var_val}"
+        export NETCDF_ROOT="${_var_val}"
+        export _found_netcdf=TRUE
+      else
+        for _var in DIR HOME PATH ROOT
+        do
+          _var_val="$(eval "echo \"\$${_name}${_var}\"")"
+          if [ -n "${_var_val:+1}" ]; then
+            export NETCDF="${_var_val}"
+            export NETCDFHOME="${_var_val}"
+            export NETCDF_DIR="${_var_val}"
+            export NETCDF_PATH="${_var_val}"
+            export NETCDF_ROOT="${_var_val}"
+            export _found_netcdf=TRUE
+            break
+          else
+            _var_val="$(eval "echo \"\$${_name}_${_var}\"")"
+            if [ -n "${_var_val:+1}" ]; then
+              export NETCDF="${_var_val}"
+              export NETCDFHOME="${_var_val}"
+              export NETCDF_DIR="${_var_val}"
+              export NETCDF_PATH="${_var_val}"
+              export NETCDF_ROOT="${_var_val}"
+              export _found_netcdf=TRUE
+              break
+            fi
+          fi
+        done
+      fi
+    done
+    unset _name _var _var_val
+#  fi
+
+  return 0
+}
