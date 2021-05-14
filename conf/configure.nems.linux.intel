@@ -1,0 +1,56 @@
+## NEMS configuration file
+##
+## Platform: Generic/Linux
+## Compiler: Intel with IntelMPI
+
+SHELL           = /bin/sh
+
+################################################################################
+## Include the common configuration parts
+include         $(TOP)/conf/configure.nems.NUOPC
+
+################################################################################
+## Other settings
+
+NETCDF_INC   = -I$(NETCDF_INCDIR)
+NETCDF_LIB   = -L$(NETCDF_LIBDIR) -lnetcdf
+
+NEMSIO_INC   = -I${LIBDIR}/incmod/nemsio
+NEMSIO_LIB   = -L${LIBDIR} -lnemsio
+SYS_LIB      =
+
+EXTLIBS      = $(NEMSIO_LIB) \
+               $(NETCDF_LIB) \
+               $(ESMF_LIB)   \
+               $(SYS_LIB) -lm
+
+EXTLIBS_POST = $(NEMSIO_LIB)  \
+               $(ESMF_LIB)    \
+               $(NETCDF_LIB)  \
+               $(SYS_LIB)
+###
+FC          = mpiifort -g -qopenmp -mkl=sequential -align array32byte -lmkl_intel_lp64 -lmkl_core -lmkl_sequential -lpthread -qopenmp -convert big_endian -assume byterecl -mkl=sequential
+F77         = mpiifort -g -qopenmp -mkl=sequential -align array32byte -lmkl_intel_lp64 -lmkl_core -lmkl_sequential -lpthread -qopenmp -convert big_endian -assume byterecl -mkl=sequential
+FREE         = -free
+FIXED        = -fixed
+R8           = -r8
+
+FINCS        = $(ESMF_INC) $(NEMSIO_INC) $(NETCDF_INC)
+#TRAPS        = -g -fno-inline -no-ip -traceback -ftrapuv -fpe0 -ftz -check all -check noarg_temp_created -fp-stack-check
+
+FFLAGS       = $(TRAPS) $(FINCS) -fp-model strict
+
+OPTS_NMM     = -g -fno-inline -no-ip -traceback -ftrapuv -fpe0 -ftz -check all -check noarg_temp_created -fp-stack-check $(FREE)
+
+FFLAGM_DEBUG =
+
+FFLAGS_NMM   = $(MACROS_NWM) $(OPTS_NMM) $(FFLAGS)
+
+FPP          = -fpp
+CPP          = cpp -P -traditional
+CPPFLAGS     = -DENABLE_SMP -DCHNK_RRTM=8 
+
+AR           = ar
+ARFLAGS      = -r
+
+RM           = rm

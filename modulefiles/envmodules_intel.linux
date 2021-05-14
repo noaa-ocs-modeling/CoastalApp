@@ -1,0 +1,31 @@
+#!/bin/bash-*-Shell-script-modules*-
+
+# This script is responsible for loading modules that are
+# compatible with the NUOPC Layer version used in NEMS.
+
+####################
+### (1) Load all needed environment modules.
+module purge
+module load intel impi
+#module load szip hdf5
+module load netcdf
+
+module load esmf
+
+
+####################
+### (2) Set some environments varaiables related to the loaded
+###     modules and required to compile the NEMS application properly.
+funcs="$( find . -type f -name "PlatformFuncs" | head -n 1 )"
+[ -f "${funcs}" ] && source "${funcs}"
+unset funcs
+
+
+get_env_hdf5
+get_env_netcdf
+
+export NETCDF_CONFIG=${NETCDFHOME:+${NETCDFHOME}/bin/nc-config}
+export NETCDF_INCDIR=${NETCDFHOME:+${NETCDFHOME}/include}
+export NETCDF_LIBDIR=${NETCDFHOME:+${NETCDFHOME}/lib}
+
+export ESMFMKFILE=${ESMFMKFILE}
