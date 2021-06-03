@@ -15,6 +15,12 @@ to see all available options.
 
 Panagiotis Velissariou - 05/29/2021  
 
+
+For MacOS running MacPorts, issue 
+```bash
+./build.sh -compiler gnu -component SCHISM -plat macports
+```
+
 --------------------
 --------------------
 
