@@ -105,22 +105,8 @@ fi
 
 
 ##########
-# If the user requested to clean the build folder, do the cleaning end exit
-if [ ${CLEAN:-0} -ge 1 ]; then
-  echo "User requested to only clean the project. Cleaning ..."
-
-  pushd ${nemsDIR} >/dev/null 2>&1
-    [ ${CLEAN:-0} -eq 1 ] && compileNems clean
-    [ ${CLEAN:-0} -eq 2 ] && compileNems distclean
-  popd >/dev/null 2>&1
-
-  exit 0
-fi
-##########
-
-
-##########
 # Source the environment module
+# This is required in all stages (clean, distclean, build
 source ${modDIR}/${modFILE}
 
 component_ww3="$( echo "${COMPONENT}" | sed 's/ /:/g' )"
@@ -183,6 +169,24 @@ unset echo_response
 ############################################################
 ### START THE CALCULATIONS
 ############################################################
+
+##########
+# If the user requested to clean the build folder, do the cleaning end exit
+if [ ${CLEAN:-0} -ge 1 ]; then
+  echo "User requested to only clean the project. Cleaning ..."
+
+  pushd ${nemsDIR} >/dev/null 2>&1
+    [ ${CLEAN:-0} -eq 1 ] && compileNems clean
+    [ ${CLEAN:-0} -eq 2 ] && compileNems distclean
+  popd >/dev/null 2>&1
+
+  exit 0
+fi
+##########
+
+export CC=mpiicc
+export CXX=mpiicpc
+export FC=mpiifort
 
 ##########
 # Compile the project
