@@ -22,3 +22,9 @@
 	path = NWM
 	url = https://github.com/noaa-ocs-modeling/nwm_public_nuopc.git
 	branch = master
+[submodule "SCHISM"]
+	path = SCHISM
+	url = https://github.com/schism-dev/schism.git
+[submodule "schism-esmf"]
+	path = schism-esmf
+	url = https://github.com/schism-dev/schism-esmf.git
