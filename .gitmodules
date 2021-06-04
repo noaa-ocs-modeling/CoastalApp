@@ -25,6 +25,3 @@
 [submodule "SCHISM"]
 	path = SCHISM
 	url = https://github.com/schism-dev/schism.git
-[submodule "schism-esmf"]
-	path = schism-esmf
-	url = https://github.com/schism-dev/schism-esmf.git
