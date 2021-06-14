@@ -13,6 +13,7 @@ module load netcdf
 module use /work/07380/panvel/Modules/modulefiles
 module load impi-intel/esmf-8.0.1
 
+module load cmake/3.16.1
 
 ####################
 ### (2) Set some environments varaiables related to the loaded
