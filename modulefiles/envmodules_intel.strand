@@ -2,16 +2,17 @@
 
 # This script is responsible for loading modules that are
 # compatible with the NUOPC Layer version used in NEMS.
-
+# Adapted for hereon/strand by Carsten Lemmen <carsten.lemmen@hereon.de>
+# Call with ./build.sh -plat strand from top directory
+# 
 ####################
-### (1) Load all needed environment modules.
+### Load all needed environment modules.
 module purge
 module load compilers/intel/2020.1.217
 module load intelmpi/2020.1.217
-module load hdf5 netcdf
-
-module load esmf
-
+module load netcdf/4.7.0 hdf5/1.10.5
+module load esmf/8.1.0
+module load applications/utils/cmake3-20.0
 
 ####################
 ### (2) Set some environments varaiables related to the loaded
@@ -19,7 +20,6 @@ module load esmf
 funcs="$( find . -type f -name "PlatformFuncs" | head -n 1 )"
 [ -f "${funcs}" ] && source "${funcs}"
 unset funcs
-
 
 get_env_hdf5
 get_env_netcdf
