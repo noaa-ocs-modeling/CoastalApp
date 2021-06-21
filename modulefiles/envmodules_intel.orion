@@ -5,14 +5,15 @@
 
 ####################
 ### (1) Load all needed environment modules.
-module purge
-module load intel/2020 impi
-module load szip hdf5/1.10.5-parallel
-module load netcdf/4.7.2-parallel netcdf/4.7.4
+module purge 
 
+module load intel/2020 impi/2020
+module load szip/2.1.1
+module load hdf5/1.10.5-parallel netcdf/4.7.2-parallel 
+module load hdf5/1.10.5-parallel
 module load esmf/8.0.0
 
-module load cmake
+module load cmake/3.18.1
 
 ####################
 ### (2) Set some environments varaiables related to the loaded
