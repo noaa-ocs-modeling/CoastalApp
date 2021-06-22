@@ -1,0 +1,32 @@
+#!/bin/bash-*-Shell-script-modules*-
+
+# This script is responsible for loading modules that are
+# compatible with the NUOPC Layer version used in NEMS.
+# Adapted for wm/femto Carsten Lemmen <carsten.lemmen@hereon.de>
+# Call with ./build.sh -plat femto from top directory
+# 
+####################
+### Load all needed environment modules.
+module purge
+module load intel/2018
+module load openmpi/3.1.4/intel-2018
+module load netcdf/4.4.1.1/intel-2018
+module load netcdf-fortran/4.4.4/intel-2018
+module load cmake/3.14.4
+
+####################
+### (2) Set some environments varaiables related to the loaded
+###     modules and required to compile the NEMS application properly.
+funcs="$( find . -type f -name "PlatformFuncs" | head -n 1 )"
+[ -f "${funcs}" ] && source "${funcs}"
+unset funcs
+
+get_env_hdf5
+get_env_netcdf
+
+export NETCDFHOME=$(nc-config --prefix)
+export NETCDF_CONFIG=${NETCDFHOME:+${NETCDFHOME}/bin/nc-config}
+export NETCDF_INCDIR=${NETCDFHOME:+${NETCDFHOME}/include}
+export NETCDF_LIBDIR=${NETCDFHOME:+${NETCDFHOME}/lib}
+
+export ESMFMKFILE=${ESMFMKFILE}
