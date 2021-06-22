@@ -14,6 +14,7 @@ module load hdf5_parallel/1.10.6.release
 module load netcdf_parallel/4.7.4.release
 module load esmf/8.1.0bs36g
 
+module load cmake/3.16.1
 
 ####################
 ### (2) Set some environments varaiables related to the loaded
