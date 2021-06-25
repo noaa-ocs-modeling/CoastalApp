@@ -3,6 +3,7 @@
 # This script is responsible for loading modules that are
 # compatible with the NUOPC Layer version used in NEMS.
 
+
 ####################
 ### (1) Load all needed environment modules.
 module purge
