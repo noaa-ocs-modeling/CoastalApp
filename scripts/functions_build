@@ -40,7 +40,7 @@ ParseArgs()
   local ans0 ans ival intN
   local all_evars
 
-  all_evars="MY_CLEAN MY_COMPILER MY_COMPONENT MY_OS MY_PARMAKE MY_PLATFORM MY_VERBOSE"
+  all_evars="MY_CLEAN MY_COMPILER MY_COMPONENT MY_OS MY_PARALLEL MY_PARMAKE MY_PLATFORM MY_VERBOSE"
 
   for ival in ${all_evars}; do unset __${ival}; done
 
@@ -49,6 +49,7 @@ ParseArgs()
   __MY_COMPILER=intel
   __MY_COMPONENT="ADCIRC WW3DATA ATMESH"
   __MY_OS=
+  __MY_PARALLEL=1
   __MY_PARMAKE=1
   __MY_PLATFORM=
   __MY_VERBOSE=
@@ -56,7 +57,7 @@ ParseArgs()
 
   # -----
   # Process the function options
-  opt_all=( c clean compiler component j os plat v verbose h help )
+  opt_all=( c clean compiler component j par parallel  os plat v verbose h help )
   opt_all=":$( echo "${opt_all[@]/#/-} ${opt_all[@]/#/--}" | sed 's/ /:/g' ):"
 
   unset __OPTION_LIST
@@ -124,6 +125,21 @@ ParseArgs()
               __MY_PARMAKE=1
               t_VAR="$( getPosInteger "${opt_arg}" )"
               [ ! -z "${t_VAR}" ] && __MY_PARMAKE=${t_VAR}
+            fi
+          fi
+        ;;
+      -par | --par | -parallel | --parallel )
+          checkFuncOpt "--parallel"
+          if [ $? -eq 0 ]; then
+            __MY_PARALLEL=1
+            if [ "X${opt_arg}" != "X" ]; then
+              if `isInteger "${opt_arg}"` ; then
+                __MY_PARALLEL=0
+                [ ${opt_arg} -ge 1 ] && __MY_PARALLEL=1
+              else
+                __MY_PARALLEL=0
+                [ "$( getYesNo "${opt_arg}" )" = "yes" ] && __MY_PARALLEL=1
+              fi
             fi
           fi
         ;;
@@ -218,6 +234,11 @@ UsageBuild()
   echo "  -j|--j [=|space] \"N\" (OPTIONAL)."
   echo "    Define the number of make jobs to run simultaneously."
   echo "    Default: 1."
+  echo
+  #---
+  echo "  -par|--par|-parallel|--parallel [=|space] \"0|1|yes|no\" (OPTIONAL)."
+  echo "    Activate the use of parallel compilers."
+  echo "    Default: 1|yes."
   echo
   #---
   echo "  -os|--os [=|space] \"OS string\" (OPTIONAL)."

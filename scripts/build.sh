@@ -48,10 +48,12 @@ ParseArgs "${@}"
 # Set the variables for this script
 CLEAN=${MY_CLEAN:-0}
 
-[ -n "${MY_COMPILER:+1}" ] && COMPILER="$( toLOWER "${MY_COMPILER}" )"
+[ -n "${MY_COMPILER:+1}" ] && COMPILER="$( toLOWER "$( basename "${MY_COMPILER}" )" )"
 
 [ -n "${MY_COMPONENT:+1}" ] && COMPONENT="$( toUPPER "${MY_COMPONENT}" )"
 
+PARALLEL=${MY_PARALLEL:-1}
+export NEMS_PARALLEL=${PARALLEL}
 
 [ -n "${MY_OS:+1}" ] && OS="$( toLOWER "${MY_OS}" )"
 if [ -n "${MY_PLATFORM:+1}" ]; then
@@ -75,7 +77,7 @@ if [ -n "${COMPONENT:+1}" ]; then
   compFNAME="$( echo "${compFNAME}" | sed 's/ /_/g' )"
 fi
 
-# Export some environment variables for NEMS
+# Export some environment variables for NEMS and for other models
 export NEMS_COMPILER=${COMPILER}
 ##########
 
@@ -120,6 +122,60 @@ fi
 
 
 ##########
+# Get the compilers to use for this project compilation
+case "${COMPILER}" in
+  gnu)
+     CC=gcc
+     CXX=g++
+     FC=gfortran
+     F90=gfortran
+     PCC=mpicc
+     PCXX=mpicxx
+     PFC=mpif90
+     PF90=mpif90
+     ;;
+  intel)
+     CC=icc
+     CXX=icpc
+     FC=ifort
+     F90=ifort
+     PCC=mpiicc
+     PCXX=mpiicpc
+     PFC=mpiifort
+     PF90=mpiifort
+     ;;
+  pgi)
+     CC=pgcc
+     CXX=pgc++
+     FC=pgfortran
+     F90=pgfortran
+     PCC=pgcc
+     PCXX=pgc++
+     PFC=pgfortran
+     PF90=pgfortran
+     ;;
+  *) # No defaults. Give the user the option to define the environment variables
+     # CC, CXX, FC, F90 before running this script.
+     #echo "WARNING: The supplied compiling system \"${COMPILER}\", is not suported."
+     #echo "         Supported systems are anyone of: compiling_system=[${MY_COMPILING_SYTEMS}]"
+     #echo "         Use: --compiler=compiling_system."
+     #echo "         Will continue with OS defaults."
+     CC=${CC:-}
+     CXX=${CXX:-}
+     FC=${FC:-}
+     F90=${F90:-}
+     PCC=${CC:-}
+     PCXX=${CXX:-}
+     PFC=${FC:-}
+     PF90=${F90:-}
+     ;;
+esac
+
+export CC CXX FC F90 PCC PCXX PFC PF90
+##########
+
+
+##########
 # Source the environment module
 source ${modDIR}/${modFILE}
 
@@ -139,6 +195,15 @@ echo "The following variables are defined:"
 echo "    CLEAN          = ${CLEAN}"
 echo "    COMPILER       = ${COMPILER:-Undefined, Supported values are: [${MY_COMPILING_SYTEMS}]}"
 echo "    NEMS_COMPILER  = ${NEMS_COMPILER}"
+echo "    NEMS_PARALLEL  = ${PARALLEL:-0}"
+echo "    CC             = ${CC:-UNDEF}"
+echo "    CXX            = ${CXX:-UNDEF}"
+echo "    FC             = ${FC:-UNDEF}"
+echo "    F90            = ${F90:-UNDEF}"
+echo "    PCC            = ${PCC:-UNDEF}"
+echo "    PCXX           = ${PCXX:-UNDEF}"
+echo "    PFC            = ${PFC:-UNDEF}"
+echo "    PF90           = ${PF90:-UNDEF}"
 echo "    MODULES FILE   = ${modFILE}"
 if [[ :${component_ww3}: == *:"WW3":* ]]; then
   echo "    WW3_CONFOPT    = ${WW3_CONFOPT}"

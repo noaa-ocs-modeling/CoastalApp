@@ -6,12 +6,11 @@
 ####################
 ### (1) Load all needed environment modules.
 module purge
-module load cmake
-module load intel/2019.5 impi
-module load szip hdf5/1.10.5-parallel
-module load netcdf/4.7.2-parallel
+module load intel impi
+module load szip hdf5
+module load netcdf
 
-module load esmf/7.1.0r
+module load esmf
 
 
 ####################
