@@ -19,7 +19,7 @@ module purge
 module use /scratch2/NCEPDEV/nwprod/hpc-stack/libs/hpc-stack/modulefiles/stack
 module load hpc
 module load cmake
-if [ ${use_defaults:-0} -ge 1 ]; then
+if [ ${use_defaults:-0} -le 0 ]; then
   module load hpc-intel/18.0.5.274  hpc-impi
   module load szip hdf5 netcdf
   module load esmf/8_1_1

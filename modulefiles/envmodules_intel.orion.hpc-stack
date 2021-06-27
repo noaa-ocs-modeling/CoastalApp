@@ -19,7 +19,7 @@ module purge
 module use /apps/contrib/NCEP/libs/hpc-stack/modulefiles/stack
 module load hpc
 module load cmake
-if [ ${use_defaults:-0} -ge 1 ]; then
+if [ ${use_defaults:-0} -le 0 ]; then
   module load hpc-intel/2018.4  hpc-impi
   module load szip hdf5 netcdf
   module load esmf/8_1_1
