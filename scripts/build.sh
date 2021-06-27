@@ -63,6 +63,7 @@ else
 fi
 export NEMS_PLATFORM=${PLATFORM}
 export MACHINE_ID=${PLATFORM}
+export FULL_MACHINE_ID=${PLATFORM}
 
 
 [ "${MY_PARMAKE:0}" -gt 1 ] && PARMAKE=${MY_PARMAKE}
