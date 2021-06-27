@@ -14,20 +14,14 @@
 
 ####################
 ### (1) Load all needed environment modules.
-use_defaults=0
 module purge
-module use /apps/contrib/NCEP/libs/hpc-stack/modulefiles/stack
-module load hpc
 module load cmake
-if [ ${use_defaults:-0} -le 0 ]; then
-  module load hpc-intel/2018.4  hpc-impi
-  module load szip hdf5 netcdf
-  module load esmf/8_1_1
-else
-  module load hpc-intel  hpc-impi
-  module load szip hdf5 netcdf
-  module load esmf
-fi
+module load intel/2019.5 impi
+module load szip hdf5/1.10.5-parallel
+module load netcdf/4.7.2-parallel
+
+module load esmf/7.1.0r
+
 
 ####################
 ### (2) Set some environments varaiables related to the loaded
@@ -44,8 +38,8 @@ unset funcs
 
 ########## BEG:: PLATFORM CUSTOMIZED SETTINGS ##########
 export NETCDF_CONFIG=${NETCDFHOME:+${NETCDFHOME}/bin/nc-config}
-export NETCDF_INCDIR=${NETCDF_INCLUDES}
-export NETCDF_LIBDIR=${NETCDF_LIBRARIES}
+export NETCDF_INCDIR=${NETCDF_INCLUDE_DIRS}
+export NETCDF_LIBDIR=${NETCDF_LIBRARY_DIRS}
 
 export ESMFMKFILE=${ESMFMKFILE}
 ########## END:: PLATFORM CUSTOMIZED SETTINGS ##########
