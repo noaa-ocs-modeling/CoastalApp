@@ -9,6 +9,7 @@
 set +u
 
 MY_COMPILING_SYTEMS="gnu, intel, pgi"
+MY_COMPILING_PLATFORMS="custom, linux, macosx, cheyenne, gaea, hera, jet, orion, stampede, wcoss mistral strand"
 
 MY_ATM_MODS="ATMESH WRF HWRF PAHM"
 MY_OCN_MODS="ADCIRC SCHISM FVCOM ROMS"
@@ -51,7 +52,7 @@ ParseArgs()
   __MY_OS=
   __MY_PARALLEL=1
   __MY_PARMAKE=1
-  __MY_PLATFORM=
+  __MY_PLATFORM=linux
   __MY_VERBOSE=
           
 
@@ -251,8 +252,8 @@ UsageBuild()
   echo "    The name of the compute HPC platform to consider."
   echo "    Selecting a platform, environment modules specific to that platform are loaded"
   echo "    and corresponding environment variables are set."
-  echo "    Supported platforms: cheyenne gaea hera jet orion stampede wcoss."
-  echo "    Default: none."
+  echo "    Supported platforms: ${MY_COMPILING_PLATFORMS}."
+  echo "    Default: linux."
   echo
   #---
   echo "  -v|--v|-verbose|--verbose [=|space] \"a,b,v,i,j,m,n\" (any combination, OPTIONAL)."

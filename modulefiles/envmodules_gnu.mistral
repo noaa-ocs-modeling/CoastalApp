@@ -21,15 +21,15 @@ ${retv} 1
 ####################
 ### (1) Load all needed environment modules.
 module purge
-module load pgi impi
-module load szip hdf5
-module load netcdf
+module load cmake/3.17.1-gcc-9.1.0
+module load gcc openmpi
+module load netcdf-c
+module load netcdf-fortran
 
-module use /contrib/modulefiles
 module load esmf
 
 
-###################
+####################
 ### (2) Set some environments varaiables related to the loaded
 ###     modules and required to compile the NEMS application properly.
 funcs="$( find . -type f -name "PlatformFuncs" | head -n 1 )"
@@ -43,9 +43,13 @@ unset funcs
 
 
 ########## BEG:: PLATFORM CUSTOMIZED SETTINGS ##########
+# use this more complicated one to address ADCIRC demands 
+export NETCDFHOME="$(nf-config --prefix)/include $(nf-config --flibs) $(nc-config --prefix)"
+export NETCDFPATH=$(nc-config --prefix)
 export NETCDF_CONFIG=${NETCDFHOME:+${NETCDFHOME}/bin/nc-config}
-export NETCDF_INCDIR=${NETCDFHOME:+${NETCDFHOME}/include}
-export NETCDF_LIBDIR=${NETCDFHOME:+${NETCDFHOME}/lib}
+
+export NETCDF_INCDIR="$(nc-config --includedir) -I$(nf-config --includedir)"
+export NETCDF_LIBDIR="$(nc-config --prefix)/lib $(nf-config --flibs)"
 
 export ESMFMKFILE=${ESMFMKFILE}
 ########## END:: PLATFORM CUSTOMIZED SETTINGS ##########

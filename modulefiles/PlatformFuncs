@@ -3,99 +3,148 @@
 ### PlatformFuncs :: Utility functions
 ###
 ### Author: Panagiotis Velissariou <panagiotis.velissariou@noaa.gov>
+### Date:   June 26 2021
 ###########################################################################
+
+function strTrim ()
+{
+  local trimFLG="${2:-0}"
+  local out_str=
+
+  case ${trimFLG} in
+    0) out_str="$(echo "${1}" | sed 's/[[:space:]]*$//')" ;;
+    1) out_str="$(echo "${1}" | sed 's/^[[:space:]]*//')" ;;
+    2) out_str="$(echo "${1}" | sed 's/^[[:space:]]*//;s/[[:space:]]*$//')" ;;
+    *) out_str="$(echo "${1}" | sed 's/[[:space:]]*$//')" ;;
+  esac
+
+  echo -n ${out_str}
+}
 
 get_env_hdf5()
 {
-#  if [ "${_found_hdf5:-FALSE}" = "FALSE" ]; then
-    _found_hdf5=FALSE
-    if [ -n "${HDF5:+1}" ]; then
-      HDF5="${HDF5}"
-      export HDF5HOME="${HDF5}"
-      HDF5_DIR="${HDF5}"
-      HDF5_PATH="${HDF5}"
-      HDF5_ROOT="${HDF5}"
-      _found_hdf5=TRUE
+  local _DEFINED_HDF5
+  local _hdf5_env_name
+  local _name _var _var_val
+
+  _DEFINED_HDF5=FALSE
+  _hdf5_env_name="$( strTrim "$( echo "${1:-}" )" 2 )"
+
+  if [ -n "${_hdf5_env_name:+1}" ]; then
+    _hdf5_env_name="$( eval echo "\$${_hdf5_env_name}" )"
+    if [ -n "${_hdf5_env_name:+1}" ]; then
+      export HDF5="${_hdf5_env_name}"
+      export HDF5HOME="${_hdf5_env_name}"
+      export HDF5_DIR="${_hdf5_env_name}"
+      export HDF5_PATH="${_hdf5_env_name}"
+      export HDF5_ROOT="${_hdf5_env_name}"
+      _DEFINED_HDF5=TRUE
+    fi
+  fi
+
+  if [ "${_DEFINED_HDF5:-FALSE}" != "TRUE" ]; then
+    _hdf5_env_name="${HDF5}"
+    if [ -n "${_hdf5_env_name:+1}" ]; then
+      export HDF5HOME="${_hdf5_env_name}"
+      export HDF5_DIR="${_hdf5_env_name}"
+      export HDF5_PATH="${_hdf5_env_name}"
+      export HDF5_ROOT="${_hdf5_env_name}"
+      _DEFINED_HDF5=TRUE
     else
       for _var in DIR HOME PATH ROOT
       do
-        _var_val="$(eval "echo \"\$HDF5${_var}\"")"
-        if [ -n "${_var_val:+1}" ]; then
-          HDF5="${_var_val}"
-          export HDF5HOME="${_var_val}"
-          HDF5_DIR="${_var_val}"
-          HDF5_PATH="${_var_val}"
-          HDF5_ROOT="${_var_val}"
-          _found_hdf5=TRUE
+        _hdf5_env_name="$(eval "echo \"\$HDF5${_var}\"")"
+        if [ -n "${_hdf5_env_name:+1}" ]; then
+          export HDF5="${_hdf5_env_name}"
+          export HDF5HOME="${_hdf5_env_name}"
+          export HDF5_DIR="${_hdf5_env_name}"
+          export HDF5_PATH="${_hdf5_env_name}"
+          export HDF5_ROOT="${_hdf5_env_name}"
+          _DEFINED_HDF5=TRUE
           break
         else
-          _var_val="$(eval "echo \"\$HDF5_${_var}\"")"
-          if [ -n "${_var_val:+1}" ]; then
-            HDF5="${_var_val}"
-            export HDF5HOME="${_var_val}"
-            HDF5_DIR="${_var_val}"
-            HDF5_PATH="${_var_val}"
-            HDF5_ROOT="${_var_val}"
-            _found_hdf5=TRUE
+          _hdf5_env_name="$(eval "echo \"\$HDF5_${_var}\"")"
+          if [ -n "${_hdf5_env_name:+1}" ]; then
+            export HDF5="${_hdf5_env_name}"
+            export HDF5HOME="${_hdf5_env_name}"
+            export HDF5_DIR="${_hdf5_env_name}"
+            export HDF5_PATH="${_hdf5_env_name}"
+            export HDF5_ROOT="${_hdf5_env_name}"
+            _DEFINED_HDF5=TRUE
             break
           fi
         fi
       done
     fi
-    unset _name _var _var_val
-#  fi
+  fi
 
   return 0
 }
 
-
 get_env_netcdf()
 {
-#  if [ "${_found_netcdf:-FALSE}" = "FALSE" ]; then
-    export _found_netcdf=FALSE
+  local _DEFINED_NETCDF
+  local _netcdf_env_name
+  local _name _var _var_val
+
+  _DEFINED_NETCDF=FALSE
+  _netcdf_env_name="$( strTrim "$( echo "${1:-}" )" 2 )"
+
+  if [ -n "${_netcdf_env_name:+1}" ]; then
+    _netcdf_env_name="$( eval echo "\$${_netcdf_env_name}" )"
+    if [ -n "${_netcdf_env_name:+1}" ]; then
+      export netcdf="${_netcdf_env_name}"
+      export netcdfHOME="${_netcdf_env_name}"
+      export netcdf_DIR="${_netcdf_env_name}"
+      export netcdf_PATH="${_netcdf_env_name}"
+      export netcdf_ROOT="${_netcdf_env_name}"
+      _DEFINED_NETCDF=TRUE
+    fi
+  fi
+
+  if [ "${_DEFINED_NETCDF:-FALSE}" != "TRUE" ]; then
     for _name in NETCDF NETCDF4 NetCDF NetCDF4
     do
-      if [ "${_found_netcdf}" = "TRUE" ]; then
+      if [ "${_DEFINED_NETCDF:-FALSE}" = "TRUE" ]; then
         break
       fi
 
-      _var_val="$(eval "echo \"\$${_name}\"")"
-      if [ -n "${_var_val:+1}" ]; then
-        export NETCDF="${_var_val}"
-        export NETCDFHOME="${_var_val}"
-        export NETCDF_DIR="${_var_val}"
-        export NETCDF_PATH="${_var_val}"
-        export NETCDF_ROOT="${_var_val}"
-        export _found_netcdf=TRUE
+      _netcdf_env_name="$(eval "echo \"\$${_name}\"")"
+      if [ -n "${_netcdf_env_name:+1}" ]; then
+        export NETCDF="${_netcdf_env_name}"
+        export NETCDFHOME="${_netcdf_env_name}"
+        export NETCDF_DIR="${_netcdf_env_name}"
+        export NETCDF_PATH="${_netcdf_env_name}"
+        export NETCDF_ROOT="${_netcdf_env_name}"
+        _DEFINED_NETCDF=TRUE
       else
         for _var in DIR HOME PATH ROOT
         do
-          _var_val="$(eval "echo \"\$${_name}${_var}\"")"
-          if [ -n "${_var_val:+1}" ]; then
-            export NETCDF="${_var_val}"
-            export NETCDFHOME="${_var_val}"
-            export NETCDF_DIR="${_var_val}"
-            export NETCDF_PATH="${_var_val}"
-            export NETCDF_ROOT="${_var_val}"
-            export _found_netcdf=TRUE
+          _netcdf_env_name="$(eval "echo \"\$${_name}${_var}\"")"
+          if [ -n "${_netcdf_env_name:+1}" ]; then
+            export NETCDF="${_netcdf_env_name}"
+            export NETCDFHOME="${_netcdf_env_name}"
+            export NETCDF_DIR="${_netcdf_env_name}"
+            export NETCDF_PATH="${_netcdf_env_name}"
+            export NETCDF_ROOT="${_netcdf_env_name}"
+            _DEFINED_NETCDF=TRUE
             break
           else
-            _var_val="$(eval "echo \"\$${_name}_${_var}\"")"
-            if [ -n "${_var_val:+1}" ]; then
-              export NETCDF="${_var_val}"
-              export NETCDFHOME="${_var_val}"
-              export NETCDF_DIR="${_var_val}"
-              export NETCDF_PATH="${_var_val}"
-              export NETCDF_ROOT="${_var_val}"
-              export _found_netcdf=TRUE
+            _netcdf_env_name="$(eval "echo \"\$${_name}_${_var}\"")"
+            if [ -n "${_netcdf_env_name:+1}" ]; then
+              export NETCDF="${_netcdf_env_name}"
+              export NETCDFHOME="${_netcdf_env_name}"
+              export NETCDF_DIR="${_netcdf_env_name}"
+              export NETCDF_PATH="${_netcdf_env_name}"
+              export NETCDF_ROOT="${_netcdf_env_name}"
+              _DEFINED_NETCDF=TRUE
               break
             fi
           fi
         done
       fi
     done
-    unset _name _var _var_val
-#  fi
+  fi
 
   return 0
 }
