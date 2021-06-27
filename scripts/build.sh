@@ -214,6 +214,8 @@ fi
 echo "    COMPONENTS     = ${COMPONENT:-Undefined, Supported values are: [${MY_COMPONENT_LIST}]}"
 echo "    OS             = ${OS}"
 echo "    PLATFORM       = ${PLATFORM}"
+echo "    MACHINE_ID     = ${MACHINE_ID}"
+echo "    FULL_MACHINE_ID= ${FULL_MACHINE_ID}"
 echo "    VERBOSE        = ${VERBOSE}"
 echo
 echo "    HDF5HOME       = ${HDF5HOME}"
