@@ -14,14 +14,20 @@
 
 ####################
 ### (1) Load all needed environment modules.
+use_defaults=0
 module purge
-module load intel/18.0.5.274 impi/2018.0.4
-module load szip
-
-module use /home/emc.nemspara/SOFT-hera/modulefiles
-module load hdf5_parallel/1.10.6.release
-module load netcdf_parallel/4.7.4.release
-module load esmf/8.1.0bs36g
+module use /scratch2/NCEPDEV/nwprod/hpc-stack/libs/hpc-stack/modulefiles/stack
+module load hpc
+module load cmake
+if [ ${use_defaults:-0} -le 0 ]; then
+  module load hpc-intel/18.0.5.274  hpc-impi
+  module load szip hdf5 netcdf
+  module load esmf/8_1_1
+else
+  module load hpc-intel  hpc-impi
+  module load szip hdf5 netcdf
+  module load esmf
+fi
 
 
 ###################

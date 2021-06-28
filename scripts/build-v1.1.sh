@@ -61,6 +61,7 @@ else
 fi
 export NEMS_PLATFORM=${PLATFORM}
 export MACHINE_ID=${PLATFORM}
+export FULL_MACHINE_ID=${PLATFORM}
 
 
 [ "${MY_PARMAKE:0}" -gt 1 ] && PARMAKE=${MY_PARMAKE}
@@ -148,6 +149,8 @@ fi
 echo "    COMPONENTS     = ${COMPONENT:-Undefined, Supported values are: [${MY_COMPONENT_LIST}]}"
 echo "    OS             = ${OS}"
 echo "    PLATFORM       = ${PLATFORM}"
+echo "    MACHINE_ID     = ${MACHINE_ID}"
+echo "    FULL_MACHINE_ID= ${FULL_MACHINE_ID}"
 echo "    VERBOSE        = ${VERBOSE}"
 echo
 echo "    HDF5HOME       = ${HDF5HOME}"

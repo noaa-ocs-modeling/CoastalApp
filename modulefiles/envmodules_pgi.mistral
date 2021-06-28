@@ -7,6 +7,12 @@
 ### Date:   June 26 2021
 ###########################################################################
 
+#----------
+[[ "$0" == "bash" || "$0" == "-bash" ]] && retv=return || retv=exit
+echo "$(basename ${BASH_SOURCE[0]}) :: This environment is either not configured or not supported"
+echo "  Exiting ..."
+${retv} 1
+#----------
 
 # This script is responsible for loading modules that are
 # compatible with the NUOPC Layer version used in NEMS.
@@ -15,16 +21,15 @@
 ####################
 ### (1) Load all needed environment modules.
 module purge
-module load intel/18.0.5.274 impi/2018.0.4
-module load szip
+module load cmake/3.17.1-gcc-9.1.0
+module load pgi openmpi
+module load netcdf-c
+module load netcdf-fortran
 
-module use /home/emc.nemspara/SOFT-hera/modulefiles
-module load hdf5_parallel/1.10.6.release
-module load netcdf_parallel/4.7.4.release
-module load esmf/8.1.0bs36g
+module load esmf
 
 
-###################
+####################
 ### (2) Set some environments varaiables related to the loaded
 ###     modules and required to compile the NEMS application properly.
 funcs="$( find . -type f -name "PlatformFuncs" | head -n 1 )"
@@ -38,9 +43,13 @@ unset funcs
 
 
 ########## BEG:: PLATFORM CUSTOMIZED SETTINGS ##########
+# use this more complicated one to address ADCIRC demands 
+export NETCDFHOME="$(nf-config --prefix)/include $(nf-config --flibs) $(nc-config --prefix)"
+export NETCDFPATH=$(nc-config --prefix)
 export NETCDF_CONFIG=${NETCDFHOME:+${NETCDFHOME}/bin/nc-config}
-export NETCDF_INCDIR=${NETCDFHOME:+${NETCDFHOME}/include}
-export NETCDF_LIBDIR=${NETCDFHOME:+${NETCDFHOME}/lib}
+
+export NETCDF_INCDIR="$(nc-config --includedir) -I$(nf-config --includedir)"
+export NETCDF_LIBDIR="$(nc-config --prefix)/lib $(nf-config --flibs)"
 
 export ESMFMKFILE=${ESMFMKFILE}
 ########## END:: PLATFORM CUSTOMIZED SETTINGS ##########
