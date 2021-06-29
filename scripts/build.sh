@@ -24,18 +24,27 @@ else
   readonly scrDIR="$(cd "$(dirname "$(realpath -s "${BASH_SOURCE[0]}")" )" && pwd -P)"
 fi
 
-funcs="$( find ${scrDIR} -type f -name "functions_build" | head -n 1 )"
-if [ -f "${funcs}" ]; then
+lst="${scrDIR}/functions_build ${scrDIR}/scripts/functions_build functions_build "
+funcs=
+for ilst in ${lst}
+do
+  if [ -f "${ilst:-}" ]; then
+    funcs="${ilst}"
+    break
+  fi
+done
+
+if [ -n "${funcs:+1}" ]; then
   source "${funcs}"
 else
   echo " ### ERROR :: in ${scrNAME}"
-  echo "     Cannot load the required file: ${funcs}"
+  echo "     Cannot load the required file: functions_build"
   echo "     Exiting now ..."
   echo
   exit 1
 fi
 
-unset funcs
+unset ilst funcs
 ###====================
 
 
