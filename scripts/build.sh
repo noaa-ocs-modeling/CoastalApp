@@ -112,6 +112,9 @@ if [ ! -f "${modDIR}/${modFILE}" ]; then
   echo "Exiting ..."
   echo
   exit 1
+else
+  # Source the environment module
+  source ${modDIR}/${modFILE}
 fi
 ##########
 
@@ -139,30 +142,30 @@ case "${COMPILER}" in
      CXX=g++
      FC=gfortran
      F90=gfortran
-     PCC=mpicc
-     PCXX=mpicxx
-     PFC=mpif90
-     PF90=mpif90
+     PCC=${PCC:-mpicc}
+     PCXX=${PCXX:-mpicxx}
+     PFC=${PFC:-mpif90}
+     PF90=${PF90:-${PFC}}
      ;;
   intel)
      CC=icc
      CXX=icpc
      FC=ifort
      F90=ifort
-     PCC=mpiicc
-     PCXX=mpiicpc
-     PFC=mpiifort
-     PF90=mpiifort
+     PCC=${PCC:-mpiicc}
+     PCXX=${PCXX:-mpiicpc}
+     PFC=${PFC:-mpiifort}
+     PF90=${PF90:-${PFC}}
      ;;
   pgi)
      CC=pgcc
      CXX=pgc++
      FC=pgfortran
      F90=pgfortran
-     PCC=pgcc
-     PCXX=pgc++
-     PFC=pgfortran
-     PF90=pgfortran
+     PCC=${PCC:-pgcc}
+     PCXX=${PCXX:-pgc++}
+     PFC==${PFC:-pgfortran}
+     PF90=${PF90:-${PFC}}
      ;;
   *) # No defaults. Give the user the option to define the environment variables
      # CC, CXX, FC, F90 before running this script.
@@ -186,9 +189,6 @@ export CC CXX FC F90 PCC PCXX PFC PF90
 
 
 ##########
-# Source the environment module
-source ${modDIR}/${modFILE}
-
 component_ww3="$( echo "${COMPONENT}" | sed 's/ /:/g' )"
 if [[ :${component_ww3}: == *:"WW3":* ]]; then
   export WW3_CONFOPT="${COMPILER}"
@@ -233,6 +233,10 @@ echo "    NETCDF_INCDIR  = ${NETCDF_INCDIR}"
 echo "    NETCDF_LIBDIR  = ${NETCDF_LIBDIR}"
 echo
 echo "    ESMFMKFILE     = ${ESMFMKFILE}"
+echo
+echo "NOTE: If the parallel compiler names are different in your platform, you may pass one or more"
+echo "      of the environment variables: PCC, PCXX, PFC, PF90 to $(basename ${scrNAME}) and run the script as:"
+echo "         PCC=yourPCC PCXX=yourPCXX PFC=yourPFC PF90=yourPF90 $(basename ${scrNAME}) [options]"
 echo
 
 module list
