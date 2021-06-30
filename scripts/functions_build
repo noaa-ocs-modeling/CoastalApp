@@ -559,9 +559,8 @@ compileNems() {
         echo "compileNems :: Cleaning: make -f ${cmp_make} ${cmp_type} ${cmp_comp}"
         eval "make ${cmp_verb} -f ${cmp_make} ${cmp_type} ${cmp_comp}"
         err=$?
-        
-        if [ "${cmp_type}" == "distclean" ]; then
-          rm -f NEMS/exe/NEMS-*.x
+        if [ "${cmp_type}" = "distclean" ]; then
+          rm -fv exe/NEMS*.x
         fi
       else
         echo "compileNems :: Cleaning: no makefile found: makefile = ${cmp_make}"
