@@ -184,11 +184,6 @@ if [ ${CLEAN:-0} -ge 1 ]; then
 fi
 ##########
 
-export CC=mpiicc
-export CXX=mpiicpc
-export FC=mpiifort
-
-##########
 # Compile the project
 compileERR=0
 pushd ${nemsDIR} >/dev/null 2>&1
