@@ -14,7 +14,7 @@
 ####################
 ### (1) Load all needed environment modules.
 module purge
-module load intel impi
+module load pgi openmpi
 #module load szip hdf5
 module load netcdf
 
@@ -35,6 +35,9 @@ unset funcs
 
 
 ########## BEG:: PLATFORM CUSTOMIZED SETTINGS ##########
+# Is this needed in all systems?
+export HDF5_USE_FILE_LOCKING=FALSE
+
 export NETCDF_CONFIG=${NETCDFHOME:+${NETCDFHOME}/bin/nc-config}
 export NETCDF_INCDIR=${NETCDFHOME:+${NETCDFHOME}/include}
 export NETCDF_LIBDIR=${NETCDFHOME:+${NETCDFHOME}/lib}
