@@ -34,7 +34,7 @@ EXTLIBS_POST = $(NEMSIO_LIB)  \
                $(SYS_LIB)
 ###
 FC          = mpif90 -g -ffree-line-length-none -fno-range-check -fbacktrace
-F77         = mpiifort -g -ffree-line-length-none -fno-range-check -fbacktrace
+F77         = mpifort -g -ffree-line-length-none -fno-range-check -fbacktrace
 FREE         = -free
 FIXED        = -fixed
 R8           = -r8
@@ -42,7 +42,7 @@ R8           = -r8
 FINCS        = $(ESMF_INC) $(NEMSIO_INC) $(NETCDF_INC)
 #TRAPS        = ???
 
-FFLAGS       = $(TRAPS) $(FINCS) -fp-model strict
+FFLAGS       = $(TRAPS) $(FINCS)
 
 OPTS_NMM     = -g -ffree-line-length-none -fno-range-check -fbacktrace $(FREE)
 
