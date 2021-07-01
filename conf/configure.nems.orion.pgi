@@ -42,7 +42,8 @@ R8           = -r8
 FINCS        = $(ESMF_INC) $(NEMSIO_INC) $(NETCDF_INC)
 #TRAPS        = -g -fno-inline -no-ip -traceback -ftrapuv -fpe0 -ftz -check all -check noarg_temp_created -fp-stack-check
 
-FFLAGS       = $(TRAPS) $(FINCS) -fp-model strict
+#FFLAGS       = $(TRAPS) $(FINCS) -fp-model strict
+FFLAGS       = $(TRAPS) $(FINCS)
 
 OPTS_NMM     = -g -Mextend -Minform,inform -Mbounds $(FREE)
 

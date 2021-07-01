@@ -1,5 +1,13 @@
 #!/bin/bash-*-Shell-script-modules*-
 
+###########################################################################
+### Module File to load the required environment modules for the NEMS application
+###
+### Author: Panagiotis Velissariou <panagiotis.velissariou@noaa.gov>
+### Date:   June 26 2021
+###########################################################################
+
+
 # This script is responsible for loading modules that are
 # compatible with the NUOPC Layer version used in NEMS.
 
@@ -18,12 +26,20 @@ module load cmake/3.16.1
 ####################
 ### (2) Set some environments varaiables related to the loaded
 ###     modules and required to compile the NEMS application properly.
+funcs="$( find . -type f -name "PlatformFuncs" | head -n 1 )"
+if [ -f "${funcs}" ]; then
+  source "${funcs}"
 
-export HDF5HOME=${TACC_HDF5_DIR}
-export NETCDFHOME=${TACC_NETCDF_DIR}
+  get_env_hdf5 TACC_HDF5_DIR
+  get_env_netcdf TACC_NETCDF_DIR
+fi
+unset funcs
 
+
+########## BEG:: PLATFORM CUSTOMIZED SETTINGS ##########
 export NETCDF_CONFIG=${TACC_NETCDF_BIN}/nc-config
 export NETCDF_INCDIR=${TACC_NETCDF_INC}
 export NETCDF_LIBDIR=${TACC_NETCDF_LIB}
 
 export ESMFMKFILE=${ESMFMKFILE}
+########## END:: PLATFORM CUSTOMIZED SETTINGS ##########

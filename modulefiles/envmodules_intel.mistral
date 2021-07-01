@@ -1,9 +1,18 @@
 #!/bin/bash-*-Shell-script-modules*-
 
+###########################################################################
+### Module File to load the required environment modules for the NEMS application
+###
+### Author: Panagiotis Velissariou <panagiotis.velissariou@noaa.gov>
+### Date:   June 26 2021
+###########################################################################
+
+
 # This script is responsible for loading modules that are
 # compatible with the NUOPC Layer version used in NEMS.
 #
 # Adopted for DKRZ/mistral by Carsten Lemmen <carsten.lemmen@hereon.de>
+
 
 ####################
 ### (1) Load all needed environment modules.
@@ -21,13 +30,16 @@ module load cmake/3.17.1-gcc-9.1.0
 ### (2) Set some environments varaiables related to the loaded
 ###     modules and required to compile the NEMS application properly.
 funcs="$( find . -type f -name "PlatformFuncs" | head -n 1 )"
-[ -f "${funcs}" ] && source "${funcs}"
+if [ -f "${funcs}" ]; then
+  source "${funcs}"
+
+  get_env_hdf5
+  get_env_netcdf
+fi
 unset funcs
 
-get_env_hdf5
-get_env_netcdf
 
-#export NETCDFHOME=$(nc-config --prefix)
+########## BEG:: PLATFORM CUSTOMIZED SETTINGS ##########
 # use this more complicated one to address ADCIRC demands 
 export NETCDFHOME="$(nf-config --prefix)/include $(nf-config --flibs) $(nc-config --prefix)"
 export NETCDFPATH=$(nc-config --prefix)
@@ -37,3 +49,4 @@ export NETCDF_INCDIR="$(nc-config --includedir) -I$(nf-config --includedir)"
 export NETCDF_LIBDIR="$(nc-config --prefix)/lib $(nf-config --flibs)"
 
 export ESMFMKFILE=${ESMFMKFILE}
+########## END:: PLATFORM CUSTOMIZED SETTINGS ##########

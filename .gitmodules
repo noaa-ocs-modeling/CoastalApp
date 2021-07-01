@@ -25,3 +25,6 @@
 [submodule "SCHISM"]
 	path = SCHISM
 	url = https://github.com/schism-dev/schism.git
+[submodule "PAHM"]
+	path = PAHM
+	url = https://github.com/noaa-ocs-modeling/PaHM.git
