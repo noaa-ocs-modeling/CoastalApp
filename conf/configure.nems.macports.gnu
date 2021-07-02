@@ -33,7 +33,7 @@ EXTLIBS_POST = $(NEMSIO_LIB)  \
                $(NETCDF_LIB)  \
                $(SYS_LIB)
 ###
-FC          = mpifort -g -ffree-line-length-none -fno-range-check -fbacktrace
+FC          = mpifort -g -ffree-line-length-none -fno-range-check -fbacktrace -fallow-argument-mismatch
 F77         = mpifort -g -ffree-line-length-none -fno-range-check -fbacktrace
 FREE         = -free
 FIXED        = -fixed
