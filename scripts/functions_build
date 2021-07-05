@@ -612,7 +612,8 @@ installNems() {
       echo "   --- Installing from: ${icmp} to ${instdir} ---"
       for iprog in adcprep
       do
-        prog="$( find ${icmp} -type f -name ${iprog} | head -1 )"
+        prog="$( find -L ${icmp} -type f -name ${iprog} | head -1 )"
+
         if [ -n "${prog:+1}" ]; then
           ${CPBIN} ${prog} ${instdir}/
         fi
@@ -624,7 +625,7 @@ installNems() {
   ###### Install the NEMS/exe/NEMS* files
   echo
   echo "   --- Installing from: NEMS/exe to ${instdir} ---"
-  for iprog in NEMS/exe/NEMS-*.x
+  for iprog in NEMS/exe/NEMS*.x
   do
     if [ -f "${iprog}" ]; then
       ${CPBIN} ${iprog} ${instdir}/
