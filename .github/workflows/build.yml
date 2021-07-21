@@ -1,10 +1,13 @@
 name: build
 
 on:
+  push:
+    branches:
+      - master
+  pull_request:
   release:
     types:
       - published
-  pull_request
 
 jobs:
   build_adcirc:
