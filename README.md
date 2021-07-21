@@ -1,6 +1,7 @@
 # ADC-WW3-NWM-NEMS
 
 [![tests](https://github.com/noaa-ocs-modeling/ADC-WW3-NWM-NEMS/workflows/tests/badge.svg)](https://github.com/noaa-ocs-modeling/ADC-WW3-NWM-NEMS/actions?query=workflow%3Atests)
+[![build](https://github.com/noaa-ocs-modeling/ADC-WW3-NWM-NEMS/workflows/build/badge.svg)](https://github.com/noaa-ocs-modeling/ADC-WW3-NWM-NEMS/actions?query=workflow%3Abuild)
 [![license](https://img.shields.io/github/license/noaa-ocs-modeling/ADC-WW3-NWM-NEMS)](https://creativecommons.org/share-your-work/public-domain/cc0)
 
 ESMF application for building a NUOPC / NEMS application coupling ADCIRC, ATMESH, WW3 / WW3DATA, and NWM.
