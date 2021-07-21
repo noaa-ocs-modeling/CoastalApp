@@ -15,7 +15,7 @@ cd ADC-WW3-NWM-NEMS
 
 ## Organization / Responsibility
 
-#### `CoastalApp` NEMS application
+#### `NEMS` application
 - Saeed Moghimi (**lead**) - saeed.moghimi@noaa.gov
 - Panagiotis Velissariou - panagiotis.velissariou@noaa.gov
 - Zachary Burnett - zachary.burnett@noaa.gov
