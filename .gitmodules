@@ -25,3 +25,4 @@
 [submodule "PAHM"]
 	path = PAHM
 	url = https://github.com/noaa-ocs-modeling/PaHM
+	branch = main
