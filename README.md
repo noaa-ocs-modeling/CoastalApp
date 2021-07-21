@@ -9,6 +9,40 @@ git clone --recursive https://github.com/noaa-ocs-modeling/ADC-WW3-NWM-NEMS
 cd ADC-WW3-NWM-NEMS
 ```
 
+## Organization / Responsibility
+
+#### `CoastalApp` - overall NEMS application
+- Saeed Moghimi (**lead**) - saeed.moghimi@noaa.gov
+- Panagiotis Velissariou - panagiotis.velissariou@noaa.gov
+- Zachary Burnett - zachary.burnett@noaa.gov
+- Beheen Trimble - beheenmt@gmail.com
+#### NEMS cap for `ADCIRC` model
+- Saeed Moghimi (**lead**) saeed.moghimi@noaa.gov
+- Guoming Ling - gling@nd.edu
+- Damrongsak Wirasaet - dwirasae@nd.edu
+- Panagiotis Velissariou - panagiotis.velissariou@noaa.gov
+- Zachary Burnett - zachary.burnett@noaa.gov
+#### NEMS cap for `FVCOM` model
+- Jianhua Qi (**lead**) - jqi@umassd.edu
+- Saeed Moghimi - saeed.moghimi@noaa.gov
+#### NEMS cap for `SCHISM` model
+- Carsten Lemmen (**lead**) - carsten.lemmen@hzg.de  
+- Y. Joseph Zhang - yjzhang@vims.edu
+#### NEMS cap for `WW3`
+- Andre Van der Westhuysen (**lead**) - andre.vanderwesthuysen@noaa.gov
+- Ali Abdolali - ali.abdolali@noaa.gov
+#### `PaHM` model and NEMS cap for `PaHM`
+- Panagiotis Velissariou (**lead**) - panagiotis.velissariou@noaa.gov
+#### `ATMESH` data component and NEMS cap for `ATMESH`
+- Saeed Moghimi (**lead**) saeed.moghimi@noaa.gov
+- Guoming Ling - gling@nd.edu
+- Panagiotis Velissariou - panagiotis.velissariou@noaa.gov
+#### NEMS cap for `NWM`
+- Daniel Rosen (**lead**) - Daniel.Rosen@noaa.gov
+- Beheen Trimble - beheenmt@gmail.com
+- Jason Ducker - jason.ducker@noaa.gov
+- other colleagues from NWS / OWP
+
 ## Compilation
 
 ```bash
