@@ -1,7 +1,7 @@
 Patch usage: patch -p1 < patch_name
-        example: patch -p1 < ADC-WW3-NWM-NEMS.patch
+        example: patch -p1 < CoastalApp.patch
       to reverse it:
-        example: patch -p1 -R < ADC-WW3-NWM-NEMS.patch
+        example: patch -p1 -R < CoastalApp.patch
 
 1) Run the build.sh script as:
      build.sh -h or, build.sh --help

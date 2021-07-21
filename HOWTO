@@ -64,7 +64,7 @@ Assumptions:
 
 cd ROOTDIR
    
-1) git clone --recursive https://github.com/moghimis/ADC-WW3-NWM-NEMS
+1) git clone --recursive https://github.com/noaa-ocs-modeling/CoastalApp
 2) mkdir conf 
 3) mkdir modulefiles
 4) mkdir modulefiles/<COMPUTER>
@@ -119,11 +119,11 @@ Assumptions:
       Or get the development (a.k.a dev) version of the NEMS code to follow
 	  the instruction easier.
 
-   b) git clone --recursive https://github.com/moghimis/ADC-WW3-NWM-NEMS
+   b) git clone --recursive https://github.com/noaa-ocs-modeling/CoastalApp
    
       The development version includes the NEMS code and few model codes
-	  such as ADCIRC, WW3, ATMESH.  This version is located in a private 
-	  github repository at https://github.com/moghimis . 
+	  such as ADCIRC, WW3, ATMESH.  This version is located in a public 
+	  github repository at https://github.com/noaa-ocs-modeling . 
 	  
 	  To clone from dev you should have an account on  github repository
 	  with a valid email, username, and a password. You also required to 
