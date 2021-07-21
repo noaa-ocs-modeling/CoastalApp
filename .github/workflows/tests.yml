@@ -11,4 +11,5 @@ jobs:
         with:
           submodules: recursive
           lfs: false
+          # NOTE: this token is attached to my (@zacharyburnettNOAA) account because I have permission to clone the `adcirc-cg` repo which is private; perhaps in the future we can use the token from a dummy account, and / or an SSH key? The token is currently stored in the repository Secrets at https://github.com/noaa-ocs-modeling/ADC-WW3-NWM-NEMS/settings/secrets/actions
           token: ${{ secrets.PULL_TOKEN }}
