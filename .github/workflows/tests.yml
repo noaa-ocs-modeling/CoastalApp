@@ -1,0 +1,12 @@
+name: tests
+
+on: [push]
+
+jobs:
+  checkout:
+    name: Checkout repository with `--recursive` to validate submodule pointers
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          submodules: recursive
