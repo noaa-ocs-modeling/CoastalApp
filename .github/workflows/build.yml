@@ -1,0 +1,37 @@
+name: build
+
+on:
+  release:
+    types:
+      - published
+  pull_request
+
+jobs:
+  build_adcirc:
+    name: Build NEMS + ADCIRC
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+        with:
+          submodules: recursive
+          lfs: false
+          # NOTE: this token is attached to my (@zacharyburnettNOAA) account because I have permission to clone the `adcirc-cg` repo which is private; perhaps in the future we can use the token from a dummy account, and / or an SSH key? The token is currently stored in the repository Secrets at https://github.com/noaa-ocs-modeling/ADC-WW3-NWM-NEMS/settings/secrets/actions
+          token: ${{ secrets.PULL_TOKEN }}
+      - name: Install dependencies
+        run: sudo apt install module openmpi netcdf
+      - name: Build ESMF
+        run: |
+          # TODO: build ESMF here and export `ESMFMKFILE`
+          export ESMFMKFILE=/path/to/built/esmf
+      - name: Run build script
+        run: sh ./build.sh --plat linux --component ADCIRC --compiler intel
+        shell: bash
+      - name: Save build binaries
+        uses: actions/upload-artifact@v2
+        with:
+          name: build
+          path: |
+            ./ALLBIN_INSTALL/NEMS-adcirc.x
+            ./ALLBIN_INSTALL/adcprep
+        
