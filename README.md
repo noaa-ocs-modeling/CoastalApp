@@ -1,5 +1,9 @@
 # CoastalApp
 
+[![tests](https://github.com/noaa-ocs-modeling/ADC-WW3-NWM-NEMS/workflows/tests/badge.svg)](https://github.com/noaa-ocs-modeling/ADC-WW3-NWM-NEMS/actions?query=workflow%3Atests)
+[![build](https://github.com/noaa-ocs-modeling/ADC-WW3-NWM-NEMS/workflows/build/badge.svg)](https://github.com/noaa-ocs-modeling/ADC-WW3-NWM-NEMS/actions?query=workflow%3Abuild)
+[![license](https://img.shields.io/github/license/noaa-ocs-modeling/ADC-WW3-NWM-NEMS)](https://creativecommons.org/share-your-work/public-domain/cc0)
+
 ESMF application for building a NUOPC / NEMS application coupling ADCIRC, ATMESH, WW3 / WW3DATA, and NWM.
 
 `CoastalApp` is an ESMF application developed as part of the Coastal Act coupling project to determine wind versus water percentage loss caused by a Named Storm Event. 
@@ -8,6 +12,40 @@ ESMF application for building a NUOPC / NEMS application coupling ADCIRC, ATMESH
 git clone --recursive https://github.com/noaa-ocs-modeling/CoastalApp
 cd CoastalApp
 ```
+
+## Organization / Responsibility
+
+#### `NEMS` application implementing ESMF / NUOPC coupling
+- Saeed Moghimi (**lead**) - saeed.moghimi@noaa.gov
+- Panagiotis Velissariou - panagiotis.velissariou@noaa.gov
+- Zachary Burnett - zachary.burnett@noaa.gov
+- Beheen Trimble - beheenmt@gmail.com
+#### ESMF / NUOPC cap for `ADCIRC` model
+- Saeed Moghimi (**lead**) saeed.moghimi@noaa.gov
+- Guoming Ling - gling@nd.edu
+- Damrongsak Wirasaet - dwirasae@nd.edu
+- Panagiotis Velissariou - panagiotis.velissariou@noaa.gov
+- Zachary Burnett - zachary.burnett@noaa.gov
+#### ESMF / NUOPC cap for `FVCOM` model
+- Jianhua Qi (**lead**) - jqi@umassd.edu
+- Saeed Moghimi - saeed.moghimi@noaa.gov
+#### ESMF / NUOPC cap for `SCHISM` model
+- Carsten Lemmen (**lead**) - carsten.lemmen@hzg.de  
+- Y. Joseph Zhang - yjzhang@vims.edu
+#### ESMF / NUOPC cap for `WW3` model
+- Andre Van der Westhuysen (**lead**) - andre.vanderwesthuysen@noaa.gov
+- Ali Abdolali - ali.abdolali@noaa.gov
+#### `PaHM` model and ESMF / NUOPC cap for `PaHM` model
+- Panagiotis Velissariou (**lead**) - panagiotis.velissariou@noaa.gov
+#### `ATMESH` data component and ESMF / NUOPC cap for `ATMESH` data component
+- Saeed Moghimi (**lead**) saeed.moghimi@noaa.gov
+- Guoming Ling - gling@nd.edu
+- Panagiotis Velissariou - panagiotis.velissariou@noaa.gov
+#### ESMF / NUOPC cap for `NWM` model
+- Daniel Rosen (**lead**) - Daniel.Rosen@noaa.gov
+- Beheen Trimble - beheenmt@gmail.com
+- Jason Ducker - jason.ducker@noaa.gov
+- other colleagues from NWS / OWP
 
 ## Compilation
 
@@ -20,7 +58,7 @@ cd CoastalApp
     - `ATMESH`
     - `WW3` / `WW3DATA`
     - `NWM`
-- `--plat` can be any combination of
+- `--plat` can be one of
     - `hera`
     - `stampede`
     - `wcoss`
