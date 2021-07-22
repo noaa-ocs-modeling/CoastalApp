@@ -15,33 +15,33 @@ cd ADC-WW3-NWM-NEMS
 
 ## Organization / Responsibility
 
-#### `NEMS` application
+#### `NEMS` application implementing ESMF / NUOPC coupling
 - Saeed Moghimi (**lead**) - saeed.moghimi@noaa.gov
 - Panagiotis Velissariou - panagiotis.velissariou@noaa.gov
 - Zachary Burnett - zachary.burnett@noaa.gov
 - Beheen Trimble - beheenmt@gmail.com
-#### NEMS cap for `ADCIRC` model
+#### ESMF / NUOPC cap for `ADCIRC` model
 - Saeed Moghimi (**lead**) saeed.moghimi@noaa.gov
 - Guoming Ling - gling@nd.edu
 - Damrongsak Wirasaet - dwirasae@nd.edu
 - Panagiotis Velissariou - panagiotis.velissariou@noaa.gov
 - Zachary Burnett - zachary.burnett@noaa.gov
-#### NEMS cap for `FVCOM` model
+#### ESMF / NUOPC cap for `FVCOM` model
 - Jianhua Qi (**lead**) - jqi@umassd.edu
 - Saeed Moghimi - saeed.moghimi@noaa.gov
-#### NEMS cap for `SCHISM` model
+#### ESMF / NUOPC cap for `SCHISM` model
 - Carsten Lemmen (**lead**) - carsten.lemmen@hzg.de  
 - Y. Joseph Zhang - yjzhang@vims.edu
-#### NEMS cap for `WW3` model
+#### ESMF / NUOPC cap for `WW3` model
 - Andre Van der Westhuysen (**lead**) - andre.vanderwesthuysen@noaa.gov
 - Ali Abdolali - ali.abdolali@noaa.gov
-#### `PaHM` model and NEMS cap for `PaHM` model
+#### `PaHM` model and ESMF / NUOPC cap for `PaHM` model
 - Panagiotis Velissariou (**lead**) - panagiotis.velissariou@noaa.gov
-#### `ATMESH` data component and NEMS cap for `ATMESH` data component
+#### `ATMESH` data component and ESMF / NUOPC cap for `ATMESH` data component
 - Saeed Moghimi (**lead**) saeed.moghimi@noaa.gov
 - Guoming Ling - gling@nd.edu
 - Panagiotis Velissariou - panagiotis.velissariou@noaa.gov
-#### NEMS cap for `NWM` model
+#### ESMF / NUOPC cap for `NWM` model
 - Daniel Rosen (**lead**) - Daniel.Rosen@noaa.gov
 - Beheen Trimble - beheenmt@gmail.com
 - Jason Ducker - jason.ducker@noaa.gov
