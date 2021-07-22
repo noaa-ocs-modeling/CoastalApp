@@ -58,7 +58,7 @@ cd ADC-WW3-NWM-NEMS
     - `ATMESH`
     - `WW3` / `WW3DATA`
     - `NWM`
-- `--plat` can be any combination of
+- `--plat` can be one of
     - `hera`
     - `stampede`
     - `wcoss`
