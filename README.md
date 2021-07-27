@@ -54,8 +54,8 @@ cd CoastalApp
 ```
 
 - `--component` can be any combination of
-    - `ADCIRC`
-    - `ATMESH`
+    - `ADCIRC` / `SCHISM`
+    - `ATMESH` / `PAHM`
     - `WW3` / `WW3DATA`
     - `NWM`
 - `--plat` can be one of
