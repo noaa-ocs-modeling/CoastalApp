@@ -19,6 +19,7 @@ cd CoastalApp
 - Saeed Moghimi (**lead**) - saeed.moghimi@noaa.gov
 - Panagiotis Velissariou - panagiotis.velissariou@noaa.gov
 - Zachary Burnett - zachary.burnett@noaa.gov
+- Andre Van der Westhuysen - andre.vanderwesthuysen@noaa.gov 
 - Beheen Trimble - beheenmt@gmail.com
 #### ESMF / NUOPC cap for `ADCIRC` model
 - Saeed Moghimi (**lead**) saeed.moghimi@noaa.gov
