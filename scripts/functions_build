@@ -9,7 +9,7 @@
 set +u
 
 MY_COMPILING_SYTEMS="gnu, intel, pgi"
-MY_COMPILING_PLATFORMS="custom, linux, macosx, cheyenne, gaea, hera, jet, orion, stampede, wcoss mistral strand"
+MY_COMPILING_PLATFORMS="custom, linux, macosx, cheyenne, gaea, hera, jet, orion, stampede, wcoss, mistral, strand"
 
 MY_ATM_MODS="ATMESH WRF HWRF PAHM"
 MY_OCN_MODS="ADCIRC SCHISM FVCOM ROMS"
@@ -41,24 +41,25 @@ ParseArgs()
   local ans0 ans ival intN
   local all_evars
 
-  all_evars="MY_CLEAN MY_COMPILER MY_COMPONENT MY_OS MY_PARALLEL MY_PARMAKE MY_PLATFORM MY_VERBOSE"
+  all_evars="MY_CLEAN MY_COMPILER MY_COMPONENT MY_EXECUTABLES MY_OS MY_PARALLEL MY_PARMAKE MY_PLATFORM MY_VERBOSE"
 
   for ival in ${all_evars}; do unset __${ival}; done
 
 
   __MY_CLEAN=0
+  __MY_EXECUTABLES=
   __MY_COMPILER=intel
   __MY_COMPONENT="ADCIRC WW3DATA ATMESH"
   __MY_OS=
   __MY_PARALLEL=1
   __MY_PARMAKE=1
-  __MY_PLATFORM=linux
+  __MY_PLATFORM=
   __MY_VERBOSE=
           
 
   # -----
   # Process the function options
-  opt_all=( c clean compiler component j par parallel  os plat v verbose h help )
+  opt_all=( build_exec c clean compiler component j par parallel os plat platform v verbose h help )
   opt_all=":$( echo "${opt_all[@]/#/-} ${opt_all[@]/#/--}" | sed 's/ /:/g' ):"
 
   unset __OPTION_LIST
@@ -87,6 +88,14 @@ ParseArgs()
     esac
 
     case "${opt_opt}" in
+      -build_exec | --build_exec )
+          checkFuncOpt "--build_exec"
+          if [ $? -eq 0 ]; then
+            if [ "X${opt_arg}" != "X" ]; then
+              __MY_EXECUTABLES="$( strTrim "${opt_arg}" )"
+            fi
+          fi
+        ;;
       -c | --c | -clean | --clean )
           checkFuncOpt "--clean"
           if [ $? -eq 0 ]; then
@@ -152,8 +161,8 @@ ParseArgs()
             fi
           fi
         ;;
-      -plat | --plat )
-          checkFuncOpt "--plat"
+      -plat | --plat | -platform | --platform)
+          checkFuncOpt "--platform"
           if [ $? -eq 0 ]; then
             if [ "X${opt_arg}" != "X" ]; then
               __MY_PLATFORM="$( echo "${opt_arg}" | sed 's/[[:space:]]//g' )"
@@ -186,6 +195,14 @@ ParseArgs()
       Darwin ) __MY_OS="macosx" ;;
       Linux  ) __MY_OS="linux" ;;
             *) __MY_OS="UNDEFINED";; # DEFAULT
+    esac
+  fi
+
+  if [ -z "${__MY_PLATFORM}" ]; then
+    case "$(uname -s)" in
+      Darwin ) __MY_PLATFORM="macosx" ;;
+      Linux  ) __MY_PLATFORM="linux" ;;
+            *) __MY_PLATFORM="linux";; # DEFAULT
     esac
   fi
 
@@ -232,6 +249,11 @@ UsageBuild()
   echo "    Default: \"ADCIRC WW3DATA ATMESH\"."
   echo
   #---
+  echo "  -build_exec|--build_exec [=|space] \"executable_list\" (OPTIONAL)."
+  echo "    The executables(s) to build (e.g. --build_exec=\"padcirc pahm\")."
+  echo "    Default: none."
+  echo
+  #---
   echo "  -j|--j [=|space] \"N\" (OPTIONAL)."
   echo "    Define the number of make jobs to run simultaneously."
   echo "    Default: 1."
@@ -248,12 +270,12 @@ UsageBuild()
   echo "    Default: current OS."
   echo
   #---
-  echo "  -plat|--plat [=|space] \"platform\" (OPTIONAL)."
+  echo "  -plat|--plat|-platform|--platform [=|space] \"platform\" (OPTIONAL)."
   echo "    The name of the compute HPC platform to consider."
   echo "    Selecting a platform, environment modules specific to that platform are loaded"
   echo "    and corresponding environment variables are set."
   echo "    Supported platforms: ${MY_COMPILING_PLATFORMS}."
-  echo "    Default: linux."
+  echo "    Default: OS."
   echo
   #---
   echo "  -v|--v|-verbose|--verbose [=|space] \"a,b,v,i,j,m,n\" (any combination, OPTIONAL)."
@@ -584,6 +606,8 @@ compileNems() {
   return ${err}
 }
 
+# Need to have specific model components install functions
+# TODO - Panagiotis Velissariou
 installNems() {
   local cmp_comp icmp
   local instdir
@@ -610,7 +634,7 @@ installNems() {
     if [ "${icmp}" == "ADCIRC" ]; then
       echo
       echo "   --- Installing from: ${icmp} to ${instdir} ---"
-      for iprog in adcprep
+      for iprog in adcprep adcirc padcirc tide_fac
       do
         prog="$( find -L ${icmp} -type f -name ${iprog} | head -1 )"
 

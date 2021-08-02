@@ -16,8 +16,7 @@
 ### (1) Load all needed environment modules.
 module purge
 module load intel impi
-module load szip hdf5
-module load netcdf
+module load hdf5 netcdf
 
 module load esmf
 
