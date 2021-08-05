@@ -132,9 +132,9 @@ if [ ! -f "${modDIR}/${modFILE}" ]; then
   echo "Exiting ..."
   echo
   exit 1
-#else
-#  # Source the environment module
-#  source ${modDIR}/${modFILE}
+else
+  # Source the environment module
+  source ${modDIR}/${modFILE}
 fi
 ##########
 
@@ -151,12 +151,6 @@ if [ ${CLEAN:-0} -ge 1 ]; then
 
   exit 0
 fi
-##########
-
-
-##########
-# Source the environment module
-source ${modDIR}/${modFILE}
 ##########
 
 
