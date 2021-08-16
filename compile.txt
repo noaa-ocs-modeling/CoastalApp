@@ -1,0 +1,6 @@
+module purge
+rm ADCIRC/work/libadc.a
+./build.sh -plat rhino -component "ATMESH ADCIRC CICE"
+
+#./build.sh -plat rhino -component "ADCIRC ATMESH WW3"
+

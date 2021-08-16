@@ -1,0 +1,129 @@
+################################################################################
+##!! @author Saeed Moghimi (moghimis@gmail.com)
+##!! @date 15/1/17 Original documentation
+
+##! LOG !
+##! 
+################################################################################
+
+ifneq ($(origin ESMFMKFILE), environment)
+  $(warning Environment variable ESMFMKFILE was not set.)
+  export ESMFMKFILE=/scratch1/NCEPDEV/nems/emc.nemspara/soft/esmf/8.0.0bs48g-intel18.0.5.274-impi2018.0.4-netcdf4.6.1/lib/esmf.mk
+  $(info Setting to $(ESMFMKFILE))
+endif
+
+include $(ESMFMKFILE)
+
+
+INCDIRS := -I . 
+LIBDIRS := -L . 
+LIBSS   :=  -lnetcdf  -lnetcdff -lhdf5 -lhdf5_fortran
+
+INCDIRS += -I${NETCDFHOME}/include/   
+LIBDIRS += -L${NETCDFHOME}/lib/
+
+INCDIRS += -I${HDF5HOME}/include/   
+LIBDIRS += -L${HDF5HOME}/lib/
+
+# unremark this line to define petlists
+LIBDIRS += -DWITHPETLISTS_on 
+
+# debug for gfortran
+# LIBDIRS +=  -g -O0 -fbacktrace 
+################################################################################ $(INCDIRS) $(LIBDIRS)
+################################################################################
+
+.SUFFIXES: .f90 .F90 .c .C
+
+%.o : %.F90
+	@echo ""
+	$(ESMF_F90COMPILER) -c $(ESMF_F90COMPILEOPTS) $(ESMF_F90COMPILEPATHS) $(ESMF_F90COMPILEFREECPP) $(ESMF_F90COMPILECPPFLAGS) $(INCDIRS) $(LIBDIRS) -DESMF_VERSION_MAJOR=$(ESMF_VERSION_MAJOR) $<
+	@echo ""
+
+%.o : %.F
+	@echo ""
+	$(ESMF_F90COMPILER) -c $(ESMF_F90COMPILEOPTS) $(ESMF_F90COMPILEPATHS) $(ESMF_F90COMPILEFREECPP) $(ESMF_F90COMPILECPPFLAGS) $(INCDIRS) $(LIBDIRS) -DESMF_VERSION_MAJOR=$(ESMF_VERSION_MAJOR) $<
+	@echo ""
+
+.PRECIOUS: %.o
+
+# -----------------------------------------------------------------------------
+vars:
+	@echo " >>>>>>>>>>>>>>>> vars >>>>>>>>>>>>>>"
+	@echo "INCDIRS $(INCDIRS)"
+	@echo "LIBDIRS $(LIBDIRS)"
+	@echo "ESMF_F90COMPILER $(ESMF_F90COMPILER)"
+	@echo "ESMF_F90LINKER $(ESMF_F90LINKER)"
+	@echo "ESMF_F90LINKOPTS $(ESMF_F90LINKOPTS)"
+	@echo "ESMF_F90LINKPATHS  $(ESMF_F90LINKPATHS)"
+	@echo "ESMF_F90LINKRPATHS $(ESMF_F90LINKRPATHS)"
+	@echo "ESMF_F90ESMFLINKLIBS $(ESMF_F90ESMFLINKLIBS)"	
+
+# -----------------------------------------------------------------------------
+
+PWDDIR     := $(shell pwd)
+INSTALLDIR := $(INSTDIR)    # coming from NEMS/src/incmake/component_CICE.mk
+
+MAKEFILE = cice.mk
+
+# ESMF self-describing build dependency makefile fragment
+#  #
+# ESMF_DEP_FRONT     = cice_cap_mod
+##
+# ESMF_DEP_INCPATH   = /mnt/projects/hpc/fujisaki/NEMS/test_cice/ADC-WW3-NWM-NEMS/CICE/wak_nems/run/compile/
+# #ESMF_DEP_INCPATH   = /mnt/projects/hpc/fujisaki/cice/CICE/wak_esmf/run/compile/
+# ESMF_DEP_CMPL_OBJS = 
+# ESMF_DEP_LINK_OBJS = /mnt/projects/hpc/fujisaki/NEMS/test_cice/ADC-WW3-NWM-NEMS/CICE/wak_nems/run/compile/libcice.a
+ #
+
+
+OBJS  = ${PWDDIR}/wak_nems/run/compile/*.o 
+#OBJS  = /mnt/projects/hpc/fujisaki/NEMS/test_cice/ADC-WW3-NWM-NEMS/CICE/wak_nems/run/compile/*.o 
+MODULE  = ${PWDDIR}/wak_nems/run/compile/cice_cap_mod.mod 
+#MODULE  = /mnt/projects/hpc/fujisaki/NEMS/test_cice/ADC-WW3-NWM-NEMS/CICE/wak_nems/run/compile/cice_cap_mod.mod 
+LIBRARY  = libcice.a
+
+nuopc: $(LIBRARY)
+
+$(LIBRARY): $(OBJS)
+	$(AR) $(ARFLAGS) $@ $?
+
+nuopcinstall: $(LIBRARY)
+	@echo ""
+	mkdir -p $(INSTALLDIR)
+	@echo "# ESMF self-describing build dependency makefile fragment" > $(strip $(INSTALLDIR))/$(MAKEFILE)
+	@echo                                                            >> $(strip $(INSTALLDIR))/$(MAKEFILE)
+	@echo "ESMF_DEP_FRONT     = cice_cap_mod  "                      >> $(strip $(INSTALLDIR))/$(MAKEFILE)
+	@echo "ESMF_DEP_INCPATH   = $(PWDDIR) $(strip $(INSTALLDIR)) "   >> $(strip $(INSTALLDIR))/$(MAKEFILE)
+	@echo "ESMF_DEP_CMPL_OBJS = "                                    >> $(strip $(INSTALLDIR))/$(MAKEFILE)
+	@echo "ESMF_DEP_LINK_OBJS =  -L$(strip $(INSTALLDIR)) $(strip $(INSTALLDIR))/$(LIBRARY)  " >> $(strip $(INSTALLDIR))/$(MAKEFILE)
+	cp -f *.a  $(INSTALLDIR) 
+	cp $(MODULE) $(strip $(INSTALLDIR))/
+	@echo ""
+
+
+
+# -----------------------------------------------------------------------------
+# -----------------------------------------------------------------------------
+.PHONY: dust nuopcclean nuopcdistclean info edit
+
+nuopcclean:
+	@echo ""
+	rm -f   $(LIBRARY)
+	@echo ""
+
+nuopcdistclean: nuopcclean
+	@echo ""
+	@echo "Cleaning Model build..."
+	@echo ""
+	#make -C $(ADCDIR) -f $(MODEL_MK) clean PET*.ESMF_LogFile *.nc
+
+dust:
+	@echo ""
+	clean PET*.ESMF_LogFile *.nc
+	@echo ""
+
+edit:
+	gedit Makefile esmApp.F90 esm.F90 wav.F90 adc_cap.F90 adc_mod.F90 couple2swan_modif.F  hwrf_mod.F90 hwrf_cap.F90 wav_mod.F90 &
+
+
