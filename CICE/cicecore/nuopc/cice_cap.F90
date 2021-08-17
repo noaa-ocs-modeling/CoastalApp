@@ -896,8 +896,13 @@ module cice_cap_mod
     write(info,*) trim(subname),' --- run phase 3 called --- '
     call ESMF_LogWrite(trim(info), ESMF_LOGMSG_INFO, rc=dbrc)
 
-    !---- local modifications to coupling fields -----
 
+! preparing data for export
+
+    ! afm 20210807 add below. 
+    ! when not coupled, the 'associated' fuction occasioanlly returns true.
+    nullify(dataPtr_ifrac, dataPtr_vice, dataPtr_iuvel)
+    nullify(dataPtr_ivvel, dataPtr_icdan)
 
     call State_GetFldPtr(ST=exportState,fldname='seaice',fldptr=dataPtr_ifrac,rc=rc)
     !call State_GetFldPtr(ST=exportState,fldname='sea_ice_concentration',fldptr=dataPtr_ifrac,rc=rc)
@@ -917,10 +922,10 @@ module cice_cap_mod
 
     ! pack and send exported fields
    if ( associated( dataPtr_ifrac ) ) dataPtr_ifrac = aice(:,:,1)   ! ice fraction (0-1)
-   if ( associated( dataPtr_vice ) )  dataPtr_vice  = vice(:,:,1)   ! ice fraction (0-1)
-   if ( associated( dataPtr_iuvel ) ) dataPtr_iuvel = uvel(:,:,1)   ! ice fraction (0-1)
-   if ( associated( dataPtr_ivvel ) ) dataPtr_ivvel = vvel(:,:,1)   ! ice fraction (0-1)
-   if ( associated( dataPtr_icdan ) ) dataPtr_icdan = Cdn_atm(:,:,1)   ! ice fraction (0-1)
+   if ( associated( dataPtr_vice ) )  dataPtr_vice  = vice(:,:,1)   ! ice volume per area 
+   if ( associated( dataPtr_iuvel ) ) dataPtr_iuvel = uvel(:,:,1)   ! ice u velocity
+   if ( associated( dataPtr_ivvel ) ) dataPtr_ivvel = vvel(:,:,1)   ! ice v velocity
+   if ( associated( dataPtr_icdan ) ) dataPtr_icdan = Cdn_atm(:,:,1)  ! air-ice drag coeff.
 
 
 !    if ( associated( dataPtr_ifrac ) .or. &

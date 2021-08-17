@@ -4,14 +4,14 @@
 
 CPP        := fpp
 CPPDEFS    := -DFORTRANUNDERSCORE -DNO_R16 -DHAVE_F2008_CONTIGUOUS -DLINUX -DCPRINTEL ${ICE_CPPDEFS}
-CFLAGS     := -c -g -traceback -check bounds -fp-model precise   
-#CFLAGS     := -c -O3 -fp-model precise   
+#CFLAGS     := -c -g -traceback -check bounds -fp-model precise   
+CFLAGS     := -c -O3 -fp-model precise   
 #CFLAGS     := -c -O3 -fp-model precise   -xHost
 
 FIXEDFLAGS := -132
 FREEFLAGS  := -FR
-FFLAGS     := -g -traceback -check bounds -fp-model precise -assume byterecl -ftz   
-#FFLAGS     := -fp-model precise -convert big_endian -assume byterecl -ftz -traceback  
+#FFLAGS     := -g -traceback -check bounds -fp-model precise -assume byterecl -ftz   
+FFLAGS     := -fp-model precise -convert big_endian -assume byterecl -ftz -traceback  
 #FFLAGS     := -fp-model precise -convert big_endian -assume byterecl -ftz -traceback   -xHost
 FFLAGS_NOOPT:= -O0
 
