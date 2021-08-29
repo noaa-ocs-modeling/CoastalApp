@@ -634,7 +634,7 @@ installNems() {
     if [ "${icmp}" == "ADCIRC" ]; then
       echo
       echo "   --- Installing from: ${icmp} to ${instdir} ---"
-      for iprog in adcprep adcirc padcirc tide_fac aswip
+      for iprog in adcprep aswip adcirc padcirc tide_fac
       do
         prog="$( find -L ${icmp} -type f -name ${iprog} | head -1 )"
 
