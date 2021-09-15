@@ -1,0 +1,10 @@
+/mnt/projects/hpc/fujisaki/NEMS/test_20210808/ADC-WW3-NWM-NEMS/CICE/cicecore/drivers/cice
+/mnt/projects/hpc/fujisaki/NEMS/test_20210808/ADC-WW3-NWM-NEMS/CICE/cicecore/cicedynB/dynamics
+/mnt/projects/hpc/fujisaki/NEMS/test_20210808/ADC-WW3-NWM-NEMS/CICE/cicecore/cicedynB/general
+/mnt/projects/hpc/fujisaki/NEMS/test_20210808/ADC-WW3-NWM-NEMS/CICE/cicecore/cicedynB/analysis
+/mnt/projects/hpc/fujisaki/NEMS/test_20210808/ADC-WW3-NWM-NEMS/CICE/cicecore/cicedynB/infrastructure
+/mnt/projects/hpc/fujisaki/NEMS/test_20210808/ADC-WW3-NWM-NEMS/CICE/cicecore/cicedynB/infrastructure/io/io_netcdf
+/mnt/projects/hpc/fujisaki/NEMS/test_20210808/ADC-WW3-NWM-NEMS/CICE/cicecore/cicedynB/infrastructure/comm/mpi
+/mnt/projects/hpc/fujisaki/NEMS/test_20210808/ADC-WW3-NWM-NEMS/CICE/icepack/columnphysics
+/mnt/projects/hpc/fujisaki/NEMS/test_20210808/ADC-WW3-NWM-NEMS/CICE/cicecore/shared
+/mnt/projects/hpc/fujisaki/NEMS/test_20210808/ADC-WW3-NWM-NEMS/CICE/cicecore/nuopc

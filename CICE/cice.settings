@@ -1,0 +1,47 @@
+#! /bin/csh -f
+
+setenv ICEDIR `pwd`
+
+setenv ICE_CASENAME  wak_nems 
+setenv ICE_SANDBOX   ${ICEDIR}
+setenv ICE_MACHINE   rhino
+setenv ICE_COMPILER  intel  
+setenv ICE_MACHCOMP  rhino_intel  
+setenv ICE_SCRIPTS   ${ICE_SANDBOX}/configuration/scripts  
+setenv ICE_CASEDIR   ${ICE_SANDBOX}/wak_nems
+setenv ICE_RUNDIR    ${ICE_SANDBOX}/wak_nems/run
+setenv ICE_OBJDIR     ${ICE_RUNDIR}/compile
+setenv ICE_RSTDIR     ${ICE_RUNDIR}/restart
+setenv ICE_HSTDIR     ${ICE_RUNDIR}/history
+setenv ICE_LOGDIR     ${ICE_CASEDIR}/logs
+setenv ICE_DRVOPT     cice
+setenv ICE_IOTYPE     netcdf    # set to none if netcdf library is unavailable
+setenv ICE_CLEANBUILD true
+setenv ICE_QUIETMODE  false  
+setenv ICE_GRID  wak  
+setenv ICE_NTASKS  24 #16  
+setenv ICE_NTHRDS  1  
+setenv ICE_TEST  UnDeFiNeD  
+setenv ICE_TESTNAME  UnDeFiNeD  
+setenv ICE_BASELINE  ${ICE_SANDBOX}/wak_nems/CICE_BASELINE 
+setenv ICE_BASEGEN  UnDeFiNeD  
+setenv ICE_BASECOM  UnDeFiNeD  
+setenv ICE_BFBCOMP  UnDeFiNeD  
+setenv ICE_SPVAL  UnDeFiNeD  
+setenv ICE_RUNLENGTH  0
+setenv ICE_ACCOUNT  P0000000  
+setenv ICE_QUEUE  default  
+
+#======================================================
+
+setenv ICE_THREADED  true  
+if (${ICE_NTHRDS} > 1) setenv ICE_THREADED  true
+setenv ICE_COMMDIR mpi
+if (${ICE_NTASKS} == 1) setenv ICE_COMMDIR serial
+
+### Specialty code
+setenv CAM_ICE  no           # set to yes for CAM runs (single column) 
+setenv DITTO    no           # reproducible diagnostics
+setenv BARRIERS no           # prevent MPI buffer overflow during gather/scatter 
+setenv ICE_BLDDEBUG  false  # build debug flags
+

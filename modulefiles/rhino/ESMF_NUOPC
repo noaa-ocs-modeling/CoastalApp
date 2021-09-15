@@ -1,0 +1,36 @@
+#%Module######################################################################
+
+# This script is responsible for loading modules that are compatible with
+# the NUOPC Layer version used in NEMS.
+
+
+
+export -n LD_LIBRARY_PATH
+module load intel/compiler/64/2017/17.0.6
+module load mvapich2/intel/64/2.2rc1  
+module load hdf5_18/1.8.17
+#module load szip/2.1
+#module load hdf5_18/1.8.17
+#module load netcdf/4.6.1
+#module load netcdf/gcc/64/4.6.3
+#module load netcdf-fortran/gcc/64/4.4.5
+#export NETCDF=/mnt/projects/hpc/fujisaki/local/ 
+#export NETCDFHOME=/mnt/projects/hpc/fujisaki/local/ 
+#export HDF5=/mnt/projects/hpc/fujisaki/local/
+#export HDF5HOME=/mnt/projects/hpc/fujisaki/local/
+
+# Environment for ESMF v8.0.0 beta snapshot 48g
+export ESMFMKFILE="/mnt/projects/hpc/fujisaki/ESMF/esmf-ESMF_8_0_1/lib/libO/Linux.intel.64.mvapich2.default/esmf.mk"
+export NETCDF=/mnt/projects/hpc/fujisaki/local/
+export NETCDFHOME=/mnt/projects/hpc/fujisaki/local/
+export HDF5=/cm/shared/apps/hdf5_18/1.8.17/
+#export HDF5=/mnt/projects/hpc/fujisaki/local/
+export HDF5HOME=/cm/shared/apps/hdf5_18/1.8.17/
+export NETCDF_INCDIR=$NETCDFHOME/include   
+export NETCDF_LIBDIR=$NETCDFHOME/lib
+#export LD_LIBRARY_PATH=/mnt/projects/hpc/fujisaki/local/lib
+
+
+#
+
+#

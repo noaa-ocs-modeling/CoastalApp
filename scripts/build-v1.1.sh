@@ -9,6 +9,8 @@
 ###   1.0 Fri Dec 04 2020
 ###########################################################################
 
+# tentative afm 20210616
+export ESMFMKFILE="/mnt/projects/hpc/fujisaki/ESMF/esmf-ESMF_8_0_1/lib/libO/Linux.intel.64.mvapich2.default/esmf.mk"
 
 ###====================
 # Make sure that the current working directory is in the PATH
