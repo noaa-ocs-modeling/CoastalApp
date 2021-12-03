@@ -19,13 +19,13 @@ ${retv} 1
 
 
 ####################
-### (1) Load all needed environment modules.
+### Load all needed environment modules.
 module purge
-module load pgi impi
-module load szip hdf5
-module load netcdf
+module load applications/utils/cmake3-20.0
+module load pgi openmpi
+module load hdf5/1.10.5 netcdf/4.7.0
 
-module load esmf
+module load esmf/8.1.0
 
 
 ####################
@@ -52,6 +52,7 @@ unset funcs
 # (this should be done automatically when loading this file - todo).
 #export HDF5_USE_FILE_LOCKING=FALSE
 
+export NETCDFHOME=$(nc-config --prefix)
 export NETCDF_CONFIG=${NETCDFHOME:+${NETCDFHOME}/bin/nc-config}
 export NETCDF_INCDIR=${NETCDFHOME:+${NETCDFHOME}/include}
 export NETCDF_LIBDIR=${NETCDFHOME:+${NETCDFHOME}/lib}

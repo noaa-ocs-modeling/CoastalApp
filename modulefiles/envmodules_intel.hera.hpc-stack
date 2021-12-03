@@ -7,12 +7,6 @@
 ### Date:   June 26 2021
 ###########################################################################
 
-#----------
-[[ "$0" == "bash" || "$0" == "-bash" ]] && retv=return || retv=exit
-echo "$(basename ${BASH_SOURCE[0]}) :: This environment is either not configured or not supported"
-echo "  Exiting ..."
-${retv} 1
-#----------
 
 # This script is responsible for loading modules that are
 # compatible with the NUOPC Layer version used in NEMS.
@@ -20,15 +14,23 @@ ${retv} 1
 
 ####################
 ### (1) Load all needed environment modules.
+use_defaults=0
 module purge
-module load pgi impi
-module load szip hdf5
-module load netcdf
+module use /scratch2/NCEPDEV/nwprod/hpc-stack/libs/hpc-stack/modulefiles/stack
+module load hpc
+module load cmake
+if [ ${use_defaults:-0} -le 0 ]; then
+  module load hpc-intel/18.0.5.274  hpc-impi
+  module load szip hdf5 netcdf
+  module load esmf/8_1_1
+else
+  module load hpc-intel  hpc-impi
+  module load szip hdf5 netcdf
+  module load esmf
+fi
 
-module load esmf
 
-
-####################
+###################
 ### (2) Set some environments varaiables related to the loaded
 ###     modules and required to compile the NEMS application properly.
 funcs="$( find . -type f -name "PlatformFuncs" | head -n 1 )"

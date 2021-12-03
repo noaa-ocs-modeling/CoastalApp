@@ -22,3 +22,7 @@
 	path = NWM
 	url = https://github.com/noaa-ocs-modeling/nwm_public_nuopc.git
 	branch = master
+[submodule "PAHM"]
+	path = PAHM
+	url = https://github.com/noaa-ocs-modeling/PaHM
+	branch = main

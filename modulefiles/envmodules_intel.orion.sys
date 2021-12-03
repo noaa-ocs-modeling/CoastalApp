@@ -7,12 +7,6 @@
 ### Date:   June 26 2021
 ###########################################################################
 
-#----------
-[[ "$0" == "bash" || "$0" == "-bash" ]] && retv=return || retv=exit
-echo "$(basename ${BASH_SOURCE[0]}) :: This environment is either not configured or not supported"
-echo "  Exiting ..."
-${retv} 1
-#----------
 
 # This script is responsible for loading modules that are
 # compatible with the NUOPC Layer version used in NEMS.
@@ -21,11 +15,12 @@ ${retv} 1
 ####################
 ### (1) Load all needed environment modules.
 module purge
-module load pgi impi
-module load szip hdf5
-module load netcdf
+module load cmake
+module load intel/2019.5 impi
+module load szip hdf5/1.10.5-parallel
+module load netcdf/4.7.2-parallel
 
-module load esmf
+module load esmf/7.1.0r
 
 
 ####################
@@ -53,8 +48,8 @@ unset funcs
 #export HDF5_USE_FILE_LOCKING=FALSE
 
 export NETCDF_CONFIG=${NETCDFHOME:+${NETCDFHOME}/bin/nc-config}
-export NETCDF_INCDIR=${NETCDFHOME:+${NETCDFHOME}/include}
-export NETCDF_LIBDIR=${NETCDFHOME:+${NETCDFHOME}/lib}
+export NETCDF_INCDIR=${NETCDF_INCLUDE_DIRS}
+export NETCDF_LIBDIR=${NETCDF_LIBRARY_DIRS}
 
 export ESMFMKFILE=${ESMFMKFILE}
 ########## END:: PLATFORM CUSTOMIZED SETTINGS ##########

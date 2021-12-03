@@ -12,11 +12,15 @@ include         $(TOP)/conf/configure.nems.NUOPC
 ################################################################################
 ## Other settings
 
-NETCDF_INC   = -I$(NETCDF)/include
-NETCDF_LIB   = -L$(NETCDF)/lib -lnetcdf
+LIBDIR      ?= .
 
-NEMSIO_INC   = -I${LIBDIR}/incmod/nemsio
-NEMSIO_LIB   = -L${LIBDIR} -lnemsio
+NETCDF_INC   = -I${NETCDF_INCDIR}
+NETCDF_LIB   = -L${NETCDF_LIBDIR} -lnetcdf
+
+#NEMSIO_INC   = -I${LIBDIR}/incmod/nemsio
+#NEMSIO_LIB   = -L${LIBDIR} -lnemsio
+NEMSIO_INC   =
+NEMSIO_LIB   =
 SYS_LIB      =
 
 EXTLIBS      = $(NEMSIO_LIB) \

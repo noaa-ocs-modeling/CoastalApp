@@ -12,11 +12,15 @@ include         $(TOP)/conf/configure.nems.NUOPC
 ################################################################################
 ## Other settings
 
-NETCDF_INC   = -I$(NETCDF_INCDIR)
-NETCDF_LIB   = -L$(NETCDF_LIBDIR) -lnetcdf
+LIBDIR      ?= .
 
-NEMSIO_INC   = -I${LIBDIR}/incmod/nemsio
-NEMSIO_LIB   = -L${LIBDIR} -lnemsio
+NETCDF_INC   = -I${NETCDF_INCDIR}
+NETCDF_LIB   = -L${NETCDF_LIBDIR} -lnetcdf
+
+#NEMSIO_INC   = -I${LIBDIR}/incmod/nemsio
+#NEMSIO_LIB   = -L${LIBDIR} -lnemsio
+NEMSIO_INC   =
+NEMSIO_LIB   =
 SYS_LIB      =
 
 EXTLIBS      = $(NEMSIO_LIB) \
@@ -30,7 +34,7 @@ EXTLIBS_POST = $(NEMSIO_LIB)  \
                $(SYS_LIB)
 ###
 FC          = mpif90 -g -ffree-line-length-none -fno-range-check -fbacktrace
-F77         = mpiifort -g -ffree-line-length-none -fno-range-check -fbacktrace
+F77         = mpifort -g -ffree-line-length-none -fno-range-check -fbacktrace
 FREE         = -free
 FIXED        = -fixed
 R8           = -r8
@@ -38,7 +42,7 @@ R8           = -r8
 FINCS        = $(ESMF_INC) $(NEMSIO_INC) $(NETCDF_INC)
 #TRAPS        = ???
 
-FFLAGS       = $(TRAPS) $(FINCS) -fp-model strict
+FFLAGS       = $(TRAPS) $(FINCS)
 
 OPTS_NMM     = -g -ffree-line-length-none -fno-range-check -fbacktrace $(FREE)
 
