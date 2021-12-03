@@ -62,24 +62,28 @@ CLEAN=${MY_CLEAN:-0}
 [ -n "${MY_COMPONENT:+1}" ] && COMPONENT="$( toUPPER "${MY_COMPONENT}" )"
 
 PARALLEL=${MY_PARALLEL:-1}
-export NEMS_PARALLEL=${PARALLEL}
+
+BUILD_EXECS="${MY_EXECUTABLES}"
 
 [ -n "${MY_OS:+1}" ] && OS="$( toLOWER "${MY_OS}" )"
+
 if [ -n "${MY_PLATFORM:+1}" ]; then
   PLATFORM="$( toLOWER "${MY_PLATFORM}" )"
 else
   PLATFORM="${OS}"
 fi
-export NEMS_PLATFORM=${PLATFORM}
-export MACHINE_ID=${PLATFORM}
-export FULL_MACHINE_ID=${PLATFORM}
-
 
 [ "${MY_PARMAKE:0}" -gt 1 ] && PARMAKE=${MY_PARMAKE}
 
 [ -n "${MY_VERBOSE:+1}" ] && VERBOSE="$( toLOWER "${MY_VERBOSE}" )"
 
 modFILE="envmodules${COMPILER:+_${COMPILER}}${PLATFORM:+.${PLATFORM}}"
+##########
+
+
+##########
+# Customizations and environment variables for NEMS and other models
+export BUILD_EXECS="${BUILD_EXECS}"
 
 # Customize the NEMS.x filename to include the component names
 if [ -n "${COMPONENT:+1}" ]; then
@@ -87,8 +91,24 @@ if [ -n "${COMPONENT:+1}" ]; then
   compFNAME="$( echo "${compFNAME}" | sed 's/ /_/g' )"
 fi
 
-# Export some environment variables for NEMS and for other models
+# Export some important environment variables for NEMS and for other models
 export NEMS_COMPILER=${COMPILER}
+export NEMS_PARALLEL=${PARALLEL}
+export NEMS_PLATFORM=${PLATFORM}
+export MACHINE_ID=${PLATFORM}
+export FULL_MACHINE_ID=${PLATFORM}
+
+# This used in NEMS to get the configuration flags for the chosen compiler
+# in the top level conf directory. Supported OSes are linux and macosx.
+# Sometimes we might need to specify special flags not founf in the default
+# files for s pecific platform
+if [ ! -f "conf/configure.nems.${FULL_MACHINE_ID}.${NEMS_COMPILER}" ]; then
+  export BUILD_TARGET=${OS}.${NEMS_COMPILER}
+fi
+
+if [ ! -f "conf/externals.nems.${FULL_MACHINE_ID}" ]; then
+  export EXTERNALS_NEMS="externals.nems"
+fi
 ##########
 
 
@@ -120,10 +140,21 @@ fi
 
 
 ##########
-# Source the environment module
-# This is required in all stages (clean, distclean, build
-source ${modDIR}/${modFILE}
+# If the user requested to clean the build folder, do the cleaning end exit
+if [ ${CLEAN:-0} -ge 1 ]; then
+  echo "User requested to only clean the project. Cleaning ..."
 
+  pushd ${nemsDIR} >/dev/null 2>&1
+    [ ${CLEAN:-0} -eq 1 ] && compileNems clean
+    [ ${CLEAN:-0} -eq 2 ] && compileNems distclean
+  popd >/dev/null 2>&1
+
+  exit 0
+fi
+##########
+
+
+##########
 # Get the compilers to use for this project compilation
 case "${COMPILER}" in
   gnu)
@@ -195,6 +226,7 @@ echo "    CLEAN          = ${CLEAN}"
 echo "    COMPILER       = ${COMPILER:-Undefined, Supported values are: [${MY_COMPILING_SYTEMS}]}"
 echo "    NEMS_COMPILER  = ${NEMS_COMPILER}"
 echo "    NEMS_PARALLEL  = ${PARALLEL:-0}"
+echo "    NEMS_PLATFORM  = ${NEMS_PLATFORM}"
 echo "    CC             = ${CC:-UNDEF}"
 echo "    CXX            = ${CXX:-UNDEF}"
 echo "    FC             = ${FC:-UNDEF}"
@@ -210,10 +242,13 @@ if [[ :${component_ww3}: == *:"WW3":* ]]; then
   echo "    WWATCH3_NETCDF = ${WWATCH3_NETCDF}"
 fi
 echo "    COMPONENTS     = ${COMPONENT:-Undefined, Supported values are: [${MY_COMPONENT_LIST}]}"
+echo "    BUILD_EXECS    = ${BUILD_EXECS}"
 echo "    OS             = ${OS}"
 echo "    PLATFORM       = ${PLATFORM}"
 echo "    MACHINE_ID     = ${MACHINE_ID}"
 echo "    FULL_MACHINE_ID= ${FULL_MACHINE_ID}"
+echo "    BUILD_TARGET   = ${BUILD_TARGET:-${PLATFORM}.${NEMS_COMPILER}}"
+echo "    EXTERNALS_NEMS = ${EXTERNALS_NEMS}"
 echo "    VERBOSE        = ${VERBOSE}"
 echo
 echo "    HDF5HOME       = ${HDF5HOME}"
@@ -229,7 +264,6 @@ echo "         PCC=yourPCC PCXX=yourPCXX PFC=yourPFC PF90=yourPF90 $(basename ${
 echo
 
 module list
-
 
 echo_response=
 while [ -z "${echo_response}" ] ; do
@@ -255,19 +289,6 @@ unset echo_response
 ############################################################
 
 ##########
-# If the user requested to clean the build folder, do the cleaning end exit
-if [ ${CLEAN:-0} -ge 1 ]; then
-  echo "User requested to only clean the project. Cleaning ..."
-
-  pushd ${nemsDIR} >/dev/null 2>&1
-    [ ${CLEAN:-0} -eq 1 ] && compileNems clean
-    [ ${CLEAN:-0} -eq 2 ] && compileNems distclean
-  popd >/dev/null 2>&1
-
-  exit 0
-fi
-##########
-
 # Compile the project
 compileERR=0
 pushd ${nemsDIR} >/dev/null 2>&1
