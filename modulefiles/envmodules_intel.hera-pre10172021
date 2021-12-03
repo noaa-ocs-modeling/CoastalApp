@@ -15,14 +15,13 @@
 ####################
 ### (1) Load all needed environment modules.
 module purge
-module load cmake
 module load intel/18.0.5.274 impi/2018.0.4
+module load szip
 
-# Points always to the latest compiled version of ESMF. It uses the following
-# HDF5/NetCDF libraries (not the system ones)
-module use /scratch1/NCEPDEV/nems/emc.nemspara/soft/modulefiles
-module load hdf5_parallel/1.10.6.release netcdf_parallel/4.7.4.release
-module load esmf
+module use /home/emc.nemspara/SOFT-hera/modulefiles
+module load hdf5_parallel/1.10.6.release
+module load netcdf_parallel/4.7.4.release
+module load esmf/8.1.0bs25g_ParallelNetCDF.release
 
 
 ###################
@@ -55,4 +54,3 @@ export NETCDF_LIBDIR=${NETCDFHOME:+${NETCDFHOME}/lib}
 
 export ESMFMKFILE=${ESMFMKFILE}
 ########## END:: PLATFORM CUSTOMIZED SETTINGS ##########
-
