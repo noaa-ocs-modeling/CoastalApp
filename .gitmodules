@@ -28,3 +28,6 @@
 [submodule "PAHM"]
 	path = PAHM
 	url = https://github.com/noaa-ocs-modeling/PaHM.git
+[submodule "SCHISM-ESMF"]
+	path = SCHISM-ESMF
+	url = https://github.com/schism-dev/schism-esmf
