@@ -1,0 +1,54 @@
+#!/bin/bash-*-Shell-script-modules*-
+
+###########################################################################
+### Module File to load the required environment modules for the NEMS application
+###
+### Author: Panagiotis Velissariou <panagiotis.velissariou@noaa.gov>
+### Date:   June 26 2021
+###########################################################################
+
+
+# This script is responsible for loading modules that are
+# compatible with the NUOPC Layer version used in NEMS.
+
+
+####################
+### (1) Load all needed environment modules.
+module purge
+module load cmake
+module load intel/2018.4 impi/2018.4
+module load hdf5/1.10.5-parallel pnetcdf/1.12.0 netcdf/4.7.2-parallel
+
+module load esmf/8.0.0
+
+
+####################
+### (2) Set some environments varaiables related to the loaded
+###     modules and required to compile the NEMS application properly.
+funcs="$( find . -type f -name "PlatformFuncs" | head -n 1 )"
+if [ -f "${funcs}" ]; then
+  source "${funcs}"
+
+  get_env_hdf5
+  get_env_netcdf
+fi
+unset funcs
+
+
+########## BEG:: PLATFORM CUSTOMIZED SETTINGS ##########
+# Is this needed in all systems?
+# If file locking is not allowed in the filesystem, or the
+# HDF5 locking mechanism is not compatible with the
+# OS locking mechanism, then HDF5 (>=1.10.x) throws errors like
+# access denied when trying to READ/WRITE NetCDF files.
+# On some platforms HDF5 locking is disabled on other it is not.
+# If you experience these problems uncomment the next line
+# (this should be done automatically when loading this file - todo).
+#export HDF5_USE_FILE_LOCKING=FALSE
+
+export NETCDF_CONFIG=${NETCDFHOME:+${NETCDFHOME}/bin/nc-config}
+export NETCDF_INCDIR=${NETCDF_INCLUDE_DIRS}
+export NETCDF_LIBDIR=${NETCDF_LIBRARY_DIRS}
+
+export ESMFMKFILE=${ESMFMKFILE}
+########## END:: PLATFORM CUSTOMIZED SETTINGS ##########
