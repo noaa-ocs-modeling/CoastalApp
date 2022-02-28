@@ -26,3 +26,7 @@
 	path = PAHM
 	url = https://github.com/noaa-ocs-modeling/PaHM
 	branch = main
+[submodule "ICEMESH"]
+	path = ICEMESH
+	url = https://github.com/GM-Ling/ATMESH
+	branch = atm_ice_str
