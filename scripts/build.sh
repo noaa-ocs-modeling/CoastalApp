@@ -18,14 +18,16 @@
 
 # Get the directory where the script is located
 if [[ $(uname -s) == Darwin ]]; then
-  readonly scrNAME="$( grealpath -s "${BASH_SOURCE[0]}" )"
+#  readonly scrDIR="$(cd "$(dirname "$(greadlink -f -n "${BASH_SOURCE[${#BASH_SOURCE[@]} - 1]}" )" )" && pwd -P)"
+  readonly scrNAME="$( grealpath -s "${BASH_SOURCE[${#BASH_SOURCE[@]} - 1]}" )"
   readonly scrDIR="$(cd "$(dirname "${scrNAME}" )" && pwd -P)"
 else
-  readonly scrNAME="$( realpath -s "${BASH_SOURCE[0]}" )"
-  readonly scrDIR="$(cd "$(dirname "$(realpath -s "${BASH_SOURCE[0]}")" )" && pwd -P)"
+#  readonly scrDIR="$(cd "$(dirname "$(readlink -f -n "${BASH_SOURCE[${#BASH_SOURCE[@]} - 1]}" )" )" && pwd -P)"
+  readonly scrNAME="$( realpath -s "${BASH_SOURCE[${#BASH_SOURCE[@]} - 1]}" )"
+  readonly scrDIR="$(cd "$(dirname "${scrNAME}" )" && pwd -P)"
 fi
 
-lst="${scrDIR}/functions_build ${scrDIR}/scripts/functions_build functions_build "
+lst="${scrDIR:+${scrDIR}/}functions_build ${scrDIR:+${scrDIR}/}scripts/functions_build functions_build"
 funcs=
 for ilst in ${lst}
 do
@@ -37,6 +39,7 @@ done
 
 if [ -n "${funcs:+1}" ]; then
   source "${funcs}"
+  [ $? -ne 0 ] && exit 1
 else
   echo " ### ERROR :: in ${scrNAME}"
   echo "     Cannot load the required file: functions_build"
@@ -75,7 +78,7 @@ getCompilerNames "${COMPILER}"
 if [ ${CLEAN:-0} -ge 1 ]; then
   echo "User requested to only clean the project. Cleaning ..."
 
-  pushd ${nemsDIR} >/dev/null 2>&1
+  pushd ${NEMS_DIR} >/dev/null 2>&1
     [ ${CLEAN:-0} -eq 1 ] && compileNems clean
     [ ${CLEAN:-0} -eq 2 ] && compileNems distclean
   popd >/dev/null 2>&1
@@ -93,23 +96,24 @@ fi
 echo
 echo "The following variables are defined:"
 echo "    CLEAN          = ${CLEAN}"
-echo "    COMPILER       = ${COMPILER:-Undefined, Supported values are: [${MY_COMPILING_SYTEMS}]}"
+echo "    COMPILER       = ${COMPILER}"
 echo "    NEMS_COMPILER  = ${NEMS_COMPILER}"
-echo "    NEMS_PARALLEL  = ${PARALLEL:-0}"
+echo "    NEMS_PARALLEL  = ${PARALLEL}"
 echo "    NEMS_PLATFORM  = ${NEMS_PLATFORM}"
-echo "    CC             = ${CC:-UNDEF}"
-echo "    CXX            = ${CXX:-UNDEF}"
-echo "    FC             = ${FC:-UNDEF}"
-echo "    F90            = ${F90:-UNDEF}"
-echo "    PCC            = ${PCC:-UNDEF}"
-echo "    PCXX           = ${PCXX:-UNDEF}"
-echo "    PFC            = ${PFC:-UNDEF}"
-echo "    PF90           = ${PF90:-UNDEF}"
+echo "    NEMS_DIR       = ${NEMS_DIR}"
+echo "    CC             = ${CC}"
+echo "    CXX            = ${CXX}"
+echo "    FC             = ${FC}"
+echo "    F90            = ${F90}"
+echo "    PCC            = ${PCC}"
+echo "    PCXX           = ${PCXX}"
+echo "    PFC            = ${PFC}"
+echo "    PF90           = ${PF90}"
 echo "    MODULES FILE   = ${modFILE}"
 echo "    WW3_CONFOPT    = ${WW3_CONFOPT}"
 echo "    WW3_COMP       = ${WW3_COMP}"
 echo "    WWATCH3_NETCDF = ${WWATCH3_NETCDF}"
-echo "    COMPONENTS     = ${COMPONENT:-Undefined, Supported values are: [${MY_COMPONENT_LIST}]}"
+echo "    COMPONENTS     = ${COMPONENT}"
 echo "    BUILD_EXECS    = ${BUILD_EXECS}"
 echo "    OS             = ${OS}"
 echo "    PLATFORM       = ${PLATFORM}"
@@ -124,7 +128,7 @@ echo "    NETCDFHOME     = ${NETCDFHOME}"
 echo "    NETCDF_INCDIR  = ${NETCDF_INCDIR}"
 echo "    NETCDF_LIBDIR  = ${NETCDF_LIBDIR}"
 echo
-echo "    ESMFMKFILE     = ${ESMFMKFILE}"
+echo "    ESMFMKFILE     = ${ESMFMKFILE:-UNDEF}"
 echo
 echo "NOTE: If the parallel compiler names are different in your platform, you may pass one or more"
 echo "      of the environment variables: PCC, PCXX, PFC, PF90 to $(basename ${scrNAME}) and run the script as:"
@@ -162,7 +166,7 @@ unset echo_response
 ##########
 # Compile the project
 compileERR=0
-pushd ${nemsDIR} >/dev/null 2>&1
+pushd ${NEMS_DIR} >/dev/null 2>&1
   case ${CLEAN:-0} in
     -1 )
       compileNems clean
