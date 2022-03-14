@@ -249,8 +249,8 @@ strTrim ()
 }
 
 ###========================================
-### getGNUMakeVerbosity()
-### Usage:      getGNUMakeVerbosit verbosity_flag
+### getMakeVerbosity()
+### Usage:      getMakeVerbosity verbosity_flag
 ### Parameters:
 ###   verbosity_flag : The verbosity flag
 ###
@@ -260,21 +260,49 @@ strTrim ()
 ###
 ### Echoes  : The filtered verbosity flag
 ###
-### getGNUMakeVerbosity: Gets a valid GNU make verbosity flag
+### getMakeVerbosity: Gets a valid GNU make verbosity flag
 ###========================================
-getGNUMakeVerbosity ()
+getMakeVerbosity ()
 {
-  local opt_verb
+  local opt_verb opt_verb i
 
-  opt_verb="$( strTrim "${1}" 2 )"
-  opt_verb="$( toLOWER "${opt_verb}" )"
+  opt_inp="$( strTrim "${1}" 2 )"
+  opt_inp="$( toLOWER "${opt_inp}" )"
+  opt_inp="$( echo "${opt_inp}" | sed 's@[_/ .,:]@ @g' )"
 
-  case "${opt_verb}" in
-    a|n|b|v|i|j|m) ;;
-    *) opt_verb=   ;;
-  esac
+  opt_verb=
+  for i in ${opt_inp}
+  do
+    if `isInteger "${i}"` ; then
+      [ ${i} -ge 1 ] && i=1
+      [ ${i} -le 0 ] && i=0
+    else
+      [ "$( getYesNo "${i}" )" = "yes" ] && i=yes
+      [ "$( getYesNo "${i}" )" = "no" ] && i=no
+    fi
 
-  echo -n "${out_str}"
+    case "${i}" in
+      yes|1) opt_verb=b
+         break
+         ;;
+      n|no|0) opt_verb=
+         break
+         ;;
+      a) opt_verb=a
+         break
+         ;;
+      b|v|i|j|m)
+         if [ -z "${opt_verb}" ]; then
+           opt_verb="${i}"
+         else
+           opt_verb="${opt_verb},${i}"
+         fi
+         ;;
+      *) ;;
+    esac
+  done
+
+  echo -n "${opt_verb}"
 }
 
 ###========================================

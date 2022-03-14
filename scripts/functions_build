@@ -247,8 +247,9 @@ ParseArgs()
           if [ $? -eq 0 ]; then
             __MY_VERBOSE=b # This is suitable for GNU's make
             if [ "X${opt_arg}" != "X" ]; then
-            __MY_VERBOSE="$( echo "$( strTrim "${opt_arg}" 2 )" | sed 's/[[:space:]]/,/g' )"
+              __MY_VERBOSE="${opt_arg}"
             fi
+            __MY_VERBOSE="$( getMakeVerbosity "${__MY_VERBOSE}" )"
           fi
         ;;
       -h | -help | --h | --help )
@@ -450,7 +451,7 @@ UsageBuild()
   PARMAKE=${MY_PARMAKE}
   export PARMAKE=${PARMAKE:-1}
 
-  VERBOSE="$( toLOWER "${MY_VERBOSE}" )"
+  VERBOSE="${MY_VERBOSE}"
   export VERBOSE=${VERBOSE:-}
 
   ##### Customize the NEMS.x filename to include the component names
