@@ -9,7 +9,7 @@
 [submodule "WW3"]
 	path = WW3
 	url = https://github.com/noaa-ocs-modeling/WW3.git
-	branch = nuopc_unstruc
+	branch = master
 [submodule "NEMS"]
 	path = NEMS
 	url = https://github.com/noaa-ocs-modeling/NEMS.git
@@ -17,14 +17,18 @@
 [submodule "ADCIRC"]
 	path = ADCIRC
 	url = https://github.com/adcirc/adcirc-cg.git
-	branch = master
+	branch = v55_nuopc
 [submodule "NWM"]
 	path = NWM
 	url = https://github.com/noaa-ocs-modeling/nwm_public_nuopc.git
-	branch = master
+	branch = feature/adcirc_v55
 [submodule "PAHM"]
 	path = PAHM
-	url = https://github.com/noaa-ocs-modeling/PaHM.git
+	url = https://github.com/noaa-ocs-modeling/PaHM
+	branch = main
+[submodule "BARDATA"]
+	path = BARDATA
+	url = https://github.com/noaa-ocs-modeling/BARDATA
 [submodule "SCHISM/schism"]
 	path = SCHISM/schism
 	url = https://github.com/schism-dev/schism.git

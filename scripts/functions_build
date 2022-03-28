@@ -3,30 +3,103 @@
 ###########################################################################
 ### Author:  Panagiotis Velissariou <panagiotis.velissariou@noaa.gov>
 ###
-### Version - 1.0 Fri Dec 04 2020
+### Version - 1.1
+###
+###   1.1 Sun Mar 06 2022
+###   1.0 Fri Dec 04 2020
 ###########################################################################
 
 set +u
 
-MY_COMPILING_SYTEMS="gnu, intel, pgi"
-MY_COMPILING_PLATFORMS="custom, linux, macosx, cheyenne, gaea, hera, jet, orion, stampede, wcoss, mistral, strand"
+###====================
+# Make sure that the current working directory is in the PATH
+[[ ! :$PATH: == *:".":* ]] && export PATH="${PATH}:."
 
-MY_ATM_MODS="ATMESH WRF HWRF PAHM"
-MY_OCN_MODS="ADCIRC SCHISM FVCOM ROMS"
+# Get the directory where the script is located
+if [[ $(uname -s) == Darwin ]]; then
+  src_name="$( grealpath -s "${BASH_SOURCE[${#BASH_SOURCE[@]} - 1]}" )"
+  src_dir="$(cd "$(dirname "${src_name}" )" && pwd -P)"
+else
+  src_name="$( realpath -s "${BASH_SOURCE[${#BASH_SOURCE[@]} - 1]}" )"
+  src_dir="$(cd "$(dirname "${src_name}" )" && pwd -P)"
+fi
+
+lst="${src_dir:+${src_dir}/}functions_utilities ${src_dir:+${src_dir}/}scripts/functions_utilities functions_utilities"
+funcs=
+for ilst in ${lst}
+do
+  if [ -f "${ilst:-}" ]; then
+    funcs="${ilst}"
+    break
+  fi
+done
+
+if [ -n "${funcs:+1}" ]; then
+  source "${funcs}"
+
+  if [ $? -ne 0 ]; then
+    echo " ### ERROR :: in ${src_name}"
+    echo "     Cannot load the required file: ${funcs}"
+    echo "     Exiting now ..."
+    echo
+
+    unset src_name src_dir ilst funcs
+    return 1
+  fi
+else
+  echo " ### ERROR :: in ${src_name}"
+  echo "     Cannot load the required file: functions_utilities"
+  echo "     Exiting now ..."
+  echo
+
+  unset src_name src_dir ilst funcs
+  return 1
+fi
+
+unset src_name src_dir ilst funcs
+###====================
+
+
+export MY_COMPILING_SYTEMS="gnu, intel, pgi"
+export MY_COMPILER_DEFAULT="intel"
+export MY_COMPILING_PLATFORMS="custom, linux, macosx, cheyenne, gaea, hera, jet, orion, stampede, wcoss, mistral, strand"
+
+########################################
+##### Atmospheric components
+MY_ATM_MODS="ATMESH PAHM"
+#MY_ATM_MODS="ATMESH WRF HWRF PAHM"
+
+##### Ocean components
+MY_OCN_MODS="ADCIRC"
+#MY_OCN_MODS="ADCIRC SCHISM FVCOM ROMS"
+
+##### Hydrologic components
 MY_HYD_MODS="NWM"
+
+##### Wave components
 MY_WAV_MODS="WW3DATA WW3"
 
-MY_COMPONENT_LIST="${MY_ATM_MODS} ${MY_OCN_MODS} ${MY_HYD_MODS} ${MY_WAV_MODS} "
+##### Miscellaneous components
+MY_MSC_MODS="BARDATA"
+########################################
+
+export MY_COMPONENT_DEFAULT="ADCIRC WW3DATA ATMESH"
+export MY_COMPONENT_LIST="${MY_ATM_MODS} ${MY_OCN_MODS} ${MY_HYD_MODS} ${MY_WAV_MODS} ${MY_MSC_MODS}"
+
 
 ##################################################
-### MODELLING SYSTEM BUILD FUNCTIONS
+### BEG:: MODELLING SYSTEM BUILD FUNCTIONS
 ##################################################
 
 ###========================================
 ### ParseArgs()
+###
 ### Usage:      ParseArgs args
+###
 ### Parameters: args = the script options
+###
 ### Returns:    0
+###
 ### Echoes:     NONE
 ###
 ### Gets the supplied options to the script.
@@ -48,8 +121,8 @@ ParseArgs()
 
   __MY_CLEAN=0
   __MY_EXECUTABLES=
-  __MY_COMPILER=intel
-  __MY_COMPONENT="ADCIRC WW3DATA ATMESH"
+  __MY_COMPILER="${MY_COMPILER_DEFAULT}"
+  __MY_COMPONENT="${MY_COMPONENT_DEFAULT}"
   __MY_OS=
   __MY_PARALLEL=1
   __MY_PARMAKE=1
@@ -172,10 +245,11 @@ ParseArgs()
       -v | --v | -verbose | --verbose )
           checkFuncOpt "--verbose"
           if [ $? -eq 0 ]; then
-            __MY_VERBOSE=b
+            __MY_VERBOSE=b # This is suitable for GNU's make
             if [ "X${opt_arg}" != "X" ]; then
-            __MY_VERBOSE="$( echo "$( strTrim "${opt_arg}" 2 )" | sed 's/[[:space:]]/,/g' )"
+              __MY_VERBOSE="${opt_arg}"
             fi
+            __MY_VERBOSE="$( getMakeVerbosity "${__MY_VERBOSE}" )"
           fi
         ;;
       -h | -help | --h | --help )
@@ -193,16 +267,16 @@ ParseArgs()
   if [ -z "${__MY_OS}" ]; then
     case "$(uname -s)" in
       Darwin ) __MY_OS="macosx" ;;
-      Linux  ) __MY_OS="linux" ;;
-            *) __MY_OS="UNDEFINED";; # DEFAULT
+      Linux  ) __MY_OS="linux"  ;;
+            *) __MY_OS="linux"  ;; # DEFAULT
     esac
   fi
 
   if [ -z "${__MY_PLATFORM}" ]; then
     case "$(uname -s)" in
       Darwin ) __MY_PLATFORM="macosx" ;;
-      Linux  ) __MY_PLATFORM="linux" ;;
-            *) __MY_PLATFORM="linux";; # DEFAULT
+      Linux  ) __MY_PLATFORM="linux"  ;;
+            *) __MY_PLATFORM="linux"  ;; # DEFAULT
     esac
   fi
 
@@ -222,6 +296,21 @@ ParseArgs()
   return 0
 }
 
+###========================================
+### UsageBuild()
+###
+### Usage:      UsageBuild
+###
+### Parameters: NONE
+###
+### Returns : Exits on error
+###
+### Exports : NONE
+###
+### Echoes  : NONE
+###
+### UsageBuild: Prints all usage options of the build script.
+###========================================
 UsageBuild()
 {
   local nm="$( basename ${0} )"
@@ -241,12 +330,12 @@ UsageBuild()
   #---
   echo "  -compiler|--compiler [=|space] \"compiling_system\" (OPTIONAL)."
   echo "    The compiling system to use (${MY_COMPILING_SYTEMS})."
-  echo "    Default: intel."
+  echo "    Default: ${MY_COMPILER_DEFAULT}."
   echo
   #---
   echo "  -component|--component [=|space] \"component_list\" (OPTIONAL)."
   echo "    The component(s) to use (${MY_COMPONENT_LIST})."
-  echo "    Default: \"ADCIRC WW3DATA ATMESH\"."
+  echo "    Default: \"${MY_COMPONENT_DEFAULT}\"."
   echo
   #---
   echo "  -build_exec|--build_exec [=|space] \"executable_list\" (OPTIONAL)."
@@ -295,273 +384,205 @@ UsageBuild()
 }
 
 ###========================================
-### checkFuncOpt()
-### Usage:      checkFuncOpt opt_name
-### Parameters:
-###   opt_name: The name of the option to a function
+### getNEMSEnvVars()
 ###
-### Returns : Exits on error
+### Usage:      getNEMSEnvVars
 ###
-### Exports : __OPTION_LIST
+### Parameters: NONE
+###
+### Returns : error status
+###
+### Exports : CLEAN COMPILER COMPONENT PARALLEL BUILD_EXECS OS PLATFORM PARMAKE VERBOSE
+###           NEMS_COMPILER NEMS_PARALLEL NEMS_PLATFORM MACHINE_ID FULL_MACHINE_ID
+###           APP_DIR APPMODS_DIR modFILE modDIR NEMS_DIR compFNAME
 ###
 ### Echoes  : NONE
 ###
-### checkFuncOpt: Checks if an option to a function is already supplied.
+### getNEMSEnvVars: Exports all the NEMS environment variables.
 ###========================================
-checkFuncOpt() {
-  local opt_inp opt_list
+ getNEMSEnvVars() {
+  local src_name src_dir component_ww3
 
-  [ $# -eq 0 ] && return -1
 
-  opt_inp="$( strTrim "${1}" 2 )"
-  opt_inp="$( echo "${opt_inp}" | sed 's/^[-]*//' )"
-
-  opt_list="$( strTrim "${__OPTION_LIST}" 2 )"
-  [ -n ${opt_list:+1} ] && \
-    opt_list=":$( echo "${opt_list}" | sed 's/ /:/g' ):"
-
-  [ "$( echo "${opt_list}" | egrep -o ":${opt_inp}:" )" ] && return 1
-
-  __OPTION_LIST="${__OPTION_LIST} ${opt_inp}"
-  export __OPTION_LIST
-
-  return 0
-}
-
-###========================================
-### isInteger()
-### Usage:      isInteger var
-### Parameters: var
-### Returns:    1 if var is not an integer (0 is an integer as well)
-###             0 in any other case
-### Echoes:     NONE
-###========================================
-isInteger()
-{
-  local -i retval=1
-
-  [ $# -eq 0 ] && return ${retval}
-
-  if [ "${1:-UNDEF}" -eq "${1}" ] 2>/dev/null
-  then
-    retval=0
-  fi
-
-  return ${retval}
-}
-
-###========================================
-### getInteger()
-### Usage:      getInteger int
-### Parameters: int (int >=0 or, int < 0)
-### Returns:    1 if var is not an integer
-###             0 in any other case
-### Echoes:     int, if it is a valid integer (including 0),
-###             in any other case echoes an empty string
-###========================================
-getInteger()
-{
-  local -i retval=0
-  local echoval= minus=
-
-  # strip spaces, '+' signs and '-' signs
-  # if the first character of the string is '-', set the minus variable
-  echoval="$( echo "${1}" | sed 's/[[:space:]+]//g' )"
-  [ "X$( echo "${echoval:0:1}" )" = "X-" ] && minus="-"
-  echoval="${minus}$( echo "${echoval}" | sed 's/[[:space:]-]//g' )"
-
-  if isInteger ${echoval}; then
-    echoval="$(echo "scale=0; ${echoval} + 0" | bc -ql 2>/dev/null)"
-    retval=$?
-    echoval="${echoval:-0}"
+  if [ -n "${APP_DIR:+1}" ]; then
+    src_dir="${APP_DIR}"
   else
-    echoval=
-    retval=1
-  fi
-
-  echo -n ${echoval}
-
-  return ${retval}
-}
-
-###========================================
-### getPosInteger()
-### Usage:      getPosInteger posint
-### Parameters: posint (posint >= 0)
-### Returns:    1 if var is not a positive integer
-###             0 in any other case
-### Echoes:     posint if it is a valid positive integer
-###             (including 0), in any other case echoes an
-###             empty string
-###========================================
-getPosInteger()
-{
-  local -i retval=0
-  local echoval=
-
-  echoval=$( getInteger "${1}" )
-  retval=$?
-
-  if [ ${retval} -ne 0 ] ; then
-    echoval=
-    retval=1
-  else
-    if [ ${echoval} -lt 0 ]; then
-      echoval=
-      retval=1
+    if [ -n "${1:+1}" ]; then
+      src_dir="${1}"
+    else
+      # Get the directory where the script is located
+      if [[ $(uname -s) == Darwin ]]; then
+        readonly src_name="$( grealpath -s "${BASH_SOURCE[${#BASH_SOURCE[@]} - 1]}" )"
+        readonly src_dir="$(cd "$(dirname "${src_name}" )" && pwd -P)"
+      else
+        readonly src_name="$( realpath -s "${BASH_SOURCE[${#BASH_SOURCE[@]} - 1]}" )"
+        readonly src_dir="$(cd "$(dirname "$(realpath -s "${BASH_SOURCE[0]}")" )" && pwd -P)"
+      fi
     fi
   fi
+  APP_DIR=${src_dir}
 
-  echo -n ${echoval}
 
-  return ${retval}
-}
+  CLEAN=${MY_CLEAN}
+  export CLEAN=${CLEAN:-0}
 
-###========================================
-### getYesNo()
-### Usage:      getYesNo value
-### Parameters:
-###   value : The input value (the value of a parameter)
-###           The value of a bash parameter that is checked
-###           against TRUE/FALSE. If the value is one of:
-###             ">=1|y|yes|yea|yeah|yep"
-###           then the value of parameter is TRUE (answer = yes).
-###           If the value is one of:
-###             "<=0|n|no|not|nop|nope"
-###           then the value of parameter is FALSE (answer = no).
-###           If the value is empty then the value of parameter
-###           is FALSE (answer = no)
-###
-### Returns : NONE
-###
-### Exports : NONE
-###
-### Echoes  : A "yes" or "no" answer.
-###
-### getYesNo: Checks if a parameter is assigned a TRUE/FALSE value.
-###========================================
-getYesNo()
-{
-  local param answer
+  COMPILER="$( toLOWER "$( basename "${MY_COMPILER}" )" )"
+  export COMPILER=${COMPILER:-}
+
+  COMPONENT="$( toUPPER "${MY_COMPONENT}" )"
+  export COMPONENT=${COMPONENT:-}
+
+  PARALLEL=${MY_PARALLEL}
+  export PARALLEL=${PARALLEL:-1}
+
+  BUILD_EXECS="${MY_EXECUTABLES}"
+  export BUILD_EXECS=${BUILD_EXECS:-}
+
+  OS="$( toLOWER "${MY_OS}" )"
+  export OS=${OS:-}
+
+  if [ -n "${MY_PLATFORM:+1}" ]; then
+    PLATFORM="$( toLOWER "${MY_PLATFORM}" )"
+  else
+    PLATFORM="${OS}"
+  fi
+  export PLATFORM=${PLATFORM:-}
+
+  PARMAKE=${MY_PARMAKE}
+  export PARMAKE=${PARMAKE:-1}
+
+  VERBOSE="${MY_VERBOSE}"
+  export VERBOSE=${VERBOSE:-}
+
+  ##### Customize the NEMS.x filename to include the component names
+  compFNAME=
+  if [ -n "${COMPONENT:+1}" ]; then
+    compFNAME="$( strTrim "$( toLOWER "${COMPONENT}" )" )"
+    compFNAME="$( echo "${compFNAME}" | sed 's/ /_/g' )"
+  fi
+  export compFNAME=${compFNAME:-}
+  #####
+
+  ##### Get the WW3 related environment variables
+  WW3_CONFOPT=
+  WW3_COMP=
+  WWATCH3_NETCDF=
+  component_ww3="$( echo "${COMPONENT}" | sed 's/ /:/g' )"
+  if [[ :${component_ww3}: == *:"WW3":* ]]; then
+    WW3_CONFOPT="${COMPILER}"
+    WW3_COMP="${COMPILER}"
+    WWATCH3_NETCDF=NC4
+  fi
+  export WW3_CONFOPT=${WW3_CONFOPT:-}
+  export WW3_COMP=${WW3_COMP:-}
+  export WWATCH3_NETCDF=${WWATCH3_NETCDF:-}
+  #####
   
-  param="$( echo "${1}" | tr '[:upper:]' '[:lower:]' )"
+  # Export some important environment variables for NEMS and for other models
+  export NEMS_COMPILER="${COMPILER:-}"
+  export NEMS_PARALLEL="${PARALLEL:-}"
+  export NEMS_PLATFORM="${PLATFORM:-}"
+  export MACHINE_ID="${PLATFORM:-}"
+  export FULL_MACHINE_ID="${PLATFORM:-}"
 
-  if [ "${param}" -eq "${param}" ] 2>/dev/null
-  then
-    [ ${param} -le 0 ] && param=0
-    [ ${param} -gt 0 ] && param=1
+  export APP_DIR="${APP_DIR:-}"
+  export APPMODS_DIR="${APPMODS_DIR:-${APP_DIR:+${APP_DIR}/}modulefiles}"
+
+  # This used in NEMS to get the configuration flags for the chosen compiler
+  # in the top level conf directory. Supported OSes are linux and macosx.
+  # Sometimes we might need to specify special flags not founf in the default
+  # files for s pecific platform
+  if [ ! -f "${APP_DIR}/conf/configure.nems.${FULL_MACHINE_ID}.${NEMS_COMPILER}" ]; then
+    export BUILD_TARGET=${OS}.${NEMS_COMPILER}
+  else
+    export BUILD_TARGET="${FULL_MACHINE_ID}.${NEMS_COMPILER}"
   fi
 
-  case "${param}" in
-    1|y|yes|yea|yeah|yep) answer="yes" ;;
-     0|n|no|not|nop|nope) answer="no"  ;;
-                       *) answer=""    ;; # DEFAULT
-  esac
+  if [ ! -f "${APP_DIR}/conf/externals.nems.${FULL_MACHINE_ID}" ]; then
+    export EXTERNALS_NEMS="externals.nems"
+  else
+    export EXTERNALS_NEMS="externals.nems.${FULL_MACHINE_ID}"
+  fi
 
-  echo -n "${answer}"
+  # Get the project directories and perform a basic check on them
+  readonly NEMS_DIR="${APP_DIR}/NEMS"
+  if [ ! -f "${NEMS_DIR}/NEMSAppBuilder" ]; then
+    echo "The project directory \"${NEMS_DIR}\" does not appear to contain NEMSAppBuilder."
+    echo "Is this the correct NEMS directory?"
+    echo "You might need to set the environment variable APP_DIR before running this script."
+    echo "Exiting ..."
+    exit 1
+  fi
+  export NEMS_DIR
+
+  modFILE="envmodules${COMPILER:+_${COMPILER}}${PLATFORM:+.${PLATFORM}}"
+  if [ ! -f "${APPMODS_DIR}/${modFILE}" ]; then
+    echo
+    echo "The modulefiles directory \"${modDIR}\" does not appear to contain the module file: ${modFILE}."
+    echo "Is this the correct \"modulefiles\" directory?"
+    echo "You might need to set the environment variable \"APPMODS_DIR\" to point to a custom modulefiles directory before running this script."
+    echo "Exiting ..."
+    echo
+    exit 1
+  else
+    # Source the environment module
+    export modFILE="${APPMODS_DIR}/${modFILE}"
+    source ${modFILE} 2>/dev/null
+  fi
 }
 
 ###========================================
-### toUPPER()
-### Usage:      toUPPER string
-### Parameters:
-###   string : The string in to convert
+### checkNEMSComponents()
 ###
-### Returns : NONE
+### Usage:      checkNEMSComponents
+###
+### Parameters: NONE
+###
+### Returns : Exits on error
 ###
 ### Exports : NONE
 ###
-### Echoes  : The input string converted to an all upper case string
+### Echoes  : NONE
 ###
-### toUPPER: Converts a string to an all upper case string
+### checkNEMSComponents: Checks if a user supplied modeling component is supported.
 ###========================================
-function toUPPER()
-{
-  echo "${1}" | tr '[:lower:]' '[:upper:]'
+ checkNEMSComponents() {
+  local comp_user comp_all
+  local icomp
+
+  comp_user="$( toUPPER "${COMPONENT}" )"
+  [ -z "${comp_user}" ] && \
+    comp_user="$( toUPPER "${MY_COMPONENT}" )"
+
+  comp_all="$( toUPPER "${MY_COMPONENT_LIST}" )"
+
+  for icomp in ${comp_user}
+  do
+    if [[ "${comp_all}" != *"${icomp}"* ]]; then
+      echo "The modeling component \"${icomp}\" is not supported."
+      echo "Please adjust your component list and re-run the script."
+      echo "Exiting ..."
+      exit 1
+      echo "icomp = ${icomp}"
+    fi
+  done
 }
 
 ###========================================
-### toLOWER()
-### Usage:      toLOWER string
-### Parameters:
-###   string : The string in to convert
+### compileNems()
 ###
-### Returns : NONE
+### Usage:      compileNems compile_type
+###
+### Parameters: compile_type = one of: clean|distclean or, build|compile
+###
+### Returns : error status
 ###
 ### Exports : NONE
 ###
-### Echoes  : The input string converted to an all lower case string
+### Echoes  : NONE
 ###
-### toLOWER: Converts a string to an all lower case string
+### compileNems: Uses environment variables to compile a NEMS application.
 ###========================================
-function toLOWER()
-{
-  echo "${1}" | tr '[:upper:]' '[:lower:]'
-}
-
-###========================================
-### strESC()
-### Usage:      strESC string
-### Parameters:
-###   string : The input string
-###            The input string on which this function is applied
-###            to escape special characters used in bash/sed ...
-###
-### Returns : NONE
-###
-### Exports : NONE
-###
-### Echoes  : The modified string with its special characters escaped
-###
-### strESC: Escapes special characters in a string: "'()/[]*.
-###========================================
-strESC()
-{
-  echo -n "$( echo "${*}" | sed -e "s/[\"\'\(\)\/\*\!]/\\\&/g;s/\[/\\\&/g;s/\]/\\\&/g" )"
-}
-
-strESC1()
-{
-  echo -n "$( echo "${*}" | sed -e "s/[\&\/\*\!]/\\\&/g;s/\[/\\\&/g;s/\]/\\\&/g" )"
-}
-
-###========================================
-### strTrim()
-### Usage:      strTrim s1 flag
-### Parameters:
-###     s1 : The input string
-###   flag : Integer
-###          A value that controls the action of strTrim.
-###          If flag is zero or not present, trailing blanks are removed.
-###          Leading blanks are removed if it is equal to 1.
-###          Both are removed if it is equal to 2.
-###          In any other case, trailing blanks are removed.
-###
-### Returns : NONE
-###
-### Exports : NONE
-###
-### Echoes  : s1 with all leading and/or trailing
-###           white spaces removed.
-###
-### strTrim: Removes all leading and/or trailing white spaces
-###          from the input string
-###========================================
-function strTrim ()
-{
-  local trimFLG="${2:-0}"
-  local out_str=
-
-  case ${trimFLG} in
-    0) out_str="$(echo "${1}" | sed 's/[[:space:]]*$//')" ;;
-    1) out_str="$(echo "${1}" | sed 's/^[[:space:]]*//')" ;;
-    2) out_str="$(echo "${1}" | sed 's/^[[:space:]]*//;s/[[:space:]]*$//')" ;;
-    *) out_str="$(echo "${1}" | sed 's/[[:space:]]*$//')" ;;
-  esac
-
-  echo -n ${out_str}
-}
-
 compileNems() {
   local cmp_type cmp_make cmp_comp cmp_mjob
   local err=0
@@ -569,7 +590,7 @@ compileNems() {
   [ $# -eq 0 ] && return ${err}
 
   cmp_type="$( toLOWER "${1}" )"
-  cmp_make=GNUmakefile
+  cmp_make=GNUmakefile   # This is the top level NEMS Makefile
   cmp_comp="${COMPONENT:+COMPONENTS=\"${COMPONENT}\"}"
   cmp_mjob="${PARMAKE:+-j ${PARMAKE}}"
   cmp_verb="${VERBOSE:+--debug=${VERBOSE}}"
@@ -606,6 +627,21 @@ compileNems() {
   return ${err}
 }
 
+###========================================
+### installNems()
+###
+### Usage:      installNems compile_type
+###
+### Parameters: NONE
+###
+### Returns : NONE
+###
+### Exports : NONE
+###
+### Echoes  : NONE
+###
+### installNems: Installs all NEMS compiled components.
+###========================================
 # Need to have specific model components install functions
 # TODO - Panagiotis Velissariou
 installNems() {
