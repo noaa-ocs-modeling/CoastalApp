@@ -29,3 +29,9 @@
 [submodule "BARDATA"]
 	path = BARDATA
 	url = https://github.com/noaa-ocs-modeling/BARDATA
+[submodule "SCHISM/schism"]
+	path = SCHISM/schism
+	url = https://github.com/schism-dev/schism.git
+[submodule "SCHISM/schism-esmf"]
+	path = SCHISM/schism-esmf
+	url = https://github.com/schism-dev/schism-esmf.git
