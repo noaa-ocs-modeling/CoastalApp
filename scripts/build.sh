@@ -3,8 +3,9 @@
 ###########################################################################
 ### Author:  Panagiotis Velissariou <panagiotis.velissariou@noaa.gov>
 ###
-### Version - 1.1
+### Version - 1.2
 ###
+###   1.2 Sun Mar 06 2022
 ###   1.1 Wed Apr 14 2021
 ###   1.0 Fri Dec 04 2020
 ###########################################################################
@@ -17,14 +18,16 @@
 
 # Get the directory where the script is located
 if [[ $(uname -s) == Darwin ]]; then
-  readonly scrNAME="$( grealpath -s "${BASH_SOURCE[0]}" )"
+#  readonly scrDIR="$(cd "$(dirname "$(greadlink -f -n "${BASH_SOURCE[${#BASH_SOURCE[@]} - 1]}" )" )" && pwd -P)"
+  readonly scrNAME="$( grealpath -s "${BASH_SOURCE[${#BASH_SOURCE[@]} - 1]}" )"
   readonly scrDIR="$(cd "$(dirname "${scrNAME}" )" && pwd -P)"
 else
-  readonly scrNAME="$( realpath -s "${BASH_SOURCE[0]}" )"
-  readonly scrDIR="$(cd "$(dirname "$(realpath -s "${BASH_SOURCE[0]}")" )" && pwd -P)"
+#  readonly scrDIR="$(cd "$(dirname "$(readlink -f -n "${BASH_SOURCE[${#BASH_SOURCE[@]} - 1]}" )" )" && pwd -P)"
+  readonly scrNAME="$( realpath -s "${BASH_SOURCE[${#BASH_SOURCE[@]} - 1]}" )"
+  readonly scrDIR="$(cd "$(dirname "${scrNAME}" )" && pwd -P)"
 fi
 
-lst="${scrDIR}/functions_build ${scrDIR}/scripts/functions_build functions_build "
+lst="${scrDIR:+${scrDIR}/}functions_build ${scrDIR:+${scrDIR}/}scripts/functions_build functions_build"
 funcs=
 for ilst in ${lst}
 do
@@ -36,6 +39,7 @@ done
 
 if [ -n "${funcs:+1}" ]; then
   source "${funcs}"
+  [ $? -ne 0 ] && exit 1
 else
   echo " ### ERROR :: in ${scrNAME}"
   echo "     Cannot load the required file: functions_build"
@@ -48,95 +52,25 @@ unset ilst funcs
 ###====================
 
 
-#########
+############################################################
+### BEG:: SYSTEM CONFIGURATION
+############################################################
+
 # Call ParseArgs to get the user input.
 ParseArgs "${@}"
 
-
-##########
 # Set the variables for this script
-CLEAN=${MY_CLEAN:-0}
+getNEMSEnvVars ${scrDIR}
 
-[ -n "${MY_COMPILER:+1}" ] && COMPILER="$( toLOWER "$( basename "${MY_COMPILER}" )" )"
+# Check if the user supplied valid components
+checkNEMSComponents
 
-[ -n "${MY_COMPONENT:+1}" ] && COMPONENT="$( toUPPER "${MY_COMPONENT}" )"
+# Get the compilers to use for this project compilation
+getCompilerNames "${COMPILER}"
 
-PARALLEL=${MY_PARALLEL:-1}
-
-BUILD_EXECS="${MY_EXECUTABLES}"
-
-[ -n "${MY_OS:+1}" ] && OS="$( toLOWER "${MY_OS}" )"
-
-if [ -n "${MY_PLATFORM:+1}" ]; then
-  PLATFORM="$( toLOWER "${MY_PLATFORM}" )"
-else
-  PLATFORM="${OS}"
-fi
-
-[ "${MY_PARMAKE:0}" -gt 1 ] && PARMAKE=${MY_PARMAKE}
-
-[ -n "${MY_VERBOSE:+1}" ] && VERBOSE="$( toLOWER "${MY_VERBOSE}" )"
-
-modFILE="envmodules${COMPILER:+_${COMPILER}}${PLATFORM:+.${PLATFORM}}"
-##########
-
-
-##########
-# Customizations and environment variables for NEMS and other models
-export BUILD_EXECS="${BUILD_EXECS}"
-
-# Customize the NEMS.x filename to include the component names
-if [ -n "${COMPONENT:+1}" ]; then
-  compFNAME="$( strTrim "$( toLOWER "${COMPONENT}" )" )"
-  compFNAME="$( echo "${compFNAME}" | sed 's/ /_/g' )"
-fi
-
-# Export some important environment variables for NEMS and for other models
-export NEMS_COMPILER=${COMPILER}
-export NEMS_PARALLEL=${PARALLEL}
-export NEMS_PLATFORM=${PLATFORM}
-export MACHINE_ID=${PLATFORM}
-export FULL_MACHINE_ID=${PLATFORM}
-
-# This used in NEMS to get the configuration flags for the chosen compiler
-# in the top level conf directory. Supported OSes are linux and macosx.
-# Sometimes we might need to specify special flags not founf in the default
-# files for s pecific platform
-if [ ! -f "conf/configure.nems.${FULL_MACHINE_ID}.${NEMS_COMPILER}" ]; then
-  export BUILD_TARGET=${OS}.${NEMS_COMPILER}
-fi
-
-if [ ! -f "conf/externals.nems.${FULL_MACHINE_ID}" ]; then
-  export EXTERNALS_NEMS="externals.nems"
-fi
-##########
-
-
-##########
-# Get the project directories and perform a basic check on them
-readonly nemsDIR="${NEMS_DIR:-${scrDIR}/NEMS}"
-if [ ! -f "${nemsDIR}/NEMSAppBuilder" ]; then
-  echo "The project directory \"${nemsDIR}\" does not appear to contain NEMSAppBuilder."
-  echo "Is this the correct NEMS directory?"
-  echo "You might need to set the environment variable NEMS_DIR before running this script."
-  echo "Exiting ..."
-  exit 1
-fi
-
-readonly modDIR="${NEMSMODS_DIR:-${scrDIR}/modulefiles}"
-if [ ! -f "${modDIR}/${modFILE}" ]; then
-  echo
-  echo "The modulefiles directory \"${modDIR}\" does not appear to contain the module file: ${modFILE}."
-  echo "Is this the correct \"modulefiles\" directory?"
-  echo "You might need to set the environment variable \"NEMSMODS_DIR\" to point to a custom modulefiles directory before running this script."
-  echo "Exiting ..."
-  echo
-  exit 1
-else
-  # Source the environment module
-  source ${modDIR}/${modFILE}
-fi
-##########
+############################################################
+### END:: SYSTEM CONFIGURATION
+############################################################
 
 
 ##########
@@ -144,7 +78,7 @@ fi
 if [ ${CLEAN:-0} -ge 1 ]; then
   echo "User requested to only clean the project. Cleaning ..."
 
-  pushd ${nemsDIR} >/dev/null 2>&1
+  pushd ${NEMS_DIR} >/dev/null 2>&1
     [ ${CLEAN:-0} -eq 1 ] && compileNems clean
     [ ${CLEAN:-0} -eq 2 ] && compileNems distclean
   popd >/dev/null 2>&1
@@ -154,94 +88,32 @@ fi
 ##########
 
 
-##########
-# Get the compilers to use for this project compilation
-case "${COMPILER}" in
-  gnu)
-     CC=gcc
-     CXX=g++
-     FC=gfortran
-     F90=gfortran
-     PCC=${PCC:-mpicc}
-     PCXX=${PCXX:-mpicxx}
-     PFC=${PFC:-mpif90}
-     PF90=${PF90:-${PFC}}
-     ;;
-  intel)
-     CC=icc
-     CXX=icpc
-     FC=ifort
-     F90=ifort
-     PCC=${PCC:-mpiicc}
-     PCXX=${PCXX:-mpiicpc}
-     PFC=${PFC:-mpiifort}
-     PF90=${PF90:-${PFC}}
-     ;;
-  pgi)
-     CC=pgcc
-     CXX=pgc++
-     FC=pgfortran
-     F90=pgfortran
-     PCC=${PCC:-pgcc}
-     PCXX=${PCXX:-pgc++}
-     PFC==${PFC:-pgfortran}
-     PF90=${PF90:-${PFC}}
-     ;;
-  *) # No defaults. Give the user the option to define the environment variables
-     # CC, CXX, FC, F90 before running this script.
-     #echo "WARNING: The supplied compiling system \"${COMPILER}\", is not suported."
-     #echo "         Supported systems are anyone of: compiling_system=[${MY_COMPILING_SYTEMS}]"
-     #echo "         Use: --compiler=compiling_system."
-     #echo "         Will continue with OS defaults."
-     CC=${CC:-}
-     CXX=${CXX:-}
-     FC=${FC:-}
-     F90=${F90:-}
-     PCC=${CC:-}
-     PCXX=${CXX:-}
-     PFC=${FC:-}
-     PF90=${F90:-}
-     ;;
-esac
+############################################################
+### BEG:: GET FINAL USER RESPONSE
+############################################################
 
-export CC CXX FC F90 PCC PCXX PFC PF90
-##########
-
-
-##########
-component_ww3="$( echo "${COMPONENT}" | sed 's/ /:/g' )"
-if [[ :${component_ww3}: == *:"WW3":* ]]; then
-  export WW3_CONFOPT="${COMPILER}"
-  export WW3_COMP="${COMPILER}"
-  export WWATCH3_NETCDF=NC4
-fi
-##########
-
-
-##########
 # Get a final user response for the variables
 echo
 echo "The following variables are defined:"
 echo "    CLEAN          = ${CLEAN}"
-echo "    COMPILER       = ${COMPILER:-Undefined, Supported values are: [${MY_COMPILING_SYTEMS}]}"
+echo "    COMPILER       = ${COMPILER}"
 echo "    NEMS_COMPILER  = ${NEMS_COMPILER}"
-echo "    NEMS_PARALLEL  = ${PARALLEL:-0}"
+echo "    NEMS_PARALLEL  = ${PARALLEL}"
 echo "    NEMS_PLATFORM  = ${NEMS_PLATFORM}"
-echo "    CC             = ${CC:-UNDEF}"
-echo "    CXX            = ${CXX:-UNDEF}"
-echo "    FC             = ${FC:-UNDEF}"
-echo "    F90            = ${F90:-UNDEF}"
-echo "    PCC            = ${PCC:-UNDEF}"
-echo "    PCXX           = ${PCXX:-UNDEF}"
-echo "    PFC            = ${PFC:-UNDEF}"
-echo "    PF90           = ${PF90:-UNDEF}"
+echo "    NEMS_DIR       = ${NEMS_DIR}"
+echo "    CC             = ${CC}"
+echo "    CXX            = ${CXX}"
+echo "    FC             = ${FC}"
+echo "    F90            = ${F90}"
+echo "    PCC            = ${PCC}"
+echo "    PCXX           = ${PCXX}"
+echo "    PFC            = ${PFC}"
+echo "    PF90           = ${PF90}"
 echo "    MODULES FILE   = ${modFILE}"
-if [[ :${component_ww3}: == *:"WW3":* ]]; then
-  echo "    WW3_CONFOPT    = ${WW3_CONFOPT}"
-  echo "    WW3_COMP       = ${WW3_COMP}"
-  echo "    WWATCH3_NETCDF = ${WWATCH3_NETCDF}"
-fi
-echo "    COMPONENTS     = ${COMPONENT:-Undefined, Supported values are: [${MY_COMPONENT_LIST}]}"
+echo "    WW3_CONFOPT    = ${WW3_CONFOPT}"
+echo "    WW3_COMP       = ${WW3_COMP}"
+echo "    WWATCH3_NETCDF = ${WWATCH3_NETCDF}"
+echo "    COMPONENTS     = ${COMPONENT}"
 echo "    BUILD_EXECS    = ${BUILD_EXECS}"
 echo "    OS             = ${OS}"
 echo "    PLATFORM       = ${PLATFORM}"
@@ -256,7 +128,7 @@ echo "    NETCDFHOME     = ${NETCDFHOME}"
 echo "    NETCDF_INCDIR  = ${NETCDF_INCDIR}"
 echo "    NETCDF_LIBDIR  = ${NETCDF_LIBDIR}"
 echo
-echo "    ESMFMKFILE     = ${ESMFMKFILE}"
+echo "    ESMFMKFILE     = ${ESMFMKFILE:-UNDEF}"
 echo
 echo "NOTE: If the parallel compiler names are different in your platform, you may pass one or more"
 echo "      of the environment variables: PCC, PCXX, PFC, PF90 to $(basename ${scrNAME}) and run the script as:"
@@ -281,17 +153,20 @@ if [ "${echo_response:-no}" = "no" ]; then
 fi
 
 unset echo_response
-##########
+
+############################################################
+### END:: GET FINAL USER RESPONSE
+############################################################
 
 
 ############################################################
-### START THE CALCULATIONS
+### BEG:: START THE CALCULATIONS
 ############################################################
 
 ##########
 # Compile the project
 compileERR=0
-pushd ${nemsDIR} >/dev/null 2>&1
+pushd ${NEMS_DIR} >/dev/null 2>&1
   case ${CLEAN:-0} in
     -1 )
       compileNems clean
