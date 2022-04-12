@@ -11,32 +11,46 @@
 # This script is responsible for loading modules that are
 # compatible with the NUOPC Layer version used in NEMS.
 #
-# Adapted for hereon/strand by Carsten Lemmen <carsten.lemmen@hereon.de>
-# 
+# Adopted for DKRZ/levante by Carsten Lemmen <carsten.lemmen@hereon.de>
 
+# We need to make the modules command available before using it
+source /sw/etc/profile.levante
 
-####################
-### Load all needed environment modules.
+export NETCDF_Fortran_MODULE=netcdf-fortran/4.5.3-openmpi-4.1.2-gcc-11.2.0
+export NETCDF_C_MODULE=netcdf-c/4.8.1-gcc-11.2.0
+
 module purge
-module load applications/utils/cmake3-20.0
-module load compilers/intel/2020.1.217
-module load intelmpi/2020.1.217
-module load hdf5/1.10.5 netcdf/4.7.0
+module load python3
+module load git
+module load gcc
+module load nco
 
-module load esmf/8.1.0
+module load openmpi/4.1.2-gcc-11.2.0
+module load ${NETCDF_C_MODULE}
+module load ${NETCDF_Fortran_MODULE}
+module load hdf5/1.12.1-openmpi-4.1.2-gcc-11.2.0
+module load esmf/8.2.0-gcc-11.2.0
 
+export P=$(module show esmf|awk  '/bin/{print $3}')
+export ESMFMKFILE=${P%%/bin}/lib/esmf.mk
+
+export P=$(module show  ${NETCDF_C_MODULE}|awk  '/bin/{print $3}')
+export NetCDF_C_DIR=${P%%/bin}
+
+export P=$(module show ${NETCDF_Fortran_MODULE}|awk  '/bin/{print $3}')
+export NetCDF_FORTRAN_DIR=${P%%/bin}
 
 ####################
 ### (2) Set some environments varaiables related to the loaded
 ###     modules and required to compile the NEMS application properly.
-funcs="$( find . -type f -name "PlatformFuncs" | head -n 1 )"
-if [ -f "${funcs}" ]; then
-  source "${funcs}"
+#funcs="$( find . -type f -name "PlatformFuncs" | head -n 1 )"
+#if [ -f "${funcs}" ]; then
+#  source "${funcs}"
 
-  get_env_hdf5
-  get_env_netcdf
-fi
-unset funcs
+#  get_env_hdf5
+#  get_env_netcdf
+#fi
+#unset funcs
 
 
 ########## BEG:: PLATFORM CUSTOMIZED SETTINGS ##########
@@ -50,11 +64,12 @@ unset funcs
 # (this should be done automatically when loading this file - todo).
 #export HDF5_USE_FILE_LOCKING=FALSE
 
-export NETCDF=$(nc-config --prefix)
-export NETCDFHOME=$(nc-config --prefix)
+# use this more complicated one to address ADCIRC demands 
+export NETCDFHOME=${NetCDF_C_DIR}
+export NETCDFPATH=${NetCDF_C_DIR}
 export NETCDF_CONFIG=${NETCDFHOME:+${NETCDFHOME}/bin/nc-config}
-export NETCDF_INCDIR=${NETCDFHOME:+${NETCDFHOME}/include}
-export NETCDF_LIBDIR=${NETCDFHOME:+${NETCDFHOME}/lib}
 
-export ESMFMKFILE=${ESMFMKFILE}
+export NETCDF_INCDIR="${NetCDF_C_DIR}/include -I${NetCDF_FORTRAN_DIR}/include"
+export NETCDF_LIBDIR="${NetCDF_FORTRAN_DIR}/lib -lnetcdff --L${NetCDF_C_DIR}/lib -lnetcdf"
+
 ########## END:: PLATFORM CUSTOMIZED SETTINGS ##########
