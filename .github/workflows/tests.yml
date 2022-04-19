@@ -3,6 +3,19 @@ name: build
 on: push
 
 jobs:
+  submodule_validation:
+    name: checkout repository
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout repository
+        uses: actions/checkout@v3
+        with:
+          submodules: recursive
+          lfs: false
+          # NOTE: this token is attached to a specific GitHub account (@zacharyburnettNOAA) because it has permission to clone the `adcirc-cg` repo, which is private.
+          # Perhaps in the future we can use the token from a dummy account, and / or an SSH key?
+          # The token is currently stored in the repository Secrets; it can be updated at https://github.com/noaa-ocs-modeling/CoastalApp/settings/secrets/actions
+          token: ${{ secrets.PULL_TOKEN }}
   build_adcirc:
     name: Build NEMS + ADCIRC
     runs-on: ubuntu-latest
@@ -14,10 +27,9 @@ jobs:
         with:
           submodules: recursive
           lfs: false
-          # NOTE: this token is attached to my (@zacharyburnettNOAA) account because I have permission to clone the `adcirc-cg` repo which is private; perhaps in the future we can use the token from a dummy account, and / or an SSH key? The token is currently stored in the repository Secrets at https://github.com/noaa-ocs-modeling/ADC-WW3-NWM-NEMS/settings/secrets/actions
           token: ${{ secrets.PULL_TOKEN }}
       - name: run build script
-        run: echo y | /bin/bash ./build.sh --plat linux --component "ADCIRC ATMESH" --compiler gnu
+        run: echo y | ./build.sh --plat linux --component "ADCIRC ATMESH" --compiler gnu
         shell: bash
       - name: save built binaries
         uses: actions/upload-artifact@v2
