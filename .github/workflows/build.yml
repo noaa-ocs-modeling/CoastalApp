@@ -29,7 +29,6 @@ jobs:
           token: ${{ secrets.PULL_TOKEN }}
       - name: run build script
         run: echo y | ./build.sh --plat linux --component "ADCIRC ATMESH" --compiler gnu
-        shell: bash
       - name: save built binaries
         uses: actions/upload-artifact@v2
         with:
