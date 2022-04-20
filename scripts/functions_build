@@ -70,7 +70,7 @@ MY_ATM_MODS="ATMESH PAHM"
 #MY_ATM_MODS="ATMESH WRF HWRF PAHM"
 
 ##### Ocean components
-MY_OCN_MODS="ADCIRC SCHISM"
+MY_OCN_MODS="ADCIRC"
 #MY_OCN_MODS="ADCIRC SCHISM FVCOM ROMS"
 
 ##### Hydrologic components
@@ -114,11 +114,13 @@ ParseArgs()
   local ans0 ans ival intN
   local all_evars
 
-  all_evars="MY_CLEAN MY_COMPILER MY_COMPONENT MY_EXECUTABLES MY_OS MY_PARALLEL MY_PARMAKE MY_PLATFORM MY_VERBOSE"
+  all_evars="MY_ACCEPT_ALL MY_CLEAN MY_COMPILER MY_COMPONENT MY_EXECUTABLES MY_OS
+             MY_PARALLEL MY_PARMAKE MY_PLATFORM MY_VERBOSE"
 
   for ival in ${all_evars}; do unset __${ival}; done
 
 
+  __MY_ACCEPT_ALL=0
   __MY_CLEAN=0
   __MY_EXECUTABLES=
   __MY_COMPILER="${MY_COMPILER_DEFAULT}"
@@ -132,7 +134,7 @@ ParseArgs()
 
   # -----
   # Process the function options
-  opt_all=( build_exec c clean compiler component j par parallel os plat platform v verbose h help )
+  opt_all=( accept_all build_exec c clean compiler component j par parallel os plat platform v verbose h help )
   opt_all=":$( echo "${opt_all[@]/#/-} ${opt_all[@]/#/--}" | sed 's/ /:/g' ):"
 
   unset __OPTION_LIST
@@ -252,6 +254,22 @@ ParseArgs()
             __MY_VERBOSE="$( getMakeVerbosity "${__MY_VERBOSE}" )"
           fi
         ;;
+      -y | --y | -yes | --yes )
+          checkFuncOpt "--yes"
+          if [ $? -eq 0 ]; then
+            __MY_ACCEPT_ALL=1
+            if [ "X${opt_arg}" != "X" ]; then
+              if `isInteger "${opt_arg}"` ; then
+                __MY_ACCEPT_ALL=$( echo "${opt_arg}" )
+                [ ${opt_arg} -le 0 ] && __MY_ACCEPT_ALL=0
+                [ ${opt_arg} -ge 1 ] && __MY_ACCEPT_ALL=1
+              else
+                __MY_ACCEPT_ALL=0
+                [ "$( getYesNo "${opt_arg}" )" = "yes" ] && __MY_ACCEPT_ALL=1
+              fi
+            fi
+          fi
+        ;;
       -h | -help | --h | --help )
           UsageBuild ${nm_func}
         ;;
@@ -321,6 +339,11 @@ UsageBuild()
 
   echo "  -h|-help|--h|--help"
   echo "    Show this help screen."
+  echo
+  #---
+  echo "  -y|-yes|--y|--yes"
+  echo "    Automatically answer yes for all questions."
+  echo "    Default: 0|no (user is required to enter a yes/no response)."
   echo
   #---
   echo "  -c|--c|-clean|--clean [=|space] \"0|1|yes|no\" (OPTIONAL)."
@@ -421,7 +444,9 @@ UsageBuild()
     fi
   fi
   APP_DIR=${src_dir}
-
+ 
+  ACCEPT_ALL=${MY_ACCEPT_ALL}
+  export ACCEPT_ALL=${ACCEPT_ALL:-0}
 
   CLEAN=${MY_CLEAN}
   export CLEAN=${CLEAN:-0}
@@ -514,6 +539,11 @@ UsageBuild()
     exit 1
   fi
   export NEMS_DIR
+
+  # ADCIRC specific (this might change in the future)
+  if [ -d "${APP_DIR}/ADCIRC/thirdparty/datetime-fortran" ]; then
+    export DATETIMEHOME=${APP_DIR}/ADCIRC/thirdparty/datetime-fortran
+  fi
 
   modFILE="envmodules${COMPILER:+_${COMPILER}}${PLATFORM:+.${PLATFORM}}"
   if [ ! -f "${APPMODS_DIR}/${modFILE}" ]; then

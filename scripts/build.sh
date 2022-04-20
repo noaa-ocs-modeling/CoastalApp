@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash -e
 
 ###########################################################################
 ### Author:  Panagiotis Velissariou <panagiotis.velissariou@noaa.gov>
@@ -16,6 +16,7 @@
 [[ ! :$PATH: == *:".":* ]] && export PATH="${PATH}:."
 
 
+####################
 # Get the directory where the script is located
 if [[ $(uname -s) == Darwin ]]; then
 #  readonly scrDIR="$(cd "$(dirname "$(greadlink -f -n "${BASH_SOURCE[${#BASH_SOURCE[@]} - 1]}" )" )" && pwd -P)"
@@ -26,7 +27,34 @@ else
   readonly scrNAME="$( realpath -s "${BASH_SOURCE[${#BASH_SOURCE[@]} - 1]}" )"
   readonly scrDIR="$(cd "$(dirname "${scrNAME}" )" && pwd -P)"
 fi
+####################
 
+
+####################
+# Get the application's root directory
+appDIR=${APP_DIR}
+if [[ -z ${appDIR} ]]; then
+  for i in ${scrDIR} ${scrDIR}/.. ${scrDIR}/../..
+  do
+    appDIR=$(find ${i} -maxdepth 1 -type d -iname NEMS)
+    if [[ -n ${appDIR:+1} ]]; then
+      appDIR="$(cd "$(dirname "${appDIR}" )" && pwd -P)"
+      break
+    fi
+  done
+fi
+if [[ ! -d ${appDIR} ]]; then
+  echo "Couldn't determine the project root directory."
+  echo "Got: \"appDIR = ${appDIR}\" which is not a valid directory."
+  echo "You might need to set the environment variable APP_DIR before running this script."
+  echo "Exiting ..."
+  exit 1
+fi
+####################
+
+
+####################
+# Load the utility functions
 lst="${scrDIR:+${scrDIR}/}functions_build ${scrDIR:+${scrDIR}/}scripts/functions_build functions_build"
 funcs=
 for ilst in ${lst}
@@ -60,7 +88,7 @@ unset ilst funcs
 ParseArgs "${@}"
 
 # Set the variables for this script
-getNEMSEnvVars ${scrDIR}
+getNEMSEnvVars ${appDIR}
 
 # Check if the user supplied valid components
 checkNEMSComponents
@@ -71,7 +99,6 @@ getCompilerNames "${COMPILER}"
 ############################################################
 ### END:: SYSTEM CONFIGURATION
 ############################################################
-
 
 ##########
 # If the user requested to clean the build folder, do the cleaning end exit
@@ -95,6 +122,8 @@ fi
 # Get a final user response for the variables
 echo
 echo "The following variables are defined:"
+echo "    APP_DIR        = ${APP_DIR}"
+echo "    ACCEPT_ALL     = ${ACCEPT_ALL}"
 echo "    CLEAN          = ${CLEAN}"
 echo "    COMPILER       = ${COMPILER}"
 echo "    NEMS_COMPILER  = ${NEMS_COMPILER}"
@@ -127,6 +156,7 @@ echo "    HDF5HOME       = ${HDF5HOME}"
 echo "    NETCDFHOME     = ${NETCDFHOME}"
 echo "    NETCDF_INCDIR  = ${NETCDF_INCDIR}"
 echo "    NETCDF_LIBDIR  = ${NETCDF_LIBDIR}"
+echo "    DATETIMEHOME   = ${DATETIMEHOME}"
 echo
 echo "    ESMFMKFILE     = ${ESMFMKFILE:-UNDEF}"
 echo
@@ -137,22 +167,27 @@ echo
 
 module list
 
-echo_response=
-while [ -z "${echo_response}" ] ; do
-  echo -n "Are these values correct? [y/n]: "
-  read echo_response
-  echo_response="$( getYesNo "${echo_response}" )"
-done
+if [ ${ACCEPT_ALL:-0} -le 0 ]; then
+  echo_response=
+  while [ -z "${echo_response}" ] ; do
+    echo -n "Are these values correct? [y/n]: "
+    read echo_response
+    echo_response="$( getYesNo "${echo_response}" )"
+  done
 
-if [ "${echo_response:-no}" = "no" ]; then
-  echo
-  echo "User responded: ${echo_response}"
-  echo "Exiting now ..."
-  echo
-  exit 1
+  if [ "${echo_response:-no}" = "no" ]; then
+    echo
+    echo "User responded: ${echo_response}"
+    echo "Exiting now ..."
+    echo
+    exit 1
+  fi
+
+  unset echo_response
+else
+  echo "User accepted all settings."
+  sleep 2
 fi
-
-unset echo_response
 
 ############################################################
 ### END:: GET FINAL USER RESPONSE
