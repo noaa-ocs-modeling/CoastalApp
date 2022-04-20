@@ -1,11 +1,20 @@
-name: build
+name: tests
 
 on: push
 
 jobs:
-  submodule_validation:
-    name: checkout repository
+  build_adcirc:
+    name: Build NEMS + ADCIRC
     runs-on: ubuntu-latest
+    container:
+      image: 'panvelissariou1/coastalapp:test1'
+      env:
+        ADCDIR: /testing/CoastalApp/ADCIRC
+        HDF5HOME: /opt/apps/gnu/hdf5/1.10.7
+        NETCDFHOME: /opt/apps/gnu/netcdf/4.7.4
+        NETCDF_INCDIR: /opt/apps/gnu/netcdf/4.7.4/include
+        NETCDF_LIBDIR: /opt/apps/gnu/netcdf/4.7.4/lib
+        ESMFMKFILE: /opt/apps/gnu/openmpi/esmf/8.1.1/lib/esmf.mk
     steps:
       - name: checkout repository
         uses: actions/checkout@v3
@@ -15,18 +24,6 @@ jobs:
           # NOTE: this token is attached to a specific GitHub account (@zacharyburnettNOAA) because it has permission to clone the `adcirc-cg` repo, which is private.
           # Perhaps in the future we can use the token from a dummy account, and / or an SSH key?
           # The token is currently stored in the repository Secrets; it can be updated at https://github.com/noaa-ocs-modeling/CoastalApp/settings/secrets/actions
-          token: ${{ secrets.PULL_TOKEN }}
-  build_adcirc:
-    name: Build NEMS + ADCIRC
-    runs-on: ubuntu-latest
-    container:
-      image: 'panvelissariou1/coastalapp:test1'
-    steps:
-      - name: checkout repository
-        uses: actions/checkout@v3
-        with:
-          submodules: recursive
-          lfs: false
           token: ${{ secrets.PULL_TOKEN }}
       - name: run build script
         run: echo y | ./build.sh --plat linux --component "ADCIRC ATMESH" --compiler gnu
