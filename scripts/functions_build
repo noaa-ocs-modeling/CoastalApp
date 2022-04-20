@@ -677,8 +677,8 @@ compileNems() {
 installNems() {
   local cmp_comp icmp
   local instdir
-  local CPBIN="/bin/cp -fpv"
-  local RMBIN="/bin/rm -fv"
+  local CPBIN="/bin/cp -fprv"
+  local RMBIN="/bin/rm -frv"
 
   instdir="ALLBIN_INSTALL"
 
