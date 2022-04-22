@@ -1,4 +1,4 @@
-#!/bin/bash-*-Shell-script-modules*-
+#!/usr/bin/env bash-*-Shell-script-functions*-
 
 ###########################################################################
 ### Module File to load the required environment modules for the NEMS application
@@ -8,10 +8,10 @@
 ###########################################################################
 
 #----------
-#[[ "$0" == "bash" || "$0" == "-bash" ]] && retv=return || retv=exit
-#echo "$(basename ${BASH_SOURCE[0]}) :: This environment is either not configured or not supported"
-#echo "  Exiting ..."
-#${retv} 1
+[[ "$0" == "bash" || "$0" == "-bash" ]] && retv=return || retv=exit
+echo "$(basename ${BASH_SOURCE[0]}) :: This environment is either not configured or not supported"
+echo "  Exiting ..."
+${retv} 1
 #----------
 
 # This script is responsible for loading modules that are

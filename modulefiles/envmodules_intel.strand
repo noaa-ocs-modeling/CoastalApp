@@ -1,4 +1,4 @@
-#!/bin/bash-*-Shell-script-modules*-
+#!/usr/bin/env bash-*-Shell-script-functions*-
 
 ###########################################################################
 ### Module File to load the required environment modules for the NEMS application
@@ -50,7 +50,6 @@ unset funcs
 # (this should be done automatically when loading this file - todo).
 #export HDF5_USE_FILE_LOCKING=FALSE
 
-export NETCDF=$(nc-config --prefix)
 export NETCDFHOME=$(nc-config --prefix)
 export NETCDF_CONFIG=${NETCDFHOME:+${NETCDFHOME}/bin/nc-config}
 export NETCDF_INCDIR=${NETCDFHOME:+${NETCDFHOME}/include}
