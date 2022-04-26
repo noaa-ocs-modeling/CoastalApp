@@ -3,9 +3,12 @@ name: tests
 on: push
 
 jobs:
-  build_adcirc_atmesh:
-    name: build NEMS + ADCIRC + ATMESH
+  build:
+    name: build NEMS
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        components: ['ADCIRC ATMESH']
     container:
       image: panvelissariou1/coastalapp:test1
       env:
@@ -50,19 +53,22 @@ jobs:
       - name: run build script
         run: |
           source scripts/module_function
-          ./build.sh -y -compiler gnu -platform linux -component "atmesh adcirc"
+          ./build.sh -y -compiler gnu -platform linux -component "${{ matrix.components }}"
         shell: bash
       - name: save built binaries
         uses: actions/upload-artifact@v2
         with:
-          name: build-adcirc-atmesh
+          name: build-${{ matrix.components }}
           path: |
             ./ALLBIN_INSTALL/adcprep
             ./ALLBIN_INSTALL/NEMS.x
-  test_adcirc_atmesh:
-    needs: build_adcirc_atmesh
-    name: test NEMS + ADCIRC + ATMESH
+  test:
+    needs: build
+    name: test NEMS
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        components: [ 'ADCIRC ATMESH' ]
     container:
       image: panvelissariou1/coastalapp:test1
       env:
@@ -103,7 +109,7 @@ jobs:
       - name: download binaries
         uses: actions/download-artifact@v3.0.0
         with:
-          name: build-adcirc-atmesh
+          name: build-${{ matrix.components }}
           path: .
       - name: test
         run: |
