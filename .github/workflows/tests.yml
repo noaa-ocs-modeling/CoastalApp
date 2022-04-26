@@ -107,6 +107,8 @@ jobs:
           path: .
       - name: test
         run: |
+          pwd
+          ls
           source scripts/module_function
           source modulefiles/envmodules_gnu.linux
           cd CoastalApp-testsuite
