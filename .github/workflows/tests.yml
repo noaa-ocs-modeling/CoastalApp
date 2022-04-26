@@ -50,8 +50,7 @@ jobs:
       - name: run build script
         run: |
           source scripts/module_function
-          source modulefiles/envmodules_gnu.linux
-          ./build.sh -y -compiler gnu -platform linux -component "atmesh pahm adcirc"
+          ./build.sh -y -compiler gnu -platform linux -component "atmesh adcirc"
         shell: bash
       - name: save built binaries
         uses: actions/upload-artifact@v2
