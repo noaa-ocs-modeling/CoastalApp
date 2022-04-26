@@ -110,13 +110,12 @@ jobs:
         uses: actions/download-artifact@v3.0.0
         with:
           name: build-${{ matrix.components }}
-          path: .
+          path: ${{ github.workspace }}/../CoastalApp-testsuite
       - name: test
         run: |
-          pwd
-          ls
           source scripts/module_function
           source modulefiles/envmodules_gnu.linux
-          cd CoastalApp-testsuite
+          cd ${{ github.workspace }}/../CoastalApp-testsuite
           ./NEMS.x
+        shell: bash
 
