@@ -57,7 +57,5 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: build
-          path: |
-            ./ALLBIN_INSTALL/NEMS-adcirc.x
-            ./ALLBIN_INSTALL/adcprep
-        
+          path: ./ALLBIN_INSTALL/*
+
