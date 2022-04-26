@@ -3,8 +3,8 @@ name: tests
 on: push
 
 jobs:
-  build_adcirc:
-    name: build NEMS + ADCIRC
+  build_adcirc_atmesh:
+    name: build NEMS + ADCIRC + ATMESH
     runs-on: ubuntu-latest
     container:
       image: panvelissariou1/coastalapp:test1
@@ -35,8 +35,8 @@ jobs:
         LMOD_PKG: /usr/share/lmod/lmod
         LMOD_CMD: /usr/share/lmod/lmod/libexec/lmod
         LMOD_DIR: /usr/share/lmod/lmod/libexec
-#        BASH_FUNC_module%%: () { eval $($LMOD_CMD bash "$@") && eval $(${LMOD_SETTARG_CMD:-:} -s sh) }
-#        BASH_FUNC_ml%%: () { eval $($LMOD_DIR/ml_cmd "$@") }
+    #        BASH_FUNC_module%%: () { eval $($LMOD_CMD bash "$@") && eval $(${LMOD_SETTARG_CMD:-:} -s sh) }
+    #        BASH_FUNC_ml%%: () { eval $($LMOD_DIR/ml_cmd "$@") }
     steps:
       - name: checkout repository
         uses: actions/checkout@v3
@@ -55,6 +55,60 @@ jobs:
       - name: save built binaries
         uses: actions/upload-artifact@v2
         with:
-          name: build
-          path: ./ALLBIN_INSTALL/*
+          name: build-adcirc-atmesh
+          path: |
+            ./ALLBIN_INSTALL/adcprep
+            ./ALLBIN_INSTALL/NEMS.x
+  test_adcirc_atmesh:
+    needs: build_adcirc_atmesh
+    name: test NEMS + ADCIRC + ATMESH
+    runs-on: ubuntu-latest
+    container:
+      image: panvelissariou1/coastalapp:test1
+      env:
+        APP_DIR: /__w/CoastalApp/CoastalApp
+        ADCDIR: /__w/CoastalApp/CoastalApp/ADCIRC
+        HDF5HOME: /opt/apps/gnu/hdf5/1.10.7
+        NETCDFHOME: /opt/apps/gnu/netcdf/4.7.4
+        NETCDF_INCDIR: /opt/apps/gnu/netcdf/4.7.4/include
+        NETCDF_LIBDIR: /opt/apps/gnu/netcdf/4.7.4/lib
+        ESMFMKFILE: /opt/apps/gnu/openmpi/esmf/8.1.1/lib/esmf.mk
+        __LMOD_REF_COUNT_PATH: /bin:1;/sbin:1;/usr/bin:1;/usr/sbin:1;/usr/local/bin:1;/usr/local/sbin:1;.:1
+        _ModuleTable002_: aWxlcyIsIi91c3Ivc2hhcmUvbW9kdWxlZmlsZXMvTGludXgiLCIvdXNyL3NoYXJlL21vZHVsZWZpbGVzL0NvcmUiLCIvdXNyL3NoYXJlL2xtb2QvbG1vZC9tb2R1bGVmaWxlcy9Db3JlIix9LFsic3lzdGVtQmFzZU1QQVRIIl09Ii9vcHQvYXBwcy9tb2R1bGVmaWxlczovb3B0L2NvbXBpbGVycy9tb2R1bGVmaWxlczovb3B0L2FwcHMvTW9kdWxlcy9tb2R1bGVmaWxlczovZXRjL21vZHVsZWZpbGVzOi91c3Ivc2hhcmUvbW9kdWxlZmlsZXM6L3Vzci9zaGFyZS9tb2R1bGVmaWxlcy9MaW51eDovdXNyL3NoYXJlL21vZHVsZWZpbGVzL0NvcmU6L3Vzci9zaGFyZS9sbW9kL2xtb2QvbW9kdWxlZmlsZXMvQ29yZSIsfQ==
+        LMOD_ANCIENT_TIME: 300
+        __LMOD_REF_COUNT_MODULEPATH: /opt/apps/modulefiles:1;/opt/compilers/modulefiles:1;/opt/apps/Modules/modulefiles:1;/etc/modulefiles:1;/usr/share/modulefiles:1;/usr/share/modulefiles/Linux:1;/usr/share/modulefiles/Core:1;/usr/share/lmod/lmod/modulefiles/Core:1
+        __LMOD_REF_COUNT_LOADEDMODULES: dot:1
+        LMOD_VERSION: 8.2.7
+        BASH_ENV: /usr/share/lmod/lmod/init/bash
+        LMOD_SHORT_TIME: 86400
+        LMOD_sys: Linux
+        _ModuleTable001_: X01vZHVsZVRhYmxlXz17WyJNVHZlcnNpb24iXT0zLFsiY19yZWJ1aWxkVGltZSJdPWZhbHNlLFsiY19zaG9ydFRpbWUiXT1mYWxzZSxkZXB0aFQ9e30sZmFtaWx5PXt9LG1UPXtkb3Q9e1siZm4iXT0iL29wdC9hcHBzL01vZHVsZXMvbW9kdWxlZmlsZXMvZG90IixbImZ1bGxOYW1lIl09ImRvdCIsWyJsb2FkT3JkZXIiXT0xLHByb3BUPXt9LFsic3RhY2tEZXB0aCJdPTAsWyJzdGF0dXMiXT0iYWN0aXZlIixbInVzZXJOYW1lIl09ImRvdCIsfSx9LG1wYXRoQT17Ii9vcHQvYXBwcy9tb2R1bGVmaWxlcyIsIi9vcHQvY29tcGlsZXJzL21vZHVsZWZpbGVzIiwiL29wdC9hcHBzL01vZHVsZXMvbW9kdWxlZmlsZXMiLCIvZXRjL21vZHVsZWZpbGVzIiwiL3Vzci9zaGFyZS9tb2R1bGVm
+        LOADEDMODULES: dot
+        LMOD_ROOT: /usr/share/lmod
+        MODULEPATH: /opt/apps/modulefiles:/opt/compilers/modulefiles:/opt/apps/Modules/modulefiles:/etc/modulefiles:/usr/share/modulefiles:/usr/share/modulefiles/Linux:/usr/share/modulefiles/Core:/usr/share/lmod/lmod/modulefiles/Core
+        MODULEPATH_ROOT: /usr/share/modulefiles
+        MODULESHOME: /usr/share/lmod/lmod
+        LMOD_SETTARG_FULL_SUPPORT: no
+        LMOD_PKG: /usr/share/lmod/lmod
+        LMOD_CMD: /usr/share/lmod/lmod/libexec/lmod
+        LMOD_DIR: /usr/share/lmod/lmod/libexec
+    steps:
+      - name: checkout repository
+        uses: actions/checkout@v3
+      - name: checkout repository
+        uses: actions/checkout@v3
+        with:
+          repository: noaa-ocs-modeling/CoastalApp-testsuite
+          path: ${{ github.workspace }}/CoastalApp-testsuite
+      - name: download binaries
+        uses: actions/download-artifact@v3.0.0
+        with:
+          name: build-adcirc-atmesh
+          path: .
+      - name: test
+        run: |
+          source scripts/module_function
+          source modulefiles/envmodules_gnu.linux
+          cd CoastalApp-testsuite
+          ./NEMS.x
 
