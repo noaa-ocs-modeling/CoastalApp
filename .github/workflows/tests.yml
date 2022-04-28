@@ -29,7 +29,6 @@ jobs:
           token: ${{ secrets.PULL_TOKEN }}
       - name: run build script
         run: ./build.sh -y -compiler ${{ matrix.compiler }} -platform linux -component "${{ matrix.model }} ${{ matrix.forcings }}"
-        shell: bash
       - name: save built binaries
         uses: actions/upload-artifact@v2
         with:
@@ -70,5 +69,4 @@ jobs:
           cd ${{ github.workspace }}/CoastalApp-testsuite
           cd ${{ matrix.test }}
           ../NEMS.x
-        shell: bash
 
