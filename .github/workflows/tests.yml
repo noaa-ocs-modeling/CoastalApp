@@ -63,6 +63,7 @@ jobs:
           path: ALLBIN_INSTALL/
       - name: test
         run: |
+          chmod +x ALLBIN_INSTALL/*
           source modulefiles/envmodules_${{ matrix.compiler }}.linux
           cd CoastalApp-testsuite
           cd ${{ matrix.test }}
