@@ -63,9 +63,8 @@ jobs:
           path: ALLBIN_INSTALL/
       - name: test
         run: |
-          ls ALLBIN_INSTALL
-          source modulefiles/envmodules_gnu.linux
+          source modulefiles/envmodules_${{ matrix.compiler }}.linux
           cd CoastalApp-testsuite
           cd ${{ matrix.test }}
-          ALLBIN_INSTALL/NEMS.x
+          ../../ALLBIN_INSTALL/NEMS.x
 
