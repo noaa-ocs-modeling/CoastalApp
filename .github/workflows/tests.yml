@@ -10,7 +10,7 @@ jobs:
       matrix:
         components: [ 'ADCIRC ATMESH' ]
     container:
-      image: panvelissariou1/coastalapp:test1
+      image: panvelissariou1/coastalapp:test2
       env:
         APP_DIR: /__w/CoastalApp/CoastalApp
         ADCDIR: /__w/CoastalApp/CoastalApp/ADCIRC
