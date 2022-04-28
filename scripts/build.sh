@@ -89,7 +89,7 @@ unset ilst funcs
 
 ####################
 # Check if the module command exists
-checkModuleCmd
+#checkModuleCmd
 ####################
 
 ############################################################
