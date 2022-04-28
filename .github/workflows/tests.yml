@@ -34,9 +34,7 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: ${{ matrix.compiler }} ${{ matrix.model }} ${{ matrix.forcings }}
-          path: |
-            ./ALLBIN_INSTALL/adcprep
-            ./ALLBIN_INSTALL/NEMS.x
+          path: ${{ github.workspace }}/ALLBIN_INSTALL/*
   test:
     needs: build
     name: test NEMS
