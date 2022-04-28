@@ -8,6 +8,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
+        compiler: [ 'gnu' ]
         model: [ 'ADCIRC' ]
         forcings: [ 'ATMESH WW3DATA' ]
     container:
@@ -23,12 +24,12 @@ jobs:
           # The token is currently stored in the repository Secrets; it can be updated at https://github.com/noaa-ocs-modeling/CoastalApp/settings/secrets/actions
           token: ${{ secrets.PULL_TOKEN }}
       - name: run build script
-        run: ./build.sh -y -compiler gnu -platform linux -component "${{ matrix.model }} ${{ matrix.forcings }}"
+        run: ./build.sh -y -compiler ${{ matrix.compiler }} -platform linux -component "${{ matrix.model }} ${{ matrix.forcings }}"
         shell: bash
       - name: save built binaries
         uses: actions/upload-artifact@v2
         with:
-          name: ${{ matrix.model }} ${{ matrix.forcings }}
+          name: ${{ matrix.compiler }} ${{ matrix.model }} ${{ matrix.forcings }}
           path: |
             ./ALLBIN_INSTALL/adcprep
             ./ALLBIN_INSTALL/NEMS.x
@@ -40,6 +41,7 @@ jobs:
       matrix:
         include:
           - test: shinnecock_atmesh_adcirc
+            compiler: 'gnu'
             model: 'ADCIRC'
             forcings: 'ATMESH WW3DATA'
     container:
@@ -55,7 +57,7 @@ jobs:
       - name: download binaries
         uses: actions/download-artifact@v3.0.0
         with:
-          name: ${{ matrix.model }} ${{ matrix.forcings }}
+          name: ${{ matrix.compiler }} ${{ matrix.model }} ${{ matrix.forcings }}
           path: ${{ github.workspace }}/CoastalApp-testsuite
       - name: test
         run: |
