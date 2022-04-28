@@ -1,4 +1,4 @@
-#!/usr/bin/env bash-*-Shell-script-functions*-
+#!/bin/bash-*-Shell-script-modules*-
 
 # This script is responsible for loading modules that are
 # compatible with the NUOPC Layer version used in NEMS.

@@ -55,7 +55,7 @@ export NETCDFPATH=$(nc-config --prefix)
 export NETCDF_CONFIG=${NETCDFHOME:+${NETCDFHOME}/bin/nc-config}
 
 export NETCDF_INCDIR="$(nc-config --includedir) -I$(nf-config --includedir)"
-export NETCDF_LIBDIR="$(nc-config --prefix)/lib $(nf-config --flibs)"
+export NETCDF_LIBDIR="$(nc-config --prefix)/lib $(nc-config --libs) $(nf-config --flibs)"
 
 export ESMFMKFILE=${ESMFMKFILE}
 ########## END:: PLATFORM CUSTOMIZED SETTINGS ##########
