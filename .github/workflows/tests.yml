@@ -51,9 +51,8 @@ jobs:
           # The token is currently stored in the repository Secrets; it can be updated at https://github.com/noaa-ocs-modeling/CoastalApp/settings/secrets/actions
           token: ${{ secrets.PULL_TOKEN }}
       - name: run build script
-        run: |
+        run: ./build.sh -y -compiler gnu -platform linux -component "${{ matrix.components }}"
 #          . /etc/profile.d/modules.sh
-          ./build.sh -y -compiler gnu -platform linux -component "${{ matrix.components }}"
         shell: bash
       - name: save built binaries
         uses: actions/upload-artifact@v2
