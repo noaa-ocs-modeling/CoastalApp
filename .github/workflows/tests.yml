@@ -4,7 +4,8 @@ on: push
 
 defaults:
   run:
-    shell: bash -leo pipefail {0} # Removed " --noprofile --norc " options from default bash
+    # Removed " --noprofile --norc " options from default bash
+    shell: bash -leo pipefail {0}
 
 jobs:
   build:
@@ -64,9 +65,8 @@ jobs:
           path: ${{ github.workspace }}/CoastalApp-testsuite
       - name: test
         run: |
-          source /etc/profile.d/modules.sh
           source modulefiles/envmodules_gnu.linux
-          cd ${{ github.workspace }}/CoastalApp-testsuite
+          cd CoastalApp-testsuite
           cd ${{ matrix.test }}
           ../NEMS.x
 
