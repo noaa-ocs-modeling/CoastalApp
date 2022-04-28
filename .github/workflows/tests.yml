@@ -63,6 +63,7 @@ jobs:
           path: ${{ github.workspace }}/ALLBIN_INSTALL
       - name: test
         run: |
+          ls ${{ github.workspace }}/ALLBIN_INSTALL
           source modulefiles/envmodules_gnu.linux
           cd CoastalApp-testsuite
           cd ${{ matrix.test }}
