@@ -56,17 +56,16 @@ jobs:
         with:
           repository: noaa-ocs-modeling/CoastalApp-testsuite
           path: ${{ github.workspace }}/CoastalApp-testsuite
-      - run: mkdir ${{ github.workspace }}/ALLBIN_INSTALL
       - name: download binaries
         uses: actions/download-artifact@v3.0.0
         with:
           name: ${{ matrix.compiler }} ${{ matrix.model }} ${{ matrix.forcings }}
-          path: ${{ github.workspace }}/ALLBIN_INSTALL/
+          path: ALLBIN_INSTALL/
       - name: test
         run: |
-          ls ${{ github.workspace }}/ALLBIN_INSTALL
+          ls ALLBIN_INSTALL
           source modulefiles/envmodules_gnu.linux
           cd CoastalApp-testsuite
           cd ${{ matrix.test }}
-          ${{ github.workspace }}/ALLBIN_INSTALL/NEMS.x
+          ALLBIN_INSTALL/NEMS.x
 
