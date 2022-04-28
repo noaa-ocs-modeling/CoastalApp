@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/usr/bin/bash --login
 
 if [ -e /.dockerenv ]; then
   set -eo pipefail
