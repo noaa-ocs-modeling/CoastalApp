@@ -1,6 +1,11 @@
 #!/usr/bin/env bash
 
-set -eo pipefail
+if [ -e /.dockerenv ]; then
+  set -eo pipefail
+  set  -o errtrace
+
+  trap "ERROR: There was an error, details to follow" ERR
+fi
 
 ###########################################################################
 ### Author:  Panagiotis Velissariou <panagiotis.velissariou@noaa.gov>
@@ -79,8 +84,13 @@ else
 fi
 
 unset ilst funcs
-###====================
+####################
 
+
+####################
+# Check if the module command exists
+checkModuleCmd
+####################
 
 ############################################################
 ### BEG:: SYSTEM CONFIGURATION
@@ -167,7 +177,7 @@ echo "      of the environment variables: PCC, PCXX, PFC, PF90 to $(basename ${s
 echo "         PCC=yourPCC PCXX=yourPCXX PFC=yourPFC PF90=yourPF90 $(basename ${scrNAME}) [options]"
 echo
 
-module list
+[ ${modulecmd_ok:-0} -ge 1 ] && module list
 
 if [ ${ACCEPT_ALL:-0} -le 0 ]; then
   echo_response=

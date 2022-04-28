@@ -410,6 +410,47 @@ getCompilerNames()
   return ${err}
 }
 
+###========================================
+### checkModuleCmd()
+### Usage:      checkModuleCmd
+###
+### Returns : 1 on error
+###
+### Exports : modulecmd_ok (>= 1 module command exists)
+###
+### Echoes  : NONE
+###
+### checkModuleCmd: Checks if the command module is available.
+###========================================
+checkModuleCmd() {
+  local err_val ret_val=0
+
+  module -v >/dev/null 2>&1
+  err_val=$?
+
+  if [ ${err_val} -ne 0 ]; then
+    [ -e /etc/profile.d/modules.sh ] && \
+      . /etc/profile.d/modules.sh
+
+    module -v >/dev/null 2>&1
+    err_val=$?
+
+    if [ ${err_val} -ne 0 ]; then
+      ret_val=${err_val}
+      modulecmd_ok=-1
+    else
+      ret_val=0
+      modulecmd_ok=1
+    fi
+  else
+    ret_val=0
+    modulecmd_ok=1
+  fi
+  
+  export modulecmd_ok
+  
+  return ${ret_val}
+}
 ##################################################
 ### END:: UTILITY FUNCTIONS
 ##################################################
