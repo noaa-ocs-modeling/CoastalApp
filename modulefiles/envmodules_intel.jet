@@ -1,4 +1,4 @@
-#!/bin/bash-*-Shell-script-modules*-
+#!/usr/bin/env bash-*-Shell-script-functions*-
 
 ###########################################################################
 ### Module File to load the required environment modules for the NEMS application
