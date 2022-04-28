@@ -62,11 +62,11 @@ jobs:
         uses: actions/download-artifact@v3.0.0
         with:
           name: ${{ matrix.compiler }} ${{ matrix.model }} ${{ matrix.forcings }}
-          path: ${{ github.workspace }}/CoastalApp-testsuite
+          path: ${{ github.workspace }}/ALLBIN_INSTALL
       - name: test
         run: |
           source modulefiles/envmodules_gnu.linux
           cd CoastalApp-testsuite
           cd ${{ matrix.test }}
-          ../NEMS.x
+          ${{ github.workspace }}/ALLBIN_INSTALL/NEMS.x
 
