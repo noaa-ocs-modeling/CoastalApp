@@ -56,6 +56,7 @@ jobs:
         with:
           repository: noaa-ocs-modeling/CoastalApp-testsuite
           path: ${{ github.workspace }}/CoastalApp-testsuite
+      - run: mkdir ${{ github.workspace }}/ALLBIN_INSTALL
       - name: download binaries
         uses: actions/download-artifact@v3.0.0
         with:
