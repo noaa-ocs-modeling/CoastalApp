@@ -49,7 +49,7 @@ jobs:
       - name: checkout repository
         uses: actions/checkout@v3
         with:
-          repository: noaa-ocs-modeling/CoastalApp-testsuite
+          repository: zacharyburnettNOAA/CoastalApp-testsuite
           path: CoastalApp-testsuite
       - name: download binaries
         uses: actions/download-artifact@v3.0.0
