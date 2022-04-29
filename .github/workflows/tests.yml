@@ -62,6 +62,4 @@ jobs:
           source modulefiles/envmodules_${{ matrix.compiler }}.linux
           cd CoastalApp-testsuite
           cd ${{ matrix.test }}
-          ../../ALLBIN_INSTALL/adcprep --np 1 --partmesh
-          ../../ALLBIN_INSTALL/adcprep --np 1 --prepall
           ../../ALLBIN_INSTALL/NEMS.x
