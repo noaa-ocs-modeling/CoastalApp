@@ -5,7 +5,7 @@ on: push
 defaults:
   run:
     # Removed " --noprofile --norc " options from default bash
-    shell: bash -leo pipefail {0}
+    shell: bash -lo pipefail {0}
 
 jobs:
   build:
