@@ -27,7 +27,7 @@ jobs:
           # The token is currently stored in the repository Secrets; it can be updated at https://github.com/noaa-ocs-modeling/CoastalApp/settings/secrets/actions
           token: ${{ secrets.PULL_TOKEN }}
       - name: run build script
-        run: ./build.sh -y -compiler ${{ matrix.compiler }} -platform linux -component "ADCIRC SCHISM WW3 PAHM ATMESH WW3DATA"
+        run: ./build.sh -y --compiler ${{ matrix.compiler }} --platform linux --component "ADCIRC SCHISM WW3 PAHM ATMESH WW3DATA" --build_exec "adcprep"
       - name: save built binaries
         uses: actions/upload-artifact@v2
         with:
