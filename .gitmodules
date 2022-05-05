@@ -1,15 +1,15 @@
 [submodule "ATMESH"]
 	path = ATMESH
 	url = https://github.com/noaa-ocs-modeling/ATMESH.git
-	branch = master
+	branch = test_adc_fix
 [submodule "WW3DATA"]
 	path = WW3DATA
 	url = https://github.com/noaa-ocs-modeling/WW3DATA.git
 	branch = master
 [submodule "WW3"]
 	path = WW3
-	url = https://github.com/noaa-ocs-modeling/WW3.git
-	branch = master
+	url = https://github.com/awest-noaa/WW3.git
+	branch = scalability
 [submodule "NEMS"]
 	path = NEMS
 	url = https://github.com/noaa-ocs-modeling/NEMS.git
