@@ -44,7 +44,7 @@ jobs:
         # define the tests to iterate through
         test: [ 'shinnecock_atmesh_adcirc' ]
         compiler: [ 'gnu' ]
-        # define the components required for each test
+        # define the components required for each test (must be one of the `components` sets in the build matrix)
         include:
           - test: 'shinnecock_atmesh_adcirc'
             components: 'ADCIRC ATMESH WW3DATA'
