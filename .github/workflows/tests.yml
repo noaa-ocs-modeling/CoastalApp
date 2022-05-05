@@ -13,6 +13,8 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
+        # define which sets of components to iterate through (a new job will be spawned for each matrix combination)
+        components: [ 'ADCIRC ATMESH WW3DATA', 'ADCIRC PAHM WW3', 'SCHISM WW3', 'ADCIRC SCHISM PAHM WW3 ATMESH WW3DATA' ]
         compiler: [ 'gnu' ]
     container:
       image: panvelissariou1/coastalapp:test2
@@ -27,11 +29,11 @@ jobs:
           # The token is currently stored in the repository Secrets; it can be updated at https://github.com/noaa-ocs-modeling/CoastalApp/settings/secrets/actions
           token: ${{ secrets.PULL_TOKEN }}
       - name: run build script
-        run: ./build.sh -y --compiler ${{ matrix.compiler }} --platform linux --component "ADCIRC SCHISM WW3 PAHM ATMESH WW3DATA" --build_exec "adcprep"
+        run: ./build.sh --compiler ${{ matrix.compiler }} --platform linux --component "${{ matrix.components }}" -y
       - name: save built binaries
         uses: actions/upload-artifact@v2
         with:
-          name: NEMS-${{ matrix.compiler }}
+          name: NEMS-${{ matrix.compiler }}-${{ matrix.components }}
           path: ${{ github.workspace }}/ALLBIN_INSTALL/*
   test:
     needs: build
@@ -39,8 +41,13 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        compiler: [ 'gnu' ]
+        # define the tests to iterate through
         test: [ 'shinnecock_atmesh_adcirc' ]
+        compiler: [ 'gnu' ]
+        # define the components required for each test
+        include:
+          - test: 'shinnecock_atmesh_adcirc'
+            components: 'ADCIRC ATMESH WW3DATA'
     container:
       image: panvelissariou1/coastalapp:test2
     steps:
@@ -54,14 +61,21 @@ jobs:
       - name: download binaries
         uses: actions/download-artifact@v3.0.0
         with:
-          name: NEMS-${{ matrix.compiler }}
+          name: NEMS-${{ matrix.compiler }}-${{ matrix.components }}
           path: ALLBIN_INSTALL/
+      - name: ensure that binaries are executable
+        run: chmod +x ALLBIN_INSTALL/*
       - name: run "${{ matrix.test }}" test case
         run: |
-          chmod +x ALLBIN_INSTALL/*
-          source modulefiles/envmodules_${{ matrix.compiler }}.linux
-          cd CoastalApp-testsuite
-          cd ${{ matrix.test }}
-          ../../ALLBIN_INSTALL/adcprep --np 10 --partmesh
-          ../../ALLBIN_INSTALL/adcprep --np 10 --prepall
+          # move into test directory
+          cd CoastalApp-testsuite/${{ matrix.test }}
+          
+          # source modules needed to run NEMS
+          source ../../modulefiles/envmodules_${{ matrix.compiler }}.linux
+          
+          # partition mesh
+          ../../ALLBIN_INSTALL/adcprep --np 2 --partmesh
+          ../../ALLBIN_INSTALL/adcprep --np 2 --prepall
+          
+          # run NEMS
           ../../ALLBIN_INSTALL/NEMS.x
