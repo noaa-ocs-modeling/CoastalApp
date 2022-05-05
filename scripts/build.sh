@@ -1,12 +1,5 @@
 #!/usr/bin/env bash
 
-if [ -e /.dockerenv ]; then
-  set -eo pipefail
-  set  -o errtrace
-
-  trap "ERROR: There was an error, details to follow" ERR
-fi
-
 ###########################################################################
 ### Author:  Panagiotis Velissariou <panagiotis.velissariou@noaa.gov>
 ###
