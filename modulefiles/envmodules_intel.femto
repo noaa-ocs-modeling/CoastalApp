@@ -1,5 +1,16 @@
 #!/bin/bash-*-Shell-script-modules*-
 
+####################
+# Get the directory where the script is located
+if [[ $(uname -s) == Darwin ]]; then
+  myDIRS="$(cd "$(dirname "$(grealpath -s "${BASH_SOURCE[0]}" )" )" && pwd -P)"
+else
+  myDIRS="$(cd "$(dirname "$(realpath -s "${BASH_SOURCE[0]}" )" )" && pwd -P)"
+fi
+myDIRS="${myDIRS} . ${APPMODS_DIR}"
+####################
+
+
 # This script is responsible for loading modules that are
 # compatible with the NUOPC Layer version used in NEMS.
 # Adapted for wm/femto Carsten Lemmen <carsten.lemmen@hereon.de>
@@ -17,12 +28,14 @@ module load cmake/3.14.4
 ####################
 ### (2) Set some environments varaiables related to the loaded
 ###     modules and required to compile the NEMS application properly.
-funcs="$( find . -type f -name "PlatformFuncs" | head -n 1 )"
-[ -f "${funcs}" ] && source "${funcs}"
-unset funcs
+funcs="$( find ${myDIRS} -type f -iname "PlatformFuncs" | head -n 1 )"
+if [ -f "${funcs}" ]; then
+  source "${funcs}"
 
-get_env_hdf5
-get_env_netcdf
+  get_env_hdf5
+  get_env_netcdf
+fi
+unset funcs myDIRS
 
 export NETCDFHOME=$(nc-config --prefix)
 export NETCDF_CONFIG=${NETCDFHOME:+${NETCDFHOME}/bin/nc-config}

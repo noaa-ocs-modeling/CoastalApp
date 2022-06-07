@@ -8,6 +8,17 @@
 ###########################################################################
 
 
+####################
+# Get the directory where the script is located
+if [[ $(uname -s) == Darwin ]]; then
+  myDIRS="$(cd "$(dirname "$(grealpath -s "${BASH_SOURCE[0]}" )" )" && pwd -P)"
+else
+  myDIRS="$(cd "$(dirname "$(realpath -s "${BASH_SOURCE[0]}" )" )" && pwd -P)"
+fi
+myDIRS="${myDIRS} . ${APPMODS_DIR}"
+####################
+
+
 # This script is responsible for loading modules that are
 # compatible with the NUOPC Layer version used in NEMS.
 
@@ -25,14 +36,14 @@ module load esmf
 ####################
 ### (2) Set some environments varaiables related to the loaded
 ###     modules and required to compile the NEMS application properly.
-funcs="$( find . -type f -name "PlatformFuncs" | head -n 1 )"
+funcs="$( find ${myDIRS} -type f -iname "PlatformFuncs" | head -n 1 )"
 if [ -f "${funcs}" ]; then
   source "${funcs}"
 
   get_env_hdf5
   get_env_netcdf
 fi
-unset funcs
+unset funcs myDIRS
 
 
 ########## BEG:: PLATFORM CUSTOMIZED SETTINGS ##########
