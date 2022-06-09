@@ -33,7 +33,7 @@ fi
 ####################
 # Get the application's root directory
 appDIR=${APP_DIR}
-if [[ -z ${appDIR} ]]; then
+if [[ -z "${appDIR}" ]]; then
   for i in ${scrDIR} ${scrDIR}/.. ${scrDIR}/../..
   do
     appDIR=$(find ${i} -maxdepth 1 -type d -iname NEMS)
@@ -101,18 +101,34 @@ checkNEMSComponents
 # Get the compilers to use for this project compilation
 getCompilerNames "${COMPILER}"
 
+# Get the list of the third party comonents to build
+getThirdParty
+
 ############################################################
 ### END:: SYSTEM CONFIGURATION
 ############################################################
 
 ##########
 # If the user requested to clean the build folder, do the cleaning end exit
+compileERR=0
 if [ ${CLEAN:-0} -ge 1 ]; then
   echo "User requested to only clean the project. Cleaning ..."
 
   pushd ${NEMS_DIR} >/dev/null 2>&1
-    [ ${CLEAN:-0} -eq 1 ] && compileNems clean
-    [ ${CLEAN:-0} -eq 2 ] && compileNems distclean
+    case ${CLEAN:-0} in
+      1)
+       compileNems clean
+       compileERR=$?
+       exit ${compileERR}
+       ;;
+      2)
+       compileNems distclean
+       compileERR=$?
+       exit ${compileERR}
+       ;;
+      *)
+       ;; #Do Nothing
+    esac
   popd >/dev/null 2>&1
 
   exit 0
@@ -148,6 +164,7 @@ echo "    WW3_CONFOPT    = ${WW3_CONFOPT}"
 echo "    WW3_COMP       = ${WW3_COMP}"
 echo "    WWATCH3_NETCDF = ${WWATCH3_NETCDF}"
 echo "    COMPONENTS     = ${COMPONENT}"
+echo "    THIRDPARTY     = ${THIRDPARTY}"
 echo "    BUILD_EXECS    = ${BUILD_EXECS}"
 echo "    OS             = ${OS}"
 echo "    PLATFORM       = ${PLATFORM}"
@@ -162,6 +179,8 @@ echo "    NETCDFHOME     = ${NETCDFHOME}"
 echo "    NETCDF_INCDIR  = ${NETCDF_INCDIR}"
 echo "    NETCDF_LIBDIR  = ${NETCDF_LIBDIR}"
 echo "    DATETIMEHOME   = ${DATETIMEHOME}"
+echo "    METISHOME      = ${METISHOME}"
+echo "    PARMETISHOME   = ${PARMETISHOME}"
 echo
 echo "    ESMFMKFILE     = ${ESMFMKFILE:-UNDEF}"
 echo
@@ -204,26 +223,54 @@ fi
 ############################################################
 
 ##########
+# Compile third party libraries first (based upon user's request)
+compileERR=0
+if [ -n "${THIRDPARTY:+1}" ]; then
+  for iPart in ${THIRDPARTY}
+  do
+    case "$( toUPPER ${iPart} )" in
+      DATETIME)
+        compileDateTime
+        compileERR=$?
+        if [ ${compileERR} -eq 0 ]; then
+          export DATETIME=enable
+          export DATETIMEHOME=${DATETIMEHOME}
+        fi
+        ;;
+      METIS|PARMETIS)
+        compileMetis
+        compileERR=$?
+        if [ ${compileERR} -eq 0 ]; then
+         export PARMETISHOME METISHOME
+         export METIS=${METISHOME}
+        fi
+        ;;
+       *)
+         ;; #Do Nothing
+    esac
+  done
+fi
+
+
+##########
 # Compile the project
 compileERR=0
 pushd ${NEMS_DIR} >/dev/null 2>&1
   case ${CLEAN:-0} in
-    -1 )
+    -1)
       compileNems clean
       compileERR=$?
       ;;
-    -2 )
+    -2)
       compileNems distclean
       compileERR=$?
       ;;
-    -3 )
+    -3)
       compileNems noclean
       compileERR=$?
       ;;
-     * )
-      compileNems clean
-      compileERR=$?
-      ;;
+     *)
+       ;; #Do Nothing
   esac
 
   if [ ${compileERR} -eq 0 ]; then
@@ -240,7 +287,10 @@ popd >/dev/null 2>&1
 
 ##########
 # Install all data, executables, libraries in a common directory
-[ ${compileERR:-0} -eq 0 ] && installNems
+if [  ${compileERR} -eq 0 ]; then
+  installNems
+  compileERR=$?
+fi
 ##########
 
-exit 0
+exit ${compileERR:-0}
