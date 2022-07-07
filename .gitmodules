@@ -17,7 +17,7 @@
 [submodule "ADCIRC"]
 	path = ADCIRC
 	url = https://github.com/adcirc/adcirc-cg.git
-	branch = notre_dame
+	branch = development
 [submodule "NWM"]
 	path = NWM
 	url = https://github.com/noaa-ocs-modeling/nwm_public_nuopc.git
