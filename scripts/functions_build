@@ -83,8 +83,11 @@ MY_WAV_MODS="WW3DATA WW3"
 MY_MSC_MODS="BARDATA"
 ########################################
 
-export MY_COMPONENT_DEFAULT="ADCIRC WW3DATA ATMESH"
+#export MY_COMPONENT_DEFAULT="ADCIRC WW3DATA ATMESH"
+export MY_COMPONENT_DEFAULT=
 export MY_COMPONENT_LIST="${MY_ATM_MODS} ${MY_OCN_MODS} ${MY_HYD_MODS} ${MY_WAV_MODS} ${MY_MSC_MODS}"
+
+export MY_THIRDPARTY_LIST="datetime parmetis metis"
 
 
 ##################################################
@@ -114,7 +117,7 @@ ParseArgs()
   local ans0 ans ival intN
   local all_evars
 
-  all_evars="MY_ACCEPT_ALL MY_CLEAN MY_COMPILER MY_COMPONENT MY_EXECUTABLES MY_OS
+  all_evars="MY_ACCEPT_ALL MY_CLEAN MY_COMPILER MY_COMPONENT MY_THIRDPARTY MY_EXECUTABLES MY_OS
              MY_PARALLEL MY_PARMAKE MY_PLATFORM MY_VERBOSE"
 
   for ival in ${all_evars}; do unset __${ival}; done
@@ -125,6 +128,7 @@ ParseArgs()
   __MY_EXECUTABLES=
   __MY_COMPILER="${MY_COMPILER_DEFAULT}"
   __MY_COMPONENT="${MY_COMPONENT_DEFAULT}"
+  __MY_THIRDPARTY=
   __MY_OS=
   __MY_PARALLEL=1
   __MY_PARMAKE=1
@@ -134,7 +138,8 @@ ParseArgs()
 
   # -----
   # Process the function options
-  opt_all=( accept_all build_exec c clean compiler component j par parallel os plat platform v verbose h help )
+  opt_all=( accept_all build_exec c clean compiler component tp third thirdparty 
+            j par parallel os plat platform v verbose h help )
   opt_all=":$( echo "${opt_all[@]/#/-} ${opt_all[@]/#/--}" | sed 's/ /:/g' ):"
 
   unset __OPTION_LIST
@@ -200,6 +205,14 @@ ParseArgs()
           if [ $? -eq 0 ]; then
             if [ "X${opt_arg}" != "X" ]; then
               __MY_COMPONENT="$( strTrim "${opt_arg}" )"
+            fi
+          fi
+        ;;
+      -tp | --tp | -third | --third | -thirdparty | --thirdparty )
+          checkFuncOpt "--thirdparty"
+          if [ $? -eq 0 ]; then
+            if [ "X${opt_arg}" != "X" ]; then
+              __MY_THIRDPARTY="$( strTrim "${opt_arg}" )"
             fi
           fi
         ;;
@@ -346,9 +359,17 @@ UsageBuild()
   echo "    Default: 0|no (user is required to enter a yes/no response)."
   echo
   #---
-  echo "  -c|--c|-clean|--clean [=|space] \"0|1|yes|no\" (OPTIONAL)."
-  echo "    Only clean the already compiled CMake build system."
+  echo "  -c|--c|-clean|--clean [=|space] \"0|1|2|-3|-2|-1|yes|no\" (OPTIONAL)."
+  echo "    Only clean the already compiled build system."
   echo "    Default: 0|no."
+  echo "    Example: --clean= 1  Clean the system (make clean) and exit."
+  echo "                    = 2  Completely clean the system (make distclean) and exit."
+  echo "                    =-1  During the compilation stage, clean the system (make clean)"
+  echo "                         and continue with the compilation."
+  echo "                    =-2  During the compilation stage, completely clean the system (make distclean)"
+  echo "                         and continue with the  compilation."
+  echo "                    =-3  Do not clean anything but continue with the compilation."
+  echo "                    = 0  Do not clean anything (default)."
   echo
   #---
   echo "  -compiler|--compiler [=|space] \"compiling_system\" (OPTIONAL)."
@@ -359,6 +380,16 @@ UsageBuild()
   echo "  -component|--component [=|space] \"component_list\" (OPTIONAL)."
   echo "    The component(s) to use (${MY_COMPONENT_LIST})."
   echo "    Default: \"${MY_COMPONENT_DEFAULT}\"."
+  echo
+  #---
+  echo "  -tp|--tp|-third|--third|-thirdparty|--thirdparty [=|space] \"thirdparty_list\" (OPTIONAL)."
+  echo "    The third party libraries and programs to build."
+  echo "      ADCIRC might need the DATETIME library for it build and"
+  echo "      SCHISM, WW3 require METIS/PARMETIS libraries for their build."
+  echo "    If a component is ADCIRC, WW3 or SCHISM then in the THIRDPARTY environment variable"
+  echo "    then the required third party libraries will be added if they were not requested by the user."
+  echo "    Available third party libs/progs: ${MY_THIRDPARTY_LIST}"
+  echo "    Default: none."
   echo
   #---
   echo "  -build_exec|--build_exec [=|space] \"executable_list\" (OPTIONAL)."
@@ -399,7 +430,7 @@ UsageBuild()
   echo "      i (implicit) : prints messages describing the implicit rule searches for each target"
   echo "      j (jobs)     : prints messages giving details on the invocation of specific sub-commands"
   echo "      m (makefile) : enables messages while rebuilding makefiles"
-  echo "    Default:none."
+  echo "    Default: none."
   echo
   #---
 
@@ -415,7 +446,7 @@ UsageBuild()
 ###
 ### Returns : error status
 ###
-### Exports : CLEAN COMPILER COMPONENT PARALLEL BUILD_EXECS OS PLATFORM PARMAKE VERBOSE
+### Exports : CLEAN COMPILER COMPONENT THIRDPARTY PARALLEL BUILD_EXECS OS PLATFORM PARMAKE VERBOSE
 ###           NEMS_COMPILER NEMS_PARALLEL NEMS_PLATFORM MACHINE_ID FULL_MACHINE_ID
 ###           APP_DIR APPMODS_DIR modFILE modDIR NEMS_DIR compFNAME
 ###
@@ -425,7 +456,6 @@ UsageBuild()
 ###========================================
  getNEMSEnvVars() {
   local src_name src_dir component_ww3
-
 
   if [ -n "${APP_DIR:+1}" ]; then
     src_dir="${APP_DIR}"
@@ -444,7 +474,7 @@ UsageBuild()
     fi
   fi
   APP_DIR=${src_dir}
- 
+
   ACCEPT_ALL=${MY_ACCEPT_ALL}
   export ACCEPT_ALL=${ACCEPT_ALL:-0}
 
@@ -456,6 +486,9 @@ UsageBuild()
 
   COMPONENT="$( toUPPER "${MY_COMPONENT}" )"
   export COMPONENT=${COMPONENT:-}
+
+  THIRDPARTY="$( toUPPER "${MY_THIRDPARTY}" )"
+  export THIRDPARTY=${THIRDPARTY:-}
 
   PARALLEL=${MY_PARALLEL}
   export PARALLEL=${PARALLEL:-1}
@@ -478,6 +511,10 @@ UsageBuild()
 
   VERBOSE="${MY_VERBOSE}"
   export VERBOSE=${VERBOSE:-}
+
+  export DATETIMEHOME=${APP_DIR:+${APP_DIR}/}THIRDPARTY_INSTALL
+  export METISHOME=${APP_DIR:+${APP_DIR}/}THIRDPARTY_INSTALL
+  export PARMETISHOME=${APP_DIR:+${APP_DIR}/}THIRDPARTY_INSTALL
 
   ##### Customize the NEMS.x filename to include the component names
   compFNAME=
@@ -540,11 +577,6 @@ UsageBuild()
   fi
   export NEMS_DIR
 
-  # ADCIRC specific (this might change in the future)
-  if [ -d "${APP_DIR}/ADCIRC/thirdparty/datetime-fortran" ]; then
-    export DATETIMEHOME=${APP_DIR}/ADCIRC/thirdparty/datetime-fortran
-  fi
-
   modFILE="envmodules${COMPILER:+_${COMPILER}}${PLATFORM:+.${PLATFORM}}"
   if [ ! -f "${APPMODS_DIR}/${modFILE}" ]; then
     echo
@@ -596,6 +628,252 @@ UsageBuild()
       echo "icomp = ${icomp}"
     fi
   done
+}
+
+###========================================
+### getThirdParty()
+###
+### Usage:      getThirdParty
+###
+### Parameters: NONE
+###
+### Returns : Exits on error
+###
+### Exports : NONE
+###
+### Echoes  : NONE
+###
+### getThirdParty: Checks if a user supplied modeling component is supported.
+###========================================
+ getThirdParty() {
+  local chk_component user_thirdparty
+  local chk_thirdparty tmp_thirdparty
+  local icomp
+
+
+  chk_thirdparty="$( toUPPER "${MY_THIRDPARTY_LIST}" )"
+  chk_thirdparty="$( echo "${chk_thirdparty}" | sed 's/[[:space:]]/:/g' )"
+
+  chk_component="$( toUPPER "${COMPONENT}" )"
+  [ -z "${chk_component}" ] && \
+    chk_component="$( toUPPER "${MY_COMPONENT}" )"
+  chk_component="$( echo "${chk_component}" | sed 's/[[:space:]]/:/g' )"
+
+  user_thirdparty="$( toUPPER "${THIRDPARTY}" )"
+  [ -z "${user_thirdparty}" ] && \
+    user_thirdparty="$( toUPPER "${MY_THIRDPARTY}" )"
+
+  for icomp in ${user_thirdparty}
+  do
+    if [[ ":${chk_thirdparty}:" == *:"${icomp}":* ]]; then
+      tmp_thirdparty=" ${tmp_thirdparty}"
+    fi
+  done
+
+  # The following are used to make sure that the required third party libraries are set
+  # even if the user did not supply them from the command line
+  [[ ":${chk_component}:" == *:"ADCIRC":* ]] && \
+    tmp_thirdparty="${tmp_thirdparty} DATETIME"
+
+  [[ ":${chk_component}:" == *:"SCHISM":* ]] && \
+    tmp_thirdparty="${tmp_thirdparty} METIS"
+
+  [[ ":${chk_component}:" == *:"WW3":* ]] && \
+    tmp_thirdparty="${tmp_thirdparty} PARMETIS"
+
+  user_thirdparty="$( strSort "${tmp_thirdparty}" )"
+  
+  export THIRDPARTY=${user_thirdparty}
+}
+
+###========================================
+### compileDateTime()
+###
+### Usage:      compileDateTime src_dir
+###
+### Parameters: src_dir = the application root directory
+###
+### Returns : error status
+###
+### Exports : NONE
+###
+### Echoes  : NONE
+###
+### compileDateTime: Uses environment variables to compile the application.
+###========================================
+compileDateTime() {
+  local root_dir src_dir cmake_flags
+  local bld_dir lib_dir inc_dir inst_dir
+  local i
+  local err=0
+
+  ### Get the location of the third party directory
+  if [ -d "${1}" ]; then
+    root_dir="${1}"
+  else
+    root_dir="${APP_DIR:+${APP_DIR}/}thirdparty_open"
+  fi
+
+  ### Get the location of the install directory
+  if [ -n "${DATETIMEHOME:+1}" ]; then
+    inst_dir="${DATETIMEHOME}"
+  else
+    inst_dir="${APP_DIR:+${APP_DIR}/}THIRDPARTY_INSTALL"
+  fi
+
+
+  ##########
+  ### Try to get all the required directories to compile the application 
+  ##########
+  src_dir="$( find ${root_dir} -maxdepth 1 -type d -iname "*DATETIME*" | head -n 1 )"
+  if [ -z "${src_dir}" ] || [ ! -d "${src_dir}" ]; then
+    procError "the source directory for the DateTime library is not a valid directory:" \
+              "  srcDIR = ${src_dir:-NOTFOUND}" \
+              "searched in rootDIR = ${root_dir:-NOTFOUND}"
+  fi
+
+  bld_dir=${src_dir}/build
+  lib_dir=${src_dir}/lib
+  inc_dir=${src_dir}/include
+
+  ### Remove/Clean the previously compiled programs and libraries
+  for i in ${bld_dir} ${lib_dir} ${inc_dir}
+  do
+    if [ -d "${i}" ]; then
+      rm -rf ${i}
+      err=$?
+    fi
+  done
+  ##########
+
+
+  ### Set the compilation flags for cmake
+  cmake_flags="-DCMAKE_BUILD_TYPE=Release"
+  [ -n "${VERBOSE:+1}" ] && cmake_flags+=" -DCMAKE_VERBOSE_MAKEFILE=TRUE"
+
+  cmake_flags+=" -DCMAKE_Fortran_COMPILER=${F90:-${FC}}"
+  [ -n "${FFLAGS:+1}" ] && cmake_flags+=" -DCMAKE_Fortran_FLAGS=${FFLAGS}"
+
+
+  ##########
+  ### Run cmake to configure the application
+  ##########
+  eval "cmake -S ${src_dir} -B ${bld_dir} ${cmake_flags}"
+  err=$?
+
+  if [ ${err:-0} -ne 0 ]; then
+    procError "the configuration of the DateTime library source failed" \
+              "tried to run the cmake command as:" \
+              "cmake -S ${src_dir} -B ${bld_dir} ${cmake_flags}"
+  fi
+  ##########
+
+
+  ##########
+  ### Run cmake to build the application
+  ##########
+  eval "cmake --build ${bld_dir}"
+  err=$?
+
+  if [ ${err:-0} -ne 0 ]; then
+    procError "the compilation of the DateTime library failed" \
+              "tried to run the cmake command as:" \
+              "cmake --build ${bld_dir}"
+  fi
+  ##########
+
+
+  ##########
+  ### Install the application files
+  ##########
+  lib_dir=${inst_dir}/lib
+  inc_dir=${inst_dir}/include
+
+  for i in ${lib_dir} ${inc_dir}
+  do
+    if [ ! -d "${i}" ]; then
+      mkdir -p ${i}
+      err=$?
+
+      if [ ${err:-0} -ne 0 ]; then
+        procError "could not create the install directory" \
+                  "  instDIR = ${i}"
+      fi
+    fi
+  done
+
+  install -m 0644 ${bld_dir}/lib/*.a ${lib_dir}/
+  err=$?
+
+  install -m 0644 ${bld_dir}/include/* ${inc_dir}/
+  err=$?
+  ##########
+
+  ### Remove/Clean the compiled programs and libraries
+  lib_dir=${src_dir}/lib
+  inc_dir=${src_dir}/include
+
+  if [ ${err:-0} -eq 0 ]; then
+    for i in ${bld_dir} ${lib_dir} ${inc_dir}
+    do
+      if [ -d "${i}" ]; then
+        rm -rf ${i}
+        err=$?
+      fi
+    done
+  fi
+
+  return ${err}
+}
+
+###========================================
+### compileMetis()
+###
+### Usage:      compileMetis src_dir
+###
+### Parameters: src_dir = the application root directory
+###
+### Returns : error status
+###
+### Exports : NONE
+###
+### Echoes  : NONE
+###
+### compileMetis: Uses environment variables to compile the application.
+###========================================
+compileMetis() {
+  local root_dir src_dir cmake_flags
+  local bld_dir lib_dir inc_dir inst_dir
+  local i
+  local err=0
+
+  ### Get the location of the third party directory
+  if [ -d "${1}" ]; then
+    root_dir="${1}"
+  else
+    root_dir="${APP_DIR:+${APP_DIR}/}thirdparty_open"
+  fi
+
+  ### Get the location of the install directory
+  if [ -n "${DATETIMEHOME:+1}" ]; then
+    inst_dir="${DATETIMEHOME}"
+  else
+    inst_dir="${APP_DIR:+${APP_DIR}/}THIRDPARTY_INSTALL"
+  fi
+
+
+  ##########
+  ### Try to get all the required directories to compile the application 
+  ##########
+  src_dir="$( find ${root_dir} -maxdepth 1 -type d -iname "*METIS*" | head -n 1 )"
+  if [ -z "${src_dir}" ] || [ ! -d "${src_dir}" ]; then
+    procError "the source directory for the ParMetis/Metis library is not a valid directory:" \
+              "  srcDIR = ${src_dir:-NOTFOUND}" \
+              "searched in rootDIR = ${root_dir:-NOTFOUND}"
+  fi
+
+
+  return ${err}
 }
 
 ###========================================
@@ -675,12 +953,14 @@ compileNems() {
 # Need to have specific model components install functions
 # TODO - Panagiotis Velissariou
 installNems() {
-  local cmp_comp icmp
+  local cmp_comp cmp_progs icmp
   local instdir
   local CPBIN="/bin/cp -fprv"
   local RMBIN="/bin/rm -frv"
 
   instdir="ALLBIN_INSTALL"
+  
+  cmp_progs="adcprep adcirc padcirc adcswan padcswan aswip adccmp"
 
   cmp_comp="${COMPONENT}"
 
@@ -700,7 +980,7 @@ installNems() {
     if [ "${icmp}" == "ADCIRC" ]; then
       echo
       echo "   --- Installing from: ${icmp} to ${instdir} ---"
-      for iprog in adcprep aswip adcirc padcirc tide_fac
+      for iprog in ${cmp_progs} tide_fac
       do
         prog="$( find -L ${icmp} -type f -name ${iprog} | head -1 )"
 

@@ -14,6 +14,179 @@ set +u
 ### BEG:: UTILITY FUNCTIONS
 ##################################################
 
+
+#####=============================================================================
+### BEG:: ERROR FUNCTIONS
+#####=============================================================================
+
+###========================================
+### forceError()
+### Usage:      forceError message (optional)
+### Parameters:
+###
+### Returns : NONE
+###
+### Exports : NONE
+###
+### Echoes  : NONE
+###
+### forceError: A general force error function.
+###========================================
+forceError()
+{
+  local -i status=1
+
+  [ "X${1}" != "X" ] && echo -n  "${1}"
+
+  exit ${status}
+}
+
+###========================================
+### procError()
+### Usage:      procError message
+###             procError "message1" \
+###                       "message2" \
+###                       .          \
+###                       .          \
+###                       .          \
+###                       "messageN"
+### Parameters:
+###   message : The list of messages (strings) to display
+###
+### Returns : 1 (failure) or exits with code 1
+###
+### Exports : NONE
+###
+### Echoes  : On exit displays the supplied message with
+###           the "ERROR" heading.
+###
+### procError: Force exit (code 1) on error and display the error message.
+###========================================
+procError()
+{
+  # These are for the current function (procError)
+  local fnm0="${FUNCNAME[0]}"
+  local snm0="$( basename "${BASH_SOURCE[0]}" )"
+
+  # These are for the calling function(s)
+  local err_str fun_str src_str
+  local fnm1="${FUNCNAME[1]}"
+  local fnm2="${FUNCNAME[2]}"
+  local fnm3="${FUNCNAME[3]}"
+  local fnm4="${FUNCNAME[4]}"
+  local snm1="$( basename "${BASH_SOURCE[1]}" )"
+  local snm2="$( basename "${BASH_SOURCE[2]}" )"
+  local snm3="$( basename "${BASH_SOURCE[3]}" )"
+  local snm4="$( basename "${BASH_SOURCE[4]}" )"
+
+  # proc_str: strings to be displayed (if supplied)
+  # trim_str: trimmed version of proc_str
+  local trim_str proc_str=( "$@" )
+  local -i istr
+
+
+  # Strings that identify the calling functions and sources
+  cfnm="${fnm2:+${fnm2}:}${fnm3:+${fnm3}:}${fnm4:+${fnm4}:}"
+    cfnm="${cfnm:+(${cfnm%:})}"
+  csnm="${snm2:+${snm2}:}${snm3:+${snm3}:}${snm4:+${snm4}:}"
+    csnm="${csnm:+(${csnm%:})}"
+
+  src_str="${snm1}${csnm:+ ${csnm}}"
+  fun_str="${fnm1}${cfnm:+ ${cfnm}}"
+
+  err_str="${fun_str:+${fun_str}: }${src_str:+called from: ${src_str}}"
+  [ -z "${err_str:-}" ] && \
+    err_str="${fnm0:+${fnm0}: }${snm0:+defined in: ${snm0}}"
+
+  # Display everything and then issue the exit command
+  [ -n "${err_str:+1}" ] && echo "ERROR:: ${err_str}"
+  for ((istr = 0; istr < ${#proc_str[@]}; istr++))
+  do
+    trim_str="$( strTrim "${proc_str[${istr}]}" 2)"
+    [ -n "${trim_str:+1}" ] && echo "        ${proc_str[${istr}]}"
+  done
+  echo "        Exiting now ..."
+  echo
+  if [ -n "${PS1:+1}" ]; then
+    return 1
+  else
+    exit 1
+  fi
+}
+
+###========================================
+### procWarn()
+### Usage:      procWarn message
+###             procWarn "message1" \
+###                      "message2" \
+###                      .          \
+###                      .          \
+###                      .          \
+###                      "messageN"
+### Parameters:
+###   message : The list of messages (strings) to display
+###
+### Returns : 0 (success)
+###
+### Exports : NONE
+###
+### Echoes  : Displays the supplied warning message with
+###           the "WARN" heading.
+###
+### procWarn: Issue a warning message.
+###========================================
+procWarn()
+{
+  # These are for the current function (procError)
+  local fnm0="${FUNCNAME[0]}"
+  local snm0="$( basename "${BASH_SOURCE[0]}" )"
+
+  # These are for the calling function(s)
+  local func_str=
+  local fnm1="${FUNCNAME[1]}"
+  local fnm2="${FUNCNAME[2]}"
+  local fnm3="${FUNCNAME[3]}"
+  local fnm4="${FUNCNAME[4]}"
+  local snm1="$( basename "${BASH_SOURCE[1]}" )"
+  local snm2="$( basename "${BASH_SOURCE[2]}" )"
+  local snm3="$( basename "${BASH_SOURCE[3]}" )"
+  local snm4="$( basename "${BASH_SOURCE[4]}" )"
+
+  # proc_str: strings to be displayed (if supplied)
+  # trim_str: trimmed version of proc_str
+  local trim_str= proc_str=( "$@" )
+  local -i istr
+
+
+  # Strings that identify the calling functions and sources
+  cfnm="${fnm2:+${fnm2}:}${fnm3:+${fnm3}:}${fnm4:+${fnm4}:}"
+    cfnm="${cfnm:+(${cfnm%:})}"
+  csnm="${snm2:+${snm2}:}${snm3:+${snm3}:}${snm4:+${snm4}:}"
+    csnm="${csnm:+(${csnm%:})}"
+
+  func_str="${fnm1}${cfnm:+ ${cfnm}}: called from: ${snm1}${csnm:+ ${csnm}}"
+
+
+  # Display everything and then issue the exit command
+  [ -n "${func_str:+1}" ]  && echo "WARN:: ${func_str}"
+  for ((istr = 0; istr < ${#proc_str[@]}; istr++))
+  do
+    trim_str="$( strTrim "${proc_str[${istr}]}" 2)"
+    [ -n "${trim_str:+1}" ] && echo "        ${proc_str[${istr}]}"
+  done
+  echo
+  return 0
+}
+
+#####=============================================================================
+### END:: ERROR FUNCTIONS
+#####=============================================================================
+
+
+#####=============================================================================
+### BEG:: NUMBER FUNCTIONS
+#####=============================================================================
+
 ###========================================
 ### isInteger()
 ### Usage:      isInteger var
@@ -103,49 +276,14 @@ getPosInteger()
   return ${retval}
 }
 
-###========================================
-### getYesNo()
-### Usage:      getYesNo value
-### Parameters:
-###   value : The input value (the value of a parameter)
-###           The value of a bash parameter that is checked
-###           against TRUE/FALSE. If the value is one of:
-###             ">=1|y|yes|yea|yeah|yep"
-###           then the value of parameter is TRUE (answer = yes).
-###           If the value is one of:
-###             "<=0|n|no|not|nop|nope"
-###           then the value of parameter is FALSE (answer = no).
-###           If the value is empty then the value of parameter
-###           is FALSE (answer = no)
-###
-### Returns : NONE
-###
-### Exports : NONE
-###
-### Echoes  : A "yes" or "no" answer.
-###
-### getYesNo: Checks if a parameter is assigned a TRUE/FALSE value.
-###========================================
-getYesNo()
-{
-  local param answer
-  
-  param="$( echo "${1}" | tr '[:upper:]' '[:lower:]' )"
+#####=============================================================================
+### END:: NUMBER FUNCTIONS
+#####=============================================================================
 
-  if [ "${param}" -eq "${param}" ] 2>/dev/null
-  then
-    [ ${param} -le 0 ] && param=0
-    [ ${param} -gt 0 ] && param=1
-  fi
 
-  case "${param}" in
-    1|y|yes|yea|yeah|yep) answer="yes" ;;
-     0|n|no|not|nop|nope) answer="no"  ;;
-                       *) answer=""    ;; # DEFAULT
-  esac
-
-  echo -n "${answer}"
-}
+#####=============================================================================
+### BEG:: STRING FUNCTIONS
+#####=============================================================================
 
 ###========================================
 ### toUPPER()
@@ -212,6 +350,105 @@ strESC1()
 }
 
 ###========================================
+### strRmDuplicate()
+### Usage:      strRmDuplicate string
+### Parameters:
+###   string : The input string
+###            The input string that can contain a list of substrings
+###            separated by spaces, in which duplicate substrings
+###            are removed without sorting the remaining entries
+###
+### Returns : NONE
+###
+### Exports : NONE
+###
+### Echoes  : The modified string without duplicate substrings
+###
+### strRmDuplicate: Removes duplicate sub-strings from string
+###                 without sorting the remaining entries.
+###========================================
+strRmDuplicate()
+{
+  local sep_str="${2:-[[:space:]]}"
+
+  echo -n $( echo "${1}" | tr "${sep_str}" "\n" | \
+             awk '{if ($1 in a) next; a[$1]=$0; print}' | \
+             tr "\n" " " )
+}
+
+###========================================
+### strSort()
+### Usage:      strSort string
+### Parameters:
+###   string : The input string
+###            The input string that can contain a list of substrings
+###            separated by spaces, in which duplicate substrings
+###            are removed while sorting the remaining entries
+###
+### Returns : NONE
+###
+### Exports : NONE
+###
+### Echoes  : The modified string without duplicate substrings
+###
+### strSort: Removes duplicate sub-strings from string and sorts
+###          the remaining entries.
+###========================================
+strSort()
+{
+  local sep_str="${2:-[[:space:]]}"
+
+  echo -n $( echo "${1}" | tr "${sep_str}" "\n" | \
+             sort -u | tr "\n" " " )
+}
+
+###========================================
+### strstr()
+### Usage:      strstr s1 s2
+### Parameters:
+###   s1 : The input string
+###   s2 : The sub-string in s1
+###
+### Returns : 1 if s2 does not occur in s1 (failure)
+###           0 in any other case (success)
+###
+### Exports : NONE
+###
+### Echoes  : A substring starting at the first occurrence
+###           of string s2 in string s1, or nothing if s2
+###           does not occur in s1. If s2 points to a string
+###           of zero length, strstr echoes s1.
+###
+### strstr: Extracts a sub-string from the input string.
+###========================================
+function strstr ()
+{
+  local -i retval=0
+  local first=
+
+# if s2 points to a string of zero length, strstr echoes s1
+  if [ ${#2} -eq 0 ]; then
+    echo -n "${1}"
+    return ${retval}
+  fi
+
+# strstr echoes nothing if s2 does not occur in s1
+  case "$1" in
+  *$2*) ;;
+     *) return ${retval};;
+  esac
+
+# use the pattern matching code to strip off the match and everything
+# following it
+  first=${1/$2*/}
+
+# then strip off the first unmatched portion of the string
+  echo -n "${1##$first}"
+
+  return ${retval}
+}
+
+###========================================
 ### strTrim()
 ### Usage:      strTrim s1 flag
 ### Parameters:
@@ -246,6 +483,115 @@ strTrim ()
   esac
 
   echo -n ${out_str}
+}
+
+###========================================
+### checkSUBSTR()
+### Usage:      checkSUBSTR s1 s2
+### Parameters:
+###   s1 : The input string
+###   s2 : The sub-string in s1
+###
+### Returns : 1 if s2 does not occur in s1 (failure)
+###           0 if s2 occurs in s1 (success)
+###
+### Exports : NONE
+###
+### Echoes  : NONE
+###
+### checkSUBSTR: Checks for a sub-string in the input string
+###========================================
+function checkSUBSTR()
+{
+  [ $# -lt 2 ] && return 1
+
+  case "${1}" in
+    *"${2}"*) return 0 ;;
+           *) return 1 ;; # NO MATCH (error)
+  esac
+}
+
+###********************************************************************************
+### END:: STRING FUNCTIONS
+###********************************************************************************
+
+
+###========================================
+### getYesNo()
+### Usage:      getYesNo value
+### Parameters:
+###   value : The input value (the value of a parameter)
+###           The value of a bash parameter that is checked
+###           against TRUE/FALSE. If the value is one of:
+###             ">=1|y|yes|yea|yeah|yep"
+###           then the value of parameter is TRUE (answer = yes).
+###           If the value is one of:
+###             "<=0|n|no|not|nop|nope"
+###           then the value of parameter is FALSE (answer = no).
+###           If the value is empty then the value of parameter
+###           is FALSE (answer = no)
+###
+### Returns : NONE
+###
+### Exports : NONE
+###
+### Echoes  : A "yes" or "no" answer.
+###
+### getYesNo: Checks if a parameter is assigned a TRUE/FALSE value.
+###========================================
+getYesNo()
+{
+  local param answer
+  
+  param="$( echo "${1}" | tr '[:upper:]' '[:lower:]' )"
+
+  if [ "${param}" -eq "${param}" ] 2>/dev/null
+  then
+    [ ${param} -le 0 ] && param=0
+    [ ${param} -gt 0 ] && param=1
+  fi
+
+  case "${param}" in
+    1|y|yes|yea|yeah|yep) answer="yes" ;;
+     0|n|no|not|nop|nope) answer="no"  ;;
+                       *) answer=""    ;; # DEFAULT
+  esac
+
+  echo -n "${answer}"
+}
+
+###========================================
+### checkFuncOpt()
+### Usage:      checkFuncOpt opt_name
+### Parameters:
+###   opt_name: The name of the option to a function
+###
+### Returns : Exits on error
+###
+### Exports : __OPTION_LIST
+###
+### Echoes  : NONE
+###
+### checkFuncOpt: Checks if an option to a function is already supplied.
+###========================================
+checkFuncOpt() {
+  local opt_inp opt_list
+
+  [ $# -eq 0 ] && return -1
+
+  opt_inp="$( strTrim "${1}" 2 )"
+  opt_inp="$( echo "${opt_inp}" | sed 's/^[-]*//' )"
+
+  opt_list="$( strTrim "${__OPTION_LIST}" 2 )"
+  [ -n ${opt_list:+1} ] && \
+    opt_list=":$( echo "${opt_list}" | sed 's/ /:/g' ):"
+
+  [ "$( echo "${opt_list}" | egrep -o ":${opt_inp}:" )" ] && return 1
+
+  __OPTION_LIST="${__OPTION_LIST} ${opt_inp}"
+  export __OPTION_LIST
+
+  return 0
 }
 
 ###========================================
@@ -303,40 +649,6 @@ getMakeVerbosity ()
   done
 
   echo -n "${opt_verb}"
-}
-
-###========================================
-### checkFuncOpt()
-### Usage:      checkFuncOpt opt_name
-### Parameters:
-###   opt_name: The name of the option to a function
-###
-### Returns : Exits on error
-###
-### Exports : __OPTION_LIST
-###
-### Echoes  : NONE
-###
-### checkFuncOpt: Checks if an option to a function is already supplied.
-###========================================
-checkFuncOpt() {
-  local opt_inp opt_list
-
-  [ $# -eq 0 ] && return -1
-
-  opt_inp="$( strTrim "${1}" 2 )"
-  opt_inp="$( echo "${opt_inp}" | sed 's/^[-]*//' )"
-
-  opt_list="$( strTrim "${__OPTION_LIST}" 2 )"
-  [ -n ${opt_list:+1} ] && \
-    opt_list=":$( echo "${opt_list}" | sed 's/ /:/g' ):"
-
-  [ "$( echo "${opt_list}" | egrep -o ":${opt_inp}:" )" ] && return 1
-
-  __OPTION_LIST="${__OPTION_LIST} ${opt_inp}"
-  export __OPTION_LIST
-
-  return 0
 }
 
 ###========================================
@@ -451,6 +763,7 @@ checkModuleCmd() {
   
   return ${ret_val}
 }
+
 ##################################################
 ### END:: UTILITY FUNCTIONS
 ##################################################
