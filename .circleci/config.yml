@@ -1,0 +1,90 @@
+###########################################################################
+### CircleCI Yaml File for CoastalApp Regression Tests
+###
+### This yaml file runs a series of build and regression tests
+### for CoastalApp using the CoastalApp-testsuite.
+### 1) First, the build system of CoastalApp is invoked to build the
+###    CoastalApp application (NEMS) to make sure that the application
+###    is built properly using all modeling and data components that the
+###    user requests
+### 2) Second, run the regression tests from the CoastalApp-testsuite
+###    to ensure that all models can run successfully after each
+###    CoastalApp/model upgrade
+###
+### Author: Panagiotis Velissariou <panagiotis.velissariou@noaa.gov>
+###
+### This is for CircleCI version 2.1
+###########################################################################
+
+version: 2.1
+
+#...CodeCov Orb
+orbs:
+  codecov: codecov/codecov@3.2.3
+
+#...Aliases used to shorthand this job script
+run_sysenv: &run_sysenv
+    docker:
+      - image: panvelissariou1/coastalapp
+
+default_appenv: &default_appenv
+     run:
+       name: Retrieve the CoastalApp source code
+       command: git clone --recurse-submodules --depth=1 https://github.com/noaa-ocs-modeling/CoastalApp -b develop /testing/CoastalApp
+
+default_testenv: &default_testenv
+     run:
+       name: Retrieve the CoastalApp test suite
+       command: git clone --depth=1 https://github.com/noaa-ocs-modeling/CoastalApp-testsuite.git /testing/CoastalApp-testsuite
+
+cache_key_base: &cache_key_base
+      key: adcirc-base-{{ arch }}-{{ .Environment.CIRCLE_SHA1 }}-{{ .Environment.CIRCLE_WORKFLOW_ID }}
+
+get_cache_base: &get_cache_base
+     restore_cache:
+         <<: *cache_key_base
+
+upload_coverage: &upload_coverage
+     codecov/upload
+
+#...List of jobs in the workflow
+jobs:
+  build_coastalapp:
+      <<: *run_sysenv
+      steps:
+        - checkout
+        - *default_appenv
+        - run: 
+            name: Configure and Compile CoastalApp
+            command: cd /testing/CoastalApp ; build.sh --yes --compiler=gnu --component="all"
+        - save_cache:
+            <<: *cache_key_base 
+            paths: 
+                - /testing/CoastalApp
+  test_base:
+      <<: *run_sysenv
+      parameters:
+          test_name:
+              description: "Name of test job to be run"
+              default: "adcirc_quarterannular-2d"
+              type: string
+      steps:
+        - *get_cache_base
+        - run: 
+            name: <<parameters.test_name>>
+            command: cd /root/adcirc-cg-testsuite ; ./RunTests.sh /testing/CoastalApp-testsuite >>
+            no_output_timeout: 7200
+        - *upload_coverage
+
+workflows:
+  version: 2.1
+  build_and_test:
+    jobs:
+      - build_coastalapp
+      - test_base:
+            requires:
+            matrix:
+                parameters:
+                    test_name:
+                        - shinnecock_adcirc
+                        - shinnecock_atmesh_adcirc
