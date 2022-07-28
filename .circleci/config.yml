@@ -19,8 +19,8 @@
 version: 2.1
 
 #...CodeCov Orb
-orbs:
-  codecov: codecov/codecov@3.2.3
+#orbs:
+#  codecov: codecov/codecov@3.2.3
 
 #...Aliases used to shorthand this job script
 run_sysenv: &run_sysenv
