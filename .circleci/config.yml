@@ -44,8 +44,8 @@ get_cache_base: &get_cache_base
      restore_cache:
          <<: *cache_key_base
 
-upload_coverage: &upload_coverage
-     codecov/upload
+#upload_coverage: &upload_coverage
+#     codecov/upload
 
 #...List of jobs in the workflow
 jobs:
