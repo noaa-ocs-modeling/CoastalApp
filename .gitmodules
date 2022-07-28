@@ -35,3 +35,6 @@
 [submodule "SCHISM/schism-esmf"]
 	path = SCHISM/schism-esmf
 	url = https://github.com/schism-dev/schism-esmf.git
+[submodule "NUOPC_FVCOM"]
+	path = NUOPC_FVCOM
+	url = https://github.com/FVCOM-GitHub/NUOPC_FVCOM
