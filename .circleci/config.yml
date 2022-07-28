@@ -19,8 +19,8 @@
 version: 2.1
 
 #...CodeCov Orb
-#orbs:
-#  codecov: codecov/codecov@3.2.3
+orbs:
+  codecov: codecov/codecov@3.2.3
 
 #...Aliases used to shorthand this job script
 run_sysenv: &run_sysenv
@@ -44,8 +44,8 @@ get_cache_base: &get_cache_base
      restore_cache:
          <<: *cache_key_base
 
-#upload_coverage: &upload_coverage
-#     codecov/upload
+upload_coverage: &upload_coverage
+     codecov/upload
 
 #...List of jobs in the workflow
 jobs:
