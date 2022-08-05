@@ -61,7 +61,7 @@ jobs:
         - run:
             name: Configure and Compile CoastalApp
             shell: /bin/bash --login -eo pipefail
-            command: module available; cd /testing/CoastalApp ; ./build.sh --yes --compiler=gnu --component="pahm"
+            command: cd /testing/CoastalApp ; ./build.sh --yes --compiler=gnu --component="pahm"
         - save_cache:
             <<: *cache_key_base 
             paths: 
@@ -77,9 +77,9 @@ jobs:
         - checkout
         - *get_cache_base
         - run: 
-            name: <<parameters.test_name>>
+            name: shinnecock_pahm_standalone
             shell: /bin/bash --login -eo pipefail
-            command: cd /testing/CoastalApp-testsuite ; ./run_test.sh /testing/CoastalApp/ALLBIN_INSTALL /testing/CoastalApp/modulefiles/envmodules_gnu.linux         <<parameters.test_name>>
+            command: cd /testing/CoastalApp-testsuite ; ./run_test.sh /testing/CoastalApp/ALLBIN_INSTALL /testing/CoastalApp/modulefiles/envmodules_gnu.linux         shinnecock_pahm_standalone
             no_output_timeout: 7200
 #        - *upload_coverage
 
@@ -88,12 +88,13 @@ workflows:
   build_and_test:
     jobs:
       - BuildTest_coastalapp
-      - TestBase:
-            requires:
-            matrix:
-                parameters:
-                    test_name:
+      - TestBase
+#      - TestBase:
+#            requires:
+#            matrix:
+#                parameters:
+#                    test_name:
 #                        - shinnecock_adcirc
 #                        - shinnecock_atmesh_adcirc
-                        - shinnecock_pahm_standalone
+#                        - shinnecock_pahm_standalone
 
