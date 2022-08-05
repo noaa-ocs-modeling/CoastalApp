@@ -62,7 +62,7 @@ jobs:
         - checkout
         - *coastalapp_appenv
         - *coastalapp_testenv
-        - run: /bin/bash --login -eo pipefail
+        - run:
             name: Configure and Compile CoastalApp
             shell: /bin/bash --login -eo pipefail
             command: module available; cd /testing/CoastalApp ; ./build.sh --yes --compiler=gnu --component="pahm"
