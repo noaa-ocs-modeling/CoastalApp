@@ -67,9 +67,6 @@ jobs:
                 - /testing/CoastalApp
   TestBase:
       <<: *run_sysenv
-      steps:
-        - checkout
-        - *coastalapp_testenv
       parameters:
           test_name:
               description: "Name of test job to be run"
@@ -77,6 +74,7 @@ jobs:
               type: string
       steps:
         - checkout
+        - *coastalapp_testenv
         - *get_cache_base
         - run: 
             name: shinnecock_pahm_standalone
