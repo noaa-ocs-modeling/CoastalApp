@@ -66,6 +66,7 @@ jobs:
             <<: *cache_key_base 
             paths: 
                 - /testing/CoastalApp
+                - /testing/CoastalApp_testsuite
   TestBase:
       <<: *run_sysenv
       parameters:
