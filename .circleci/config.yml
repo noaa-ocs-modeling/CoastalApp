@@ -32,7 +32,8 @@ run_sysenv: &run_sysenv
 coastalapp_appenv: &coastalapp_appenv
      run:
        name: Retrieve the CoastalApp source code
-       command: git clone --recurse-submodules --depth=1 https://github.com/noaa-ocs-modeling/CoastalApp -b develop /testing/CoastalApp
+#       command: git clone --recurse-submodules --depth=1 https://github.com/noaa-ocs-modeling/CoastalApp -b develop /testing/CoastalApp
+       command: git -c submodule.ADCIRC.update=none -c submodule.WW3.update=none -c submodule.SCHISM/schism.update=none -c submodule.SCHISM/schism-esmf.update=none -c submodule.NWM.update=none -c submodule.BARDATA.update=none clone --recurse-submodules --depth=1 https://github.com/noaa-ocs-modeling/CoastalApp -b develop takis-test
 
 coastalapp_testenv: &coastalapp_testenv
      run:
