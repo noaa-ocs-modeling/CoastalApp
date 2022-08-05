@@ -57,7 +57,6 @@ jobs:
       steps:
         - checkout
         - *coastalapp_appenv
-        - *coastalapp_testenv
         - run:
             name: Configure and Compile CoastalApp
             shell: /bin/bash --login -eo pipefail
@@ -66,9 +65,11 @@ jobs:
             <<: *cache_key_base 
             paths: 
                 - /testing/CoastalApp
-                - /testing/CoastalApp_testsuite
   TestBase:
       <<: *run_sysenv
+      steps:
+        - checkout
+        - *coastalapp_testenv
       parameters:
           test_name:
               description: "Name of test job to be run"
@@ -81,6 +82,8 @@ jobs:
             name: shinnecock_pahm_standalone
             command: ls /testing; cd /testing/CoastalApp_testsuite; ./run_test.sh /testing/CoastalApp/ALLBIN_INSTALL /testing/CoastalApp/modulefiles/envmodules_gnu.linux         shinnecock_pahm_standalone
             no_output_timeout: 7200
+            paths:
+                - /testing/CoastalApp_testsuite
 #        - *upload_coverage
 
 workflows:
