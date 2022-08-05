@@ -38,7 +38,7 @@ coastalapp_appenv: &coastalapp_appenv
 coastalapp_testenv: &coastalapp_testenv
      run:
        name: Retrieve the CoastalApp test suite
-       command: git clone --depth=1 https://github.com/noaa-ocs-modeling/CoastalApp-testsuite.git /testing/CoastalApp-testsuite
+       command: git clone --depth=1 https://github.com/noaa-ocs-modeling/CoastalApp-testsuite.git /testing/CoastalApp_testsuite
 
 cache_key_base: &cache_key_base
       key: coastalapp-base-{{ arch }}-{{ .Environment.CIRCLE_SHA1 }}-{{ .Environment.CIRCLE_WORKFLOW_ID }}
@@ -79,7 +79,7 @@ jobs:
         - run: 
             name: shinnecock_pahm_standalone
             shell: /bin/bash --login -eo pipefail
-            command: ls /testing/CoastalApp-testsuite; cd /testing/CoastalApp-testsuite; ./run_test.sh /testing/CoastalApp/ALLBIN_INSTALL /testing/CoastalApp/modulefiles/envmodules_gnu.linux         shinnecock_pahm_standalone
+            command: ls /testing/CoastalApp_testsuite; cd /testing/CoastalApp_testsuite; ./run_test.sh /testing/CoastalApp/ALLBIN_INSTALL /testing/CoastalApp/modulefiles/envmodules_gnu.linux         shinnecock_pahm_standalone
             no_output_timeout: 7200
 #        - *upload_coverage
 
