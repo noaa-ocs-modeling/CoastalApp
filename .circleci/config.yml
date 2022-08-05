@@ -78,7 +78,7 @@ jobs:
         - *get_cache_base
         - run: 
             name: shinnecock_pahm_standalone
-            command: ls /testing; cd /testing/CoastalApp_testsuite; ./run_test.sh /testing/CoastalApp/ALLBIN_INSTALL /testing/CoastalApp/modulefiles/envmodules_gnu.linux         shinnecock_pahm_standalone
+            command: ls testing; ls /testing; cd /testing/CoastalApp_testsuite; ./run_test.sh /testing/CoastalApp/ALLBIN_INSTALL /testing/CoastalApp/modulefiles/envmodules_gnu.linux         shinnecock_pahm_standalone
             no_output_timeout: 7200
             paths:
                 - /testing/CoastalApp_testsuite
