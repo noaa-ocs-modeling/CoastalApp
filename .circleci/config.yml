@@ -19,60 +19,64 @@
 version: 2.1
 
 #...CodeCov Orb
-#orbs:
+orbs:
+  codecov: codecov/codecov@1.0.5
 #  codecov: codecov/codecov@3.2.3
+
 
 #...Aliases used to shorthand this job script
 run_sysenv: &run_sysenv
     docker:
       - image: panvelissariou1/coastalapp
 
-default_appenv: &default_appenv
+coastalapp_appenv: &coastalapp_appenv
      run:
        name: Retrieve the CoastalApp source code
        command: git clone --recurse-submodules --depth=1 https://github.com/noaa-ocs-modeling/CoastalApp -b develop /testing/CoastalApp
 
-default_testenv: &default_testenv
+coastalapp_testenv: &coastalapp_testenv
      run:
        name: Retrieve the CoastalApp test suite
        command: git clone --depth=1 https://github.com/noaa-ocs-modeling/CoastalApp-testsuite.git /testing/CoastalApp-testsuite
 
 cache_key_base: &cache_key_base
-      key: adcirc-base-{{ arch }}-{{ .Environment.CIRCLE_SHA1 }}-{{ .Environment.CIRCLE_WORKFLOW_ID }}
+      key: coastalapp-base-{{ arch }}-{{ .Environment.CIRCLE_SHA1 }}-{{ .Environment.CIRCLE_WORKFLOW_ID }}
 
 get_cache_base: &get_cache_base
      restore_cache:
          <<: *cache_key_base
 
-#upload_coverage: &upload_coverage
-#     codecov/upload
+upload_coverage: &upload_coverage
+     codecov/upload
 
 #...List of jobs in the workflow
 jobs:
-  build_coastalapp:
+  BuildTest_coastalapp:
       <<: *run_sysenv
       steps:
         - checkout
-        - *default_appenv
+        - *coastalapp_appenv
+        - *coastalapp_testenv
         - run: 
             name: Configure and Compile CoastalApp
-            command: cd /testing/CoastalApp ; build.sh --yes --compiler=gnu --component="all"
+            command: cd /testing/CoastalApp ; ./build.sh --yes --compiler=gnu --component="pahm"
         - save_cache:
             <<: *cache_key_base 
             paths: 
                 - /testing/CoastalApp
-  test_base:
+  TestBase:
       <<: *run_sysenv
       parameters:
           test_name:
               description: "Name of test job to be run"
-              default: "adcirc_quarterannular-2d"
+              default: "shinnecock_pahm_standalone"
               type: string
       steps:
+        - checkout
         - *get_cache_base
         - run: 
             name: <<parameters.test_name>>
-            command: cd /root/adcirc-cg-testsuite ; ./RunTests.sh /testing/CoastalApp-testsuite >>
+            command: cd /testing/CoastalApp-testsuite ; ./run_test.sh /testing/CoastalApp/ALLBIN_INSTALL /testing/CoastalApp/modulefiles/envmodules_gnu.linux         <<parameters.test_name>>
             no_output_timeout: 7200
 #        - *upload_coverage
 
@@ -80,11 +84,13 @@ workflows:
   version: 2.1
   build_and_test:
     jobs:
-      - build_coastalapp
-      - test_base:
+      - BuildTest_coastalapp
+      - TestBase:
             requires:
             matrix:
                 parameters:
                     test_name:
-                        - shinnecock_adcirc
-                        - shinnecock_atmesh_adcirc
+#                        - shinnecock_adcirc
+#                        - shinnecock_atmesh_adcirc
+                        - shinnecock_pahm_standalone
+
