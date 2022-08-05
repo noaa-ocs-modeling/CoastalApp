@@ -29,6 +29,10 @@ run_sysenv: &run_sysenv
     docker:
       - image: panvelissariou1/coastalapp
 
+shell_defaults: &shell_defaults
+     run:
+       shell: /bin/bash --login -eo pipefail
+
 coastalapp_appenv: &coastalapp_appenv
      run:
        name: Retrieve the CoastalApp source code
@@ -58,6 +62,7 @@ jobs:
         - checkout
         - *coastalapp_appenv
         - *coastalapp_testenv
+        - *shell_defaults
         - run: 
             name: Configure and Compile CoastalApp
             command: module available; cd /testing/CoastalApp ; ./build.sh --yes --compiler=gnu --component="pahm"
