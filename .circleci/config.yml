@@ -79,7 +79,7 @@ jobs:
         - run: 
             name: shinnecock_pahm_standalone
             shell: /bin/bash --login -eo pipefail
-            command: cd /testing/CoastalApp-testsuite ; ./run_test.sh /testing/CoastalApp/ALLBIN_INSTALL /testing/CoastalApp/modulefiles/envmodules_gnu.linux         shinnecock_pahm_standalone
+            command: ls /testing/CoastalApp-testsuite; cd /testing/CoastalApp-testsuite; ./run_test.sh /testing/CoastalApp/ALLBIN_INSTALL /testing/CoastalApp/modulefiles/envmodules_gnu.linux         shinnecock_pahm_standalone
             no_output_timeout: 7200
 #        - *upload_coverage
 
