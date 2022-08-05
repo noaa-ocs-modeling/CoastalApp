@@ -60,7 +60,7 @@ jobs:
         - *coastalapp_testenv
         - run: 
             name: Configure and Compile CoastalApp
-            command: cd /testing/CoastalApp ; ./build.sh --yes --compiler=gnu --component="pahm"
+            command: ls /testing/*; cd /testing/CoastalApp ; ./build.sh --yes --compiler=gnu --component="pahm"
         - save_cache:
             <<: *cache_key_base 
             paths: 
