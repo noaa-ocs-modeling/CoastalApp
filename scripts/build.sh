@@ -101,9 +101,8 @@ checkNEMSComponents
 # Get the compilers to use for this project compilation
 getCompilerNames "${COMPILER}"
 
-# Get the list of the third party comonents to build
+# Get the list of the third party components to build
 getThirdParty
-
 ############################################################
 ### END:: SYSTEM CONFIGURATION
 ############################################################
@@ -178,9 +177,6 @@ echo "    HDF5HOME       = ${HDF5HOME}"
 echo "    NETCDFHOME     = ${NETCDFHOME}"
 echo "    NETCDF_INCDIR  = ${NETCDF_INCDIR}"
 echo "    NETCDF_LIBDIR  = ${NETCDF_LIBDIR}"
-echo "    DATETIMEHOME   = ${DATETIMEHOME}"
-echo "    METISHOME      = ${METISHOME}"
-echo "    PARMETISHOME   = ${PARMETISHOME}"
 echo
 echo "    ESMFMKFILE     = ${ESMFMKFILE:-UNDEF}"
 echo
@@ -223,26 +219,80 @@ fi
 ############################################################
 
 ##########
-# Compile third party libraries first (based upon user's request)
+# Get the location of the pre-compiled third party libraries: DATETIME, PARMETIS, ..., or
+# compile the third party libraries (based upon the user's request)
+
+### BEG :: First work with the environment variables
+if [ -n "${DATETIMEHOME}" ]; then
+  if [ -d ${DATETIMEHOME} ]; then
+    tmp_loc="$( find -L ${DATETIMEHOME} -type f -name "libdatetime*" | head -1 )"
+    if [ -n "${tmp_loc:+1}" ]; then
+      export DATETIMEHOME=${DATETIMEHOME}
+      export DATETIME=enable
+      procWarn "Setting the following variables:" \
+               "   DATETIMEHOME = ${DATETIMEHOME}" \
+               "   DATETIME     = ${DATETIME}"
+    else
+      unset DATETIMEHOME DATETIME
+      procWarn "Could not locate libdatetime in ${DATETIMEHOME}." \
+               "Unsetting variables DATETIMEHOME, DATETIME"
+    fi
+    unset tmp_loc
+  fi
+fi
+
+if [ -n "${PARMETISHOME}" ]; then
+  if [ -d ${PARMETISHOME} ]; then
+    tmp_loc="$( find -L ${PARMETISHOME} -type f -name "libparmetis*" | head -1 )"
+    if [ -n "${tmp_loc:+1}" ]; then
+      export PARMETISHOME=${PARMETISHOME}
+      export METIS_PATH=${PARMETISHOME}
+      procWarn "Setting the following variables:" \
+               "   PARMETISHOME = ${PARMETISHOME}" \
+               "   METIS        = ${METIS}" \
+               "   METIS_PATH   = ${METIS_PATH}"
+    else
+      unset PARMETISHOME METIS METIS_PATH
+      procWarn "Could not locate libparmetis in ${PARMETISHOME}." \
+               "Unsetting the variables PARMETISHOME, METIS, METIS_PATH"
+    fi
+    unset tmp_loc
+  fi
+fi
+### END :: First work with the environment variables
+
+
 compileERR=0
 if [ -n "${THIRDPARTY:+1}" ]; then
   for iPart in ${THIRDPARTY}
   do
     case "$( toUPPER ${iPart} )" in
       DATETIME)
-        compileDateTime
-        compileERR=$?
-        if [ ${compileERR} -eq 0 ]; then
-          export DATETIME=enable
-          export DATETIMEHOME=${DATETIMEHOME}
+        if [ -z "${DATETIMEHOME}" ]; then
+          compileDateTime
+          compileERR=$?
+          if [ ${compileERR} -eq 0 ]; then
+            export DATETIMEHOME=${DATETIMEHOME}
+            export DATETIME=enable
+            procWarn "Setting the following variables:" \
+                     "   DATETIMEHOME = ${DATETIMEHOME}" \
+                     "   DATETIME     = ${DATETIME}"
+          fi
         fi
         ;;
       METIS|PARMETIS)
-        compileMetis
-        compileERR=$?
-        if [ ${compileERR} -eq 0 ]; then
-         export PARMETISHOME METISHOME
-         export METIS=${METISHOME}
+        if [ -z "${PARMETISHOME}" ]; then
+          compileMetis
+          compileERR=$?
+          if [ ${compileERR} -eq 0 ]; then
+            export PARMETISHOME
+            export METIS=${PARMETISHOME}
+            export METIS_PATH=${PARMETISHOME}
+            procWarn "Setting the following variables:" \
+                     "   PARMETISHOME = ${PARMETISHOME}" \
+                     "   METIS        = ${METIS}" \
+                     "   METIS_PATH   = ${METIS_PATH}"
+          fi
         fi
         ;;
        *)
@@ -250,47 +300,53 @@ if [ -n "${THIRDPARTY:+1}" ]; then
     esac
   done
 fi
+##########
 
 
 ##########
 # Compile the project
-compileERR=0
-pushd ${NEMS_DIR} >/dev/null 2>&1
-  case ${CLEAN:-0} in
-    -1)
-      compileNems clean
-      compileERR=$?
-      ;;
-    -2)
-      compileNems distclean
-      compileERR=$?
-      ;;
-    -3)
-      compileNems noclean
-      compileERR=$?
-      ;;
-     *)
-       ;; #Do Nothing
-  esac
+#if [ -n "${COMPONENT:+1}" ]; then
 
-  if [ ${compileERR} -eq 0 ]; then
-    compileNems build
+  compileERR=0
+  pushd ${NEMS_DIR} >/dev/null 2>&1
+    case ${CLEAN:-0} in
+      -1)
+        compileNems clean
+        compileERR=$?
+        ;;
+      -2)
+        compileNems distclean
+        compileERR=$?
+        ;;
+      -3)
+        compileNems noclean
+        compileERR=$?
+        ;;
+       *)
+         ;; #Do Nothing
+    esac
+
+    if [ ${compileERR} -eq 0 ]; then
+      compileNems build
+      compileERR=$?
+    fi
+
+    if [  ${compileERR} -eq 0 ]; then
+      if [ -f exe/NEMS.x ]; then
+        cp -p exe/NEMS.x exe/NEMS${compFNAME:+-${compFNAME}}.x
+      fi
+    fi
+  popd >/dev/null 2>&1
+
+  ##########
+  # Install all data, executables, libraries in a common directory
+  if [  ${compileERR} -eq 0 ]; then
+    installNems
     compileERR=$?
   fi
 
-  if [  ${compileERR} -eq 0 ]; then
-    if [ -f exe/NEMS.x ]; then
-      cp -p exe/NEMS.x exe/NEMS${compFNAME:+-${compFNAME}}.x
-    fi
-  fi
-popd >/dev/null 2>&1
+#fi
+##########
 
-##########
-# Install all data, executables, libraries in a common directory
-if [  ${compileERR} -eq 0 ]; then
-  installNems
-  compileERR=$?
-fi
-##########
 
 exit ${compileERR:-0}

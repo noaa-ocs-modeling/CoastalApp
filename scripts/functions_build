@@ -61,7 +61,7 @@ unset src_name src_dir ilst funcs
 
 
 export MY_COMPILING_SYTEMS="gnu, intel, pgi"
-export MY_COMPILER_DEFAULT="intel"
+export MY_COMPILER_DEFAULT="gnu"
 export MY_COMPILING_PLATFORMS="custom, linux, macosx, cheyenne, gaea, hera, jet, orion, stampede, wcoss, mistral, strand"
 
 ########################################
@@ -87,7 +87,7 @@ MY_MSC_MODS="BARDATA"
 export MY_COMPONENT_DEFAULT=
 export MY_COMPONENT_LIST="${MY_ATM_MODS} ${MY_OCN_MODS} ${MY_HYD_MODS} ${MY_WAV_MODS} ${MY_MSC_MODS}"
 
-export MY_THIRDPARTY_LIST="datetime parmetis metis"
+export MY_THIRDPARTY_LIST="DATETIME PARMETIS"
 
 
 ##################################################
@@ -384,10 +384,10 @@ UsageBuild()
   #---
   echo "  -tp|--tp|-third|--third|-thirdparty|--thirdparty [=|space] \"thirdparty_list\" (OPTIONAL)."
   echo "    The third party libraries and programs to build."
-  echo "      ADCIRC might need the DATETIME library for it build and"
+  echo "      ADCIRC might need the DATETIME library for its build and"
   echo "      SCHISM, WW3 require METIS/PARMETIS libraries for their build."
   echo "    If a component is ADCIRC, WW3 or SCHISM then in the THIRDPARTY environment variable"
-  echo "    then the required third party libraries will be added if they were not requested by the user."
+  echo "    the required third party libraries will be added if they were not requested by the user."
   echo "    Available third party libs/progs: ${MY_THIRDPARTY_LIST}"
   echo "    Default: none."
   echo
@@ -511,10 +511,6 @@ UsageBuild()
 
   VERBOSE="${MY_VERBOSE}"
   export VERBOSE=${VERBOSE:-}
-
-  export DATETIMEHOME=${APP_DIR:+${APP_DIR}/}THIRDPARTY_INSTALL
-  export METISHOME=${APP_DIR:+${APP_DIR}/}THIRDPARTY_INSTALL
-  export PARMETISHOME=${APP_DIR:+${APP_DIR}/}THIRDPARTY_INSTALL
 
   ##### Customize the NEMS.x filename to include the component names
   compFNAME=
@@ -663,23 +659,72 @@ UsageBuild()
   [ -z "${user_thirdparty}" ] && \
     user_thirdparty="$( toUPPER "${MY_THIRDPARTY}" )"
 
+  tmp_thirdparty=
   for icomp in ${user_thirdparty}
   do
     if [[ ":${chk_thirdparty}:" == *:"${icomp}":* ]]; then
-      tmp_thirdparty=" ${tmp_thirdparty}"
+      tmp_thirdparty="${tmp_thirdparty} ${icomp}"
     fi
   done
 
-  # The following are used to make sure that the required third party libraries are set
-  # even if the user did not supply them from the command line
-  [[ ":${chk_component}:" == *:"ADCIRC":* ]] && \
-    tmp_thirdparty="${tmp_thirdparty} DATETIME"
+  # The following are used to make sure that the user is notified that a possibly essential
+  # third party library is not supplied by the user when compiling specific model components.
 
-  [[ ":${chk_component}:" == *:"SCHISM":* ]] && \
-    tmp_thirdparty="${tmp_thirdparty} METIS"
+  ### (1) ADCIRC
+  # For ADCIRC the user can specify that the CoastalApp may build the DATETIME library
+  # by using the --thirdparty="datetime" option. We issue a warning here to let the user
+  # know that he/she might need to specify this library.
+  if [[ ":${chk_component}:" == *:"ADCIRC":* ]]; then
+    if $( checkSUBSTR "${tmp_thirdparty}" DATETIME ) && \
+       [ -z "${DATETIME_HOME}" ] && [ -z "${DATETIMEHOME}" ]; then
+      procWarn "The DATETIME library might be needed for the compilation of ADCIRC" \
+               "in case the baroclinic effects are to be enabled in ADCIRC."
+    else
+      DATETIMEHOME=${DATETIMEHOME}
+      DATETIMEHOME=${DATETIMEHOME:-${DATETIME_HOME}}
+    fi
+  fi
 
-  [[ ":${chk_component}:" == *:"WW3":* ]] && \
-    tmp_thirdparty="${tmp_thirdparty} PARMETIS"
+  ### (2) SCHISM
+  # For SCHISM the user can specify that the CoastalApp may build the ParMETIS library
+  # by using the --thirdparty="parmetis" option. We issue a warning here to let the user
+  # know that he/she might need to specify this library.
+  if [[ ":${chk_component}:" == *:"SCHISM":* ]]; then
+    if ! $( checkSUBSTR "${tmp_thirdparty}" PARMETIS ) && \
+       [ -z "${PARMETIS_HOME}" ] && [ -z "${PARMETISHOME}" ]; then
+      procWarn "The PARMETIS library might be needed for the compilation of SCHISM." \
+               "Please supply the PARMETIS_HOME or PARAMETISHOME environment" \
+               "variable that points to the location of the pre-compiled library or use the" \
+               "--thirdparty="parmetis" option in the build.sh script to compile the" \
+               "library from within CoastalApp (NOTE: need to download first the library" \
+               "by running the download_parmetis.sh script found in the scripts directory." \
+               "Finally, if the library is not provided, then SCHISM can use its internal" \
+               "version of ParMETIS or the NO_PARMETIS option (OFF by default)."
+    else
+      PARMETISHOME=${PARMETISHOME}
+      PARMETISHOME=${PARMETISHOME:-${PARMETIS_HOME}}
+    fi
+  fi
+
+  ### (3) WW3
+  # For WW3 the user should specify the location of the ParMETIS library or to use
+  # the --thirdparty="parmetis" option. We issue an error here to let the user
+  # know that he/she need to specify this library for WW3.
+  if [[ ":${chk_component}:" == *:"WW3":* ]]; then
+    if ! $( checkSUBSTR "${tmp_thirdparty}" PARMETIS ) && \
+       [ -z "${PARMETIS_HOME}" ] && [ -z "${PARMETISHOME}" ]; then
+      procError "The PARMETIS library is needed for the compilation of WW3." \
+                "Please supply the PARMETIS_HOME or PARAMETISHOME environment" \
+                "variable that points to the location of the pre-compiled library or use the" \
+                "--thirdparty="parmetis" option in the build.sh script to compile the" \
+                "library from within CoastalApp (NOTE: need to download first the library" \
+                "by running the download_parmetis.sh script found in the scripts directory."
+    else
+      PARMETISHOME=${PARMETISHOME}
+      PARMETISHOME=${PARMETISHOME:-${PARMETIS_HOME}}
+      export PARMETISHOME
+    fi
+  fi
 
   user_thirdparty="$( strSort "${tmp_thirdparty}" )"
   
@@ -715,11 +760,7 @@ compileDateTime() {
   fi
 
   ### Get the location of the install directory
-  if [ -n "${DATETIMEHOME:+1}" ]; then
-    inst_dir="${DATETIMEHOME}"
-  else
-    inst_dir="${APP_DIR:+${APP_DIR}/}THIRDPARTY_INSTALL"
-  fi
+  inst_dir="${APP_DIR:+${APP_DIR}/}THIRDPARTY_INSTALL"
 
 
   ##########
@@ -809,7 +850,9 @@ compileDateTime() {
   err=$?
   ##########
 
+  ##########
   ### Remove/Clean the compiled programs and libraries
+  ##########
   lib_dir=${src_dir}/lib
   inc_dir=${src_dir}/include
 
@@ -822,6 +865,9 @@ compileDateTime() {
       fi
     done
   fi
+  ##########
+
+  DATETIMEHOME="${inst_dir}"
 
   return ${err}
 }
@@ -842,8 +888,8 @@ compileDateTime() {
 ### compileMetis: Uses environment variables to compile the application.
 ###========================================
 compileMetis() {
-  local root_dir src_dir cmake_flags
-  local bld_dir lib_dir inc_dir inst_dir
+  local root_dir src_dir gklib_dir metis_dir cmake_flags
+  local loc_dir lib_dir inc_dir inst_dir
   local i
   local err=0
 
@@ -855,23 +901,155 @@ compileMetis() {
   fi
 
   ### Get the location of the install directory
-  if [ -n "${DATETIMEHOME:+1}" ]; then
-    inst_dir="${DATETIMEHOME}"
-  else
-    inst_dir="${APP_DIR:+${APP_DIR}/}THIRDPARTY_INSTALL"
-  fi
+  inst_dir="${APP_DIR:+${APP_DIR}/}THIRDPARTY_INSTALL"
 
 
   ##########
   ### Try to get all the required directories to compile the application 
   ##########
-  src_dir="$( find ${root_dir} -maxdepth 1 -type d -iname "*METIS*" | head -n 1 )"
+  src_dir="$( find ${root_dir} -maxdepth 1 -type d -iname "*ParMETIS*" | head -n 1 )"
   if [ -z "${src_dir}" ] || [ ! -d "${src_dir}" ]; then
     procError "the source directory for the ParMetis/Metis library is not a valid directory:" \
               "  srcDIR = ${src_dir:-NOTFOUND}" \
               "searched in rootDIR = ${root_dir:-NOTFOUND}"
   fi
 
+  ### Remove/Clean the previously compiled programs and libraries
+  find ${src_dir} -type d -name build -exec rm -rf {} \; >/dev/null 2>&1
+  ##########
+
+  loc_dir=${src_dir}/del
+  makeDIR ${loc_dir}
+
+  ### Set the compilation flags for cmake
+#  cmake_flags="-DCMAKE_BUILD_TYPE=Release"
+#  [ -n "${VERBOSE:+1}" ] && cmake_flags+=" -DCMAKE_VERBOSE_MAKEFILE=TRUE"
+
+#  cmake_flags+=" -DCMAKE_C_COMPILER=${PCC:-mpicc} CMAKE_CXX_COMPILER=${PCXX:-mpicxx}"
+#  [ -n "${FFLAGS:+1}" ] && cmake_flags+=" -DCMAKE_C_FLAGS=${CFLAGS}"
+
+
+  ##########
+  ### Run make/cmake to configure the application
+  ##########
+  ### (1) configure GKlib if the directory exists
+  gklib_dir="$( find ${src_dir} -type d -iname "GKlib" | head -n 1 )"
+
+  if [ -d "${gklib_dir}" ]; then
+    pushd ${gklib_dir} >/dev/null 2>&1
+      eval "make config CC=${CC:-gcc} CXX=${CXX:-g++} CFLAGS=${CFLAGS} prefix=${loc_dir}"
+      err=$?
+
+      if [ ${err:-0} -ne 0 ]; then
+        procError "the configuration of the GKlib library source failed" \
+                  "tried to run the make command as:" \
+                  "make config CC=${CC:-gcc} CXX=${CXX:-g++} CFLAGS=${CFLAGS} prefix=${loc_dir}"
+      fi
+
+      make install
+      err=$?
+
+      if [ ${err:-0} -ne 0 ]; then
+        procError "the compilation of the GKlib library failed" \
+                  "tried to run the make command as:" \
+                  "make install"
+      fi
+    popd >/dev/null 2>&1
+  else
+    procError "the directory of the GKlib source could not be located" \
+              "inside the ${src_dir} folder."
+  fi
+
+  ### (2) configure metis if the directory exists
+  metis_dir="$( find ${src_dir} -type d -iname "metis" | head -n 1 )"
+
+  if [ -d "${metis_dir}" ]; then
+    pushd ${metis_dir} >/dev/null 2>&1
+      eval "make config CC=${CC:-gcc} CXX=${CXX:-g++} CFLAGS=${CFLAGS} i64=1 r64=1 gklib_path=${gklib_dir} prefix=${loc_dir}"
+      err=$?
+
+      if [ ${err:-0} -ne 0 ]; then
+        procError "the configuration of the METIS library source failed" \
+                  "tried to run the make command as:" \
+                  "make config CC=${CC:-gcc} CXX=${CXX:-g++} CFLAGS=${CFLAGS} i64=1 r64=1 gklib_path=${gklib_dir} prefix=${loc_dir}"
+      fi
+
+      make install
+      err=$?
+
+      if [ ${err:-0} -ne 0 ]; then
+        procError "the compilation of the METIS library failed" \
+                  "tried to run the make command as:" \
+                  "make install"
+      fi
+    popd >/dev/null 2>&1
+  else
+    procError "the directory of the METIS source could not be located" \
+              "inside the ${src_dir} folder."
+  fi
+
+  ### (3) configure parmetis if the directory exists
+  this_dir="${src_dir}"
+
+  pushd ${this_dir} >/dev/null 2>&1
+    eval "make config CC=${PCC:-mpicc} CXX=${PCXX:-mpicxx} CFLAGS=${CFLAGS} i64=1 r64=1 gklib_path=${gklib_dir} metis_path=${loc_dir} prefix=${loc_dir}"
+    err=$?
+
+    if [ ${err:-0} -ne 0 ]; then
+      procError "the configuration of the ParMETIS library source failed" \
+                "tried to run the make command as:" \
+                "make config CC=${PCC:-mpicc} CXX=${PCXX:-mpicxx} CFLAGS=${CFLAGS} i64=1 r64=1 gklib_path=${gklib_dir} metis_path=${loc_dir} prefix=${loc_dir}"
+    fi
+
+    make
+    err=$?
+
+    if [ ${err:-0} -ne 0 ]; then
+      procError "the compilation of the ParMETIS library failed" \
+                "tried to run the make command as:" \
+                "make install"
+    fi
+  popd >/dev/null 2>&1
+  ##########
+
+
+  ##########
+  ### Install the application files
+  ##########
+  lib_dir=${inst_dir}/lib
+  inc_dir=${inst_dir}/include
+
+  for i in ${lib_dir} ${inc_dir}
+  do
+    if [ ! -d "${i}" ]; then
+      mkdir -p ${i}
+      err=$?
+
+      if [ ${err:-0} -ne 0 ]; then
+        procError "could not create the install directory" \
+                  "  instDIR = ${i}"
+      fi
+    fi
+  done
+
+  install -m 0644 ${loc_dir}/lib/* ${lib_dir}/
+  err=$?
+
+  install -m 0644 ${loc_dir}/include/* ${inc_dir}/
+  err=$?
+  ##########
+
+
+  ##########
+  ### Remove/Clean the compiled programs and libraries
+  ##########
+  rm -rf ${loc_dir}
+
+  find ${src_dir} -type d -name build -exec rm -rf {} \; >/dev/null 2>&1
+  ##########
+
+  METISHOME="${inst_dir}"
+  PARMETISHOME="${inst_dir}"
 
   return ${err}
 }
@@ -902,6 +1080,12 @@ compileNems() {
   cmp_comp="${COMPONENT:+COMPONENTS=\"${COMPONENT}\"}"
   cmp_mjob="${PARMAKE:+-j ${PARMAKE}}"
   cmp_verb="${VERBOSE:+--debug=${VERBOSE}}"
+
+  if [ -z "${COMPONENT}" ]; then
+    procWarn "No components were specified for NEMS." \
+             "Nothing to do here."
+    return ${err}
+  fi
 
   case "${cmp_type}" in
     "clean"|"distclean" )
@@ -958,6 +1142,12 @@ installNems() {
   local CPBIN="/bin/cp -fprv"
   local RMBIN="/bin/rm -frv"
 
+  if [ -z "${COMPONENT}" ]; then
+    procWarn "No components were specified for NEMS." \
+             "Nothing to do here."
+    return ${err}
+  fi
+
   instdir="ALLBIN_INSTALL"
   
   cmp_progs="adcprep adcirc padcirc adcswan padcswan aswip adccmp"
@@ -1007,3 +1197,4 @@ installNems() {
   echo "   --- Removing files that are not needed from: ${instdir} ---"
   ${RMBIN} ${instdir}/*.mk ${instdir}/*.mod
 }
+
