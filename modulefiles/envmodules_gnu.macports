@@ -1,0 +1,42 @@
+#!/usr/bin/env bash
+# 
+# Author: Carsten Lemmen <carsten.lemmen@hereon.de>
+# Copyright: 2022, Helmholtz-Zentrum Hereon 
+# License: CC-1.0  Creative Commons Zero
+
+if  test -x port ; then
+  echo "ERROR: MacPorts does not seem to be installed or accessible"
+  exit 1
+fi
+
+if  ! `port installed |grep esmf |grep -q active` ; then 
+  echo "ERROR: ESMF does not seem to be installed via macports"
+  exit 1
+fi 
+
+export ESMFMKFILE=/opt/local/lib/esmf.mk
+
+export HDF5=/opt/local
+export HDF5HOME=${HDF5}
+export HDF5_DIR=${HDF5}
+export HDF5_PATH=${HDF5}
+export HDF5_ROOT=${HDF5}
+
+export NETCDF=/opt/local
+export NETCDFHOME=${NETCDF}
+export NETCDF_DIR=${NETCDF}
+export NETCDF_PATH=${NETCDF}
+export NETCDF_ROOT=${NETCDF}
+
+export NETCDF_CONFIG=${NETCDFHOME:+${NETCDFHOME}/bin/nc-config}
+export NETCDF_INCDIR=${NETCDFHOME:+${NETCDFHOME}/include}
+export NETCDF_LIBDIR=${NETCDFHOME:+${NETCDFHOME}/lib}
+
+export CC=/opt/local/bin/gcc
+export CXX=/opt/local/bin/g++
+export F90=/opt/local/bin/gfortran
+export FC=/opt/local/bin/gfortran
+export PCC=/opt/local/bin/mpicc
+export PCXX=/opt/local/bin/mpicxx
+export PF90=/opt/local/bin/mpifort
+export PFC=/opt/local/bin/mpifort
