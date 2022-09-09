@@ -1013,7 +1013,7 @@ compileMetis() {
     ### Run make/cmake to configure the application
     ##########
     ### (1) configure GKlib if the directory exists
-    make_flags="CC=${CC:-gcc} CXX=${CXX:-g++} CFLAGS=${CFLAGS}"
+    make_flags="CC=${CC:-gcc} CXX=${CXX:-g++} CFLAGS=\"-D_POSIX_C_SOURCE=199309L ${CFLAGS}\""
     gklib_dir="$( find ${src_dir} -type d -iname "GKlib" | head -n 1 )"
 
     if [ -d "${gklib_dir}" ]; then
