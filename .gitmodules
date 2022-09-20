@@ -8,8 +8,8 @@
 	branch = master
 [submodule "WW3"]
 	path = WW3
-	url = https://github.com/NOAA-EMC/WW3.git
-	branch = develop
+	url = https://github.com/awest-noaa/WW3.git
+	branch = scalability
 [submodule "NEMS"]
 	path = NEMS
 	url = https://github.com/noaa-ocs-modeling/NEMS.git
