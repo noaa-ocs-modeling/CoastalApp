@@ -644,7 +644,8 @@ UsageBuild()
  getThirdParty() {
   local chk_component user_thirdparty
   local chk_thirdparty tmp_thirdparty
-  local icomp
+  local icomp ivar iprt var val
+  local var_names var_parts
 
 
   chk_thirdparty="$( toUPPER "${MY_THIRDPARTY_LIST}" )"
@@ -667,6 +668,33 @@ UsageBuild()
     fi
   done
 
+
+  ##########
+  # Preprocess the thirdparty related environment variables in case they were supplied by the user.
+  var_names="DATETIME PARMETIS"
+  var_parts="HOME _HOME DIR _DIR"
+  for ivar in ${var_names}
+  do
+    for iprt in ${var_parts}
+    do
+      var=${ivar}${iprt}
+      val="$( eval "echo \${$(echo ${var}):-}" )"
+      eval "${var}=\${val}"
+      [ -n "${val}" ] && break
+    done
+
+    if [ -n "${val:+1}" ]; then
+      for iprt in ${var_parts}
+      do
+        var=${ivar}${iprt}
+        eval "${var}=\${val}"
+        export ${var}
+      done
+    fi
+  done
+  ##########
+
+
   # The following are used to make sure that the user is notified that a possibly essential
   # third party library is not supplied by the user when compiling specific model components.
 
@@ -679,9 +707,6 @@ UsageBuild()
        [ -z "${DATETIME_HOME}" ] && [ -z "${DATETIMEHOME}" ]; then
       procWarn "The DATETIME library might be needed for the compilation of ADCIRC" \
                "in case the baroclinic effects are to be enabled in ADCIRC."
-    else
-      DATETIMEHOME=${DATETIMEHOME}
-      DATETIMEHOME=${DATETIMEHOME:-${DATETIME_HOME}}
     fi
   fi
 
@@ -693,16 +718,13 @@ UsageBuild()
     if ! $( checkSUBSTR "${tmp_thirdparty}" PARMETIS ) && \
        [ -z "${PARMETIS_HOME}" ] && [ -z "${PARMETISHOME}" ]; then
       procWarn "The PARMETIS library might be needed for the compilation of SCHISM." \
-               "Please supply the PARMETIS_HOME or PARAMETISHOME environment" \
+               "Please supply the PARMETIS_HOME or PARMETISHOME environment" \
                "variable that points to the location of the pre-compiled library or use the" \
                "--thirdparty="parmetis" option in the build.sh script to compile the" \
                "library from within CoastalApp (NOTE: need to download first the library" \
                "by running the download_parmetis.sh script found in the scripts directory." \
                "Finally, if the library is not provided, then SCHISM can use its internal" \
                "version of ParMETIS or the NO_PARMETIS option (OFF by default)."
-    else
-      PARMETISHOME=${PARMETISHOME}
-      PARMETISHOME=${PARMETISHOME:-${PARMETIS_HOME}}
     fi
   fi
 
@@ -714,15 +736,11 @@ UsageBuild()
     if ! $( checkSUBSTR "${tmp_thirdparty}" PARMETIS ) && \
        [ -z "${PARMETIS_HOME}" ] && [ -z "${PARMETISHOME}" ]; then
       procError "The PARMETIS library is needed for the compilation of WW3." \
-                "Please supply the PARMETIS_HOME or PARAMETISHOME environment" \
+                "Please supply the PARMETIS_HOME or PARMETISHOME environment" \
                 "variable that points to the location of the pre-compiled library or use the" \
                 "--thirdparty="parmetis" option in the build.sh script to compile the" \
                 "library from within CoastalApp (NOTE: need to download first the library" \
                 "by running the download_parmetis.sh script found in the scripts directory."
-    else
-      PARMETISHOME=${PARMETISHOME}
-      PARMETISHOME=${PARMETISHOME:-${PARMETIS_HOME}}
-      export PARMETISHOME
     fi
   fi
 
@@ -946,14 +964,16 @@ compileDateTime() {
 ###========================================
 compileMetis() {
   local root_dir src_dir gklib_dir metis_dir make_flags
-  local loc_dir lib_dir inc_dir inst_dir
-  local i bits64 tmp_inc tmp_lib
+  local loc_dir bin_dir lib_dir inc_dir inst_dir
+  local i bits64 tmp_inc tmp_lib compiledLIB
   local err bits64 tpMetisRequested
+  local typeParMETIS
 
 
   err=0
   bits64=1
   tpMetisRequested=0
+  compiledLIB=0
 
 
   # First check if the user explicitly requested to build PerMetis
@@ -1009,168 +1029,307 @@ compileMetis() {
     loc_dir=${src_dir}/del
     makeDIR ${loc_dir}
 
-    ##########
-    ### Run make/cmake to configure the application
-    ##########
-    ### (1) configure GKlib if the directory exists
-    make_flags="CC=${CC:-gcc} CXX=${CXX:-g++} CFLAGS=\"-D_POSIX_C_SOURCE=199309L ${CFLAGS}\""
-    gklib_dir="$( find ${src_dir} -type d -iname "GKlib" | head -n 1 )"
 
-    if [ -d "${gklib_dir}" ]; then
-      pushd ${gklib_dir} >/dev/null 2>&1
-        eval "make config ${make_flags} prefix=${loc_dir}"
+    ##########
+    ### Try to get the version of ParMETIS we are using
+    ##########
+    # This is a stupid hack to determine the version of ParMETIS we are using.
+    #  typeParMETIS=GITHUB denotes that the user cloned the GitHub version of ParMETIS
+    #  typeParMETIS=403 denotes that the user downloaded the old 4.0.3 version of ParMETIS
+    
+    if [ -e ${src_dir}/README.md ]; then
+      typeParMETIS=GITHUB
+    else
+      typeParMETIS=403
+    fi
+    ##########
+
+
+    #################### BEG:: GITHUB ####################
+    ### This is for the GitHub version
+    if [ "${typeParMETIS:-UNDEF}" == "GITHUB" ]; then
+      compiledLIB=1
+
+      ##########
+      ### Run make/cmake to configure the application
+      ##########
+      ### (1) configure GKlib if the directory exists
+      make_flags="CC=${CC:-gcc} CXX=${CXX:-g++} cc=${CC:-gcc} cxx=${CXX:-g++} CFLAGS=\"-D_POSIX_C_SOURCE=199309L ${CFLAGS}\""
+      gklib_dir="$( find ${src_dir} -type d -iname "GKlib" | head -n 1 )"
+   
+      if [ -d "${gklib_dir}" ]; then
+        pushd ${gklib_dir} >/dev/null 2>&1
+          eval "make config ${make_flags} prefix=${loc_dir}"
+          err=$?
+
+          if [ ${err:-0} -ne 0 ]; then
+            procError "the configuration of the GKlib library source failed" \
+                      "tried to run the make command as:" \
+                      "make config ${make_flags} prefix=${loc_dir}"
+          fi
+
+          make install
+          err=$?
+
+          if [ ${err:-0} -ne 0 ]; then
+            procError "the compilation of the GKlib library failed" \
+                      "tried to run the make command as:" \
+                      "make install"
+          fi
+        popd >/dev/null 2>&1
+      else
+        procError "the directory of the GKlib source could not be located" \
+                  "inside the ${src_dir} folder."
+      fi
+
+      ### (2) configure metis if the directory exists
+      if [ "${bits64:-0}" -ge 1 ]; then
+        make_flags="CC=${CC:-gcc} CXX=${CXX:-g++} cc=${CC:-gcc} cxx=${CXX:-g++} CFLAGS=${CFLAGS} i64=1 r64=1"
+      else
+        make_flags="CC=${CC:-gcc} CXX=${CXX:-g++} cc=${CC:-gcc} cxx=${CXX:-g++} CFLAGS=${CFLAGS}"
+      fi
+      metis_dir="$( find ${src_dir} -type d -iname "metis" | head -n 1 )"
+
+      if [ -d "${metis_dir}" ]; then
+        pushd ${metis_dir} >/dev/null 2>&1
+          if [ "${bits64:-0}" -ge 1 ]; then
+            sed -i -e 's@^#define[[:space:]]*IDXTYPEWIDTH[[:space:]]*32@#define IDXTYPEWIDTH 64@' include/metis.h
+            sed -i -e 's@^#define[[:space:]]*REALTYPEWIDTH[[:space:]]*32@#define REALTYPEWIDTH 64@' include/metis.h
+          else
+            sed -i -e 's@^#define[[:space:]]*IDXTYPEWIDTH[[:space:]]*64@#define IDXTYPEWIDTH 32@' include/metis.h
+            sed -i -e 's@^#define[[:space:]]*REALTYPEWIDTH[[:space:]]*64@#define REALTYPEWIDTH 32@' include/metis.h
+          fi
+        
+          eval "make config ${make_flags} gklib_path=${gklib_dir} prefix=${loc_dir}"
+          err=$?
+
+          if [ ${err:-0} -ne 0 ]; then
+            procError "the configuration of the METIS library source failed" \
+                      "tried to run the make command as:" \
+                      "make config ${make_flags} gklib_path=${gklib_dir} prefix=${loc_dir}"
+          fi
+
+          make install
+          err=$?
+
+          if [ ${err:-0} -ne 0 ]; then
+            procError "the compilation of the METIS library failed" \
+                      "tried to run the make command as:" \
+                      "make install"
+          fi
+        popd >/dev/null 2>&1
+      else
+        procError "the directory of the METIS source could not be located" \
+                  "inside the ${src_dir} folder."
+      fi
+
+      ### (3) configure parmetis if the directory exists
+      make_flags="CC=${PCC:-mpicc} CXX=${PCXX:-mpicxx} cc=${PCC:-mpicc} cxx=${PCXX:-mpicxx} CFLAGS=${CFLAGS}"
+      # This is a workaround because the metis/include/metis.h does not defile
+      # IDXTYPEWIDTH and REALTYPEWIDTH it is defined thought after processing metis/include/metis.h
+      # and installing the metis.h file in the installation include directory.
+      if [ "${bits64:-0}" -ge 1 ]; then
+        make_flags+=" CONFIG_FLAGS1=-DCMAKE_C_FLAGS='\"-DIDXTYPEWIDTH=64 -DREALTYPEWIDTH=64\"'"
+      else
+        make_flags+=" CONFIG_FLAGS1=-DCMAKE_C_FLAGS='\"-DIDXTYPEWIDTH=32 -DREALTYPEWIDTH=32\"'"
+      fi
+      this_dir="${src_dir}"
+
+      pushd ${this_dir} >/dev/null 2>&1
+        sed -i -e 's@\(CONFIG_FLAGS[[:space:]]*=[[:space:]]*-DCMAKE_VERBOSE_MAKEFILE=1[[:space:]]*\)$@\1 \$(CONFIG_FLAGS1)@' Makefile
+        eval "make config "${make_flags}" gklib_path=${gklib_dir} metis_path=${metis_dir} prefix=${loc_dir}"
         err=$?
 
         if [ ${err:-0} -ne 0 ]; then
-          procError "the configuration of the GKlib library source failed" \
+          procError "the configuration of the ParMETIS library source failed" \
                     "tried to run the make command as:" \
-                    "make config ${make_flags} prefix=${loc_dir}"
+                    "make config ${make_flags} gklib_path=${gklib_dir} metis_path=${metis_dir} prefix=${loc_dir}"
         fi
 
         make install
         err=$?
 
         if [ ${err:-0} -ne 0 ]; then
-          procError "the compilation of the GKlib library failed" \
+          procError "the compilation of the ParMETIS library failed" \
                     "tried to run the make command as:" \
                     "make install"
         fi
       popd >/dev/null 2>&1
-    else
-      procError "the directory of the GKlib source could not be located" \
-                "inside the ${src_dir} folder."
+      ##########
     fi
+    #################### END:: GITHUB ####################
 
-    ### (2) configure metis if the directory exists
-    if [ "${bits64:-0}" -ge 1 ]; then
-      make_flags="CC=${CC:-gcc} CXX=${CXX:-g++} CFLAGS=${CFLAGS} i64=1 r64=1"
-    else
-      make_flags="CC=${CC:-gcc} CXX=${CXX:-g++} CFLAGS=${CFLAGS}"
-    fi
-    metis_dir="$( find ${src_dir} -type d -iname "metis" | head -n 1 )"
 
-    if [ -d "${metis_dir}" ]; then
-      pushd ${metis_dir} >/dev/null 2>&1
-        if [ "${bits64:-0}" -ge 1 ]; then
-          sed -i -e 's@^#define[[:space:]]*IDXTYPEWIDTH[[:space:]]*32@#define IDXTYPEWIDTH 64@' include/metis.h
-          sed -i -e 's@^#define[[:space:]]*REALTYPEWIDTH[[:space:]]*32@#define REALTYPEWIDTH 64@' include/metis.h
-        else
-          sed -i -e 's@^#define[[:space:]]*IDXTYPEWIDTH[[:space:]]*64@#define IDXTYPEWIDTH 32@' include/metis.h
-          sed -i -e 's@^#define[[:space:]]*REALTYPEWIDTH[[:space:]]*64@#define REALTYPEWIDTH 32@' include/metis.h
-        fi
-      
-        eval "make config ${make_flags} gklib_path=${gklib_dir} prefix=${loc_dir}"
+    #################### BEG:: 403 ####################
+    ### This is for the GitHub version
+    if [ "${typeParMETIS:-UNDEF}" == "403" ]; then
+      compiledLIB=1
+
+      ##########
+      ### Run make/cmake to configure the application
+      ##########
+      ### (1) configure metis if the directory exists
+      if [ "${bits64:-0}" -ge 1 ]; then
+        make_flags="CC=${CC:-gcc} CXX=${CXX:-g++} cc=${CC:-gcc} cxx=${CXX:-g++} CFLAGS=${CFLAGS} i64=1 r64=1"
+      else
+        make_flags="CC=${CC:-gcc} CXX=${CXX:-g++} cc=${CC:-gcc} cxx=${CXX:-g++} CFLAGS=${CFLAGS}"
+      fi
+      gklib_dir="$( find ${src_dir} -type d -iname "GKlib" | head -n 1 )"
+      metis_dir="$( find ${src_dir} -type d -iname "metis" | head -n 1 )"
+
+      if [ -d "${metis_dir}" ]; then
+        pushd ${metis_dir} >/dev/null 2>&1
+          if [ "${bits64:-0}" -ge 1 ]; then
+            sed -i -e 's@^#define[[:space:]]*IDXTYPEWIDTH[[:space:]]*32@#define IDXTYPEWIDTH 64@' include/metis.h
+            sed -i -e 's@^#define[[:space:]]*REALTYPEWIDTH[[:space:]]*32@#define REALTYPEWIDTH 64@' include/metis.h
+          else
+            sed -i -e 's@^#define[[:space:]]*IDXTYPEWIDTH[[:space:]]*64@#define IDXTYPEWIDTH 32@' include/metis.h
+            sed -i -e 's@^#define[[:space:]]*REALTYPEWIDTH[[:space:]]*64@#define REALTYPEWIDTH 32@' include/metis.h
+          fi
+        
+         eval "make config ${make_flags} gklib_path=${gklib_dir} prefix=${loc_dir}"
+         err=$?
+
+         if [ ${err:-0} -ne 0 ]; then
+           procError "the configuration of the METIS library source failed" \
+                     "tried to run the make command as:" \
+                     "make config ${make_flags} gklib_path=${gklib_dir} prefix=${loc_dir}"
+         fi
+
+         make install
+         err=$?
+
+         if [ ${err:-0} -ne 0 ]; then
+           procError "the compilation of the METIS library failed" \
+                     "tried to run the make command as:" \
+                     "make install"
+         fi
+        popd >/dev/null 2>&1
+      else
+        procError "the directory of the METIS source could not be located" \
+                  "inside the ${src_dir} folder."
+      fi
+
+      ### (2) configure parmetis if the directory exists
+      make_flags="CC=${PCC:-mpicc} CXX=${PCXX:-mpicxx} cc=${PCC:-mpicc} cxx=${PCXX:-mpicxx} CFLAGS=${CFLAGS}"
+      # This is a workaround because the metis/include/metis.h does not defile
+      # IDXTYPEWIDTH and REALTYPEWIDTH it is defined thought after processing metis/include/metis.h
+      # and installing the metis.h file in the installation include directory.
+      if [ "${bits64:-0}" -ge 1 ]; then
+        make_flags+=" CONFIG_FLAGS1=-DCMAKE_C_FLAGS='\"-DIDXTYPEWIDTH=64 -DREALTYPEWIDTH=64\"'"
+      else
+        make_flags+=" CONFIG_FLAGS1=-DCMAKE_C_FLAGS='\"-DIDXTYPEWIDTH=32 -DREALTYPEWIDTH=32\"'"
+      fi
+      this_dir="${src_dir}"
+
+      pushd ${this_dir} >/dev/null 2>&1
+        sed -i -e 's@\(CONFIG_FLAGS[[:space:]]*=[[:space:]]*-DCMAKE_VERBOSE_MAKEFILE=1[[:space:]]*\)$@\1 \$(CONFIG_FLAGS1)@' Makefile
+        eval "make config "${make_flags}" gklib_path=${gklib_dir} metis_path=${metis_dir} prefix=${loc_dir}"
         err=$?
 
         if [ ${err:-0} -ne 0 ]; then
-          procError "the configuration of the METIS library source failed" \
+          procError "the configuration of the ParMETIS library source failed" \
                     "tried to run the make command as:" \
-                    "make config ${make_flags} gklib_path=${gklib_dir} prefix=${loc_dir}"
+                    "make config ${make_flags} gklib_path=${gklib_dir} metis_path=${metis_dir} prefix=${loc_dir}"
         fi
 
         make install
         err=$?
 
         if [ ${err:-0} -ne 0 ]; then
-          procError "the compilation of the METIS library failed" \
+          procError "the compilation of the ParMETIS library failed" \
                     "tried to run the make command as:" \
                     "make install"
         fi
       popd >/dev/null 2>&1
-    else
-      procError "the directory of the METIS source could not be located" \
-                "inside the ${src_dir} folder."
+      ##########
     fi
-
-    ### (3) configure parmetis if the directory exists
-    make_flags="CC=${PCC:-mpicc} CXX=${PCXX:-mpicxx} CFLAGS=${CFLAGS}"
-    # This is a workaround because the metis/include/metis.h does not defile
-    # IDXTYPEWIDTH and REALTYPEWIDTH it is defined thought after processing metis/include/metis.h
-    # and installing the metis.h file in the installation include directory.
-    if [ "${bits64:-0}" -ge 1 ]; then
-      make_flags+=" CONFIG_FLAGS1=-DCMAKE_C_FLAGS='\"-DIDXTYPEWIDTH=64 -DREALTYPEWIDTH=64\"'"
-    else
-      make_flags+=" CONFIG_FLAGS1=-DCMAKE_C_FLAGS='\"-DIDXTYPEWIDTH=32 -DREALTYPEWIDTH=32\"'"
-    fi
-    this_dir="${src_dir}"
-
-    pushd ${this_dir} >/dev/null 2>&1
-      sed -i -e 's@\(CONFIG_FLAGS[[:space:]]*=[[:space:]]*-DCMAKE_VERBOSE_MAKEFILE=1[[:space:]]*\)$@\1 \$(CONFIG_FLAGS1)@' Makefile
-      eval "make config "${make_flags}" gklib_path=${gklib_dir} metis_path=${metis_dir} prefix=${loc_dir}"
-      err=$?
-
-      if [ ${err:-0} -ne 0 ]; then
-        procError "the configuration of the ParMETIS library source failed" \
-                  "tried to run the make command as:" \
-                  "make config ${make_flags} gklib_path=${gklib_dir} metis_path=${metis_dir} prefix=${loc_dir}"
-      fi
-
-      make install
-      err=$?
-
-      if [ ${err:-0} -ne 0 ]; then
-        procError "the compilation of the ParMETIS library failed" \
-                  "tried to run the make command as:" \
-                  "make install"
-      fi
-    popd >/dev/null 2>&1
-    ##########
+    #################### END:: 403 ####################
 
 
-    ##########
-    ### Install the application files
-    ##########
-    lib_dir=${inst_dir}/lib
-    inc_dir=${inst_dir}/include
+    if [ ${compiledLIB:-0} -ge 1 ]; then
+      bin_dir=${inst_dir}/bin
+      lib_dir=${inst_dir}/lib
+      inc_dir=${inst_dir}/include
 
-    for i in ${lib_dir} ${inc_dir}
-    do
-      if [ ! -d "${i}" ]; then
-        mkdir -p ${i}
-        err=$?
 
-        if [ ${err:-0} -ne 0 ]; then
-          procError "could not create the install directory" \
-                    "  instDIR = ${i}"
+      ##########
+      ### Remove previously installed application files
+      ##########
+      for i in libGKlib.a  libmetis.a  libparmetis.a
+      do
+        if [ -e ${lib_dir}/${i} ]; then
+          rm -f ${lib_dir}/${i}
+          echo "Removing: ${lib_dir}/${i}"
         fi
+      done
+
+      for i in ${inc_dir}/GKlib.h ${inc_dir}/gk*.h ${inc_dir}/*metis.h
+      do
+        [ -e ${i} ] && rm -f ${i}
+      done
+
+      for i in ${bin_dir}/cmpfillin ${bin_dir}/*metis ${bin_dir}/graphchk ${bin_dir}/mtest ${bin_dir}/ptest
+      do
+        [ -e ${i} ] && rm -f ${i}
+      done
+
+
+      ##########
+      ### Install the application files
+      ##########
+      for i in ${bin_dir} ${lib_dir} ${inc_dir}
+      do
+        if [ ! -d "${i}" ]; then
+          mkdir -p ${i}
+          err=$?
+
+          if [ ${err:-0} -ne 0 ]; then
+            procError "could not create the install directory" \
+                      "  instDIR = ${i}"
+          fi
+        fi
+      done
+
+      install -m 0755 ${loc_dir}/bin/* ${bin_dir}/
+      err=$?
+
+      install -m 0644 ${loc_dir}/lib/* ${lib_dir}/
+      err=$?
+
+      install -m 0644 ${loc_dir}/include/* ${inc_dir}/
+      err=$?
+      ##########
+
+
+      ##########
+      ### Remove/Clean the compiled programs and libraries
+      ##########
+      if [ ${err:-0} -eq 0 ]; then
+        deleteDIR "${loc_dir}"
+
+        find ${src_dir} -type d -name build -exec rm -rf {} \; >/dev/null 2>&1
       fi
-    done
+      ##########
 
-    install -m 0644 ${loc_dir}/lib/* ${lib_dir}/
-    err=$?
+      unset PARMETISHOME METISHOME PARMETIS_HOME METIS_HOME
+      unset PARMETISROOT METISROOT PARMETIS_ROOT METIS_ROOT
+      unset PARMETISPATH METISPATH PARMETIS_PATH METIS_PATH
+      unset PARMETISDIR METISDIR PARMETIS_DIR METIS_DIR
 
-    install -m 0644 ${loc_dir}/include/* ${inc_dir}/
-    err=$?
-    ##########
+      export PARMETISHOME="${inst_dir}"
+      export METISHOME="${inst_dir}"
+      export METIS=${PARMETISHOME}
+      export METIS_PATH=${PARMETISHOME}
+      procWarn "Setting the following variables:" \
+               "   PARMETISHOME = ${PARMETISHOME}" \
+               "   METISHOME    = ${METISHOME}" \
+               "   METIS        = ${METIS}" \
+               "   METIS_PATH   = ${METIS_PATH}"
 
 
-    ##########
-    ### Remove/Clean the compiled programs and libraries
-    ##########
-    if [ ${err:-0} -eq 0 ]; then
-      deleteDIR "${loc_dir}"
-
-      find ${src_dir} -type d -name build -exec rm -rf {} \; >/dev/null 2>&1
+      return ${err}
     fi
-    ##########
-
-    unset PARMETISHOME METISHOME PARMETIS_HOME METIS_HOME
-    unset PARMETISROOT METISROOT PARMETIS_ROOT METIS_ROOT
-    unset PARMETISPATH METISPATH PARMETIS_PATH METIS_PATH
-    unset PARMETISDIR METISDIR PARMETIS_DIR METIS_DIR
-
-    export PARMETISHOME="${inst_dir}"
-    export METISHOME="${inst_dir}"
-    export METIS=${PARMETISHOME}
-    export METIS_PATH=${PARMETISHOME}
-    procWarn "Setting the following variables:" \
-             "   PARMETISHOME = ${PARMETISHOME}" \
-             "   METISHOME    = ${METISHOME}" \
-             "   METIS        = ${METIS}" \
-             "   METIS_PATH   = ${METIS_PATH}"
-
-
-    return ${err}
   fi
   ######################
   ### END :: thirdparty_open build

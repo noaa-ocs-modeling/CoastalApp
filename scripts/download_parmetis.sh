@@ -9,6 +9,15 @@
 ###########################################################################
 
 
+####################
+# Usage
+#   download_parmetis.sh
+#      to download the old 4.0.3 version
+#   download_parmetis.sh github
+#      to download the latest version from GitHub
+####################
+
+
 ###====================
 # Make sure that the current working directory is in the PATH
 [[ ! :$PATH: == *:".":* ]] && export PATH="${PATH}:."
@@ -83,38 +92,63 @@ thirdparty_open="${appDIR}/thirdparty_open"
 makeDIR ${thirdparty_open}
 ####################
 
+typeOfDownload="$( toUPPER "${1}" )"
 
 ####################
-# Clone the ParMetis/Metis libraries into thirdparty_open.
-#
-pushd ${thirdparty_open} >/dev/null 2>&1
-  # Make sure that the parmetis directory is removed
-  deleteDIR parmetis
+if [[ ":${typeOfDownload}:" == *:"GITHUB":* ]]; then
+  # Clone the ParMetis/Metis libraries into thirdparty_open.
+  #
+  echo "Cloning the ParMETIS libraries from: https://github.com/KarypisLab ..."
 
-  ### 1) First clone ParMetis
-  #git clone https://github.com/KarypisLab/ParMETIS.git parmetis
-  git clone https://github.com/pvelissariou1/ParMETIS.git parmetis
-  err=$?
-  if [ ${err} -ne 0 ]; then
-    procError "failed to clone the ParMETIS git repository"
-  fi
+  pushd ${thirdparty_open} >/dev/null 2>&1
+    # Make sure that the parmetis directory is removed
+    deleteDIR parmetis
 
-  ### 2) Second clone GKlib
-    git clone https://github.com/KarypisLab/GKlib.git parmetis/GKlib
+    ### 1) First clone ParMetis
+    #git clone https://github.com/KarypisLab/ParMETIS.git parmetis
+    git clone https://github.com/pvelissariou1/ParMETIS.git parmetis
     err=$?
     if [ ${err} -ne 0 ]; then
-      procError "failed to clone the GKlib git repository"
+      procError "failed to clone the ParMETIS git repository"
     fi
 
-  ### 3) Third clone Metis
-  git clone https://github.com/KarypisLab/METIS.git parmetis/metis
-  err=$?
-  if [ ${err} -ne 0 ]; then
-    procError "failed to clone the METIS git repository"
-  fi
+    ### 2) Second clone GKlib
+      git clone https://github.com/KarypisLab/GKlib.git parmetis/GKlib
+      err=$?
+      if [ ${err} -ne 0 ]; then
+        procError "failed to clone the GKlib git repository"
+      fi
 
-  #find parmetis -iname ".git*" -exec rm -rf {} \; >/dev/null 2>&1
-popd >/dev/null 2>&1
+    ### 3) Third clone Metis
+    git clone https://github.com/KarypisLab/METIS.git parmetis/metis
+    err=$?
+    if [ ${err} -ne 0 ]; then
+      procError "failed to clone the METIS git repository"
+    fi
+
+    #find parmetis -iname ".git*" -exec rm -rf {} \; >/dev/null 2>&1
+  popd >/dev/null 2>&1
+else
+  # Download the 4.0.3 ParMetis/Metis libraries into thirdparty_open.
+  #
+  echo "Downloading the 4.0.3 ParMETIS libraries from: https://github.com/pvelissariou1/ParMETIS ..."
+
+  pushd ${thirdparty_open} >/dev/null 2>&1
+    # Make sure that the parmetis directory is removed
+    deleteDIR parmetis
+
+    [ -e parmetis-4.0.3.zip ] && rm -f parmetis-4.0.3.zip
+    wget https://github.com/pvelissariou1/ParMETIS/raw/4.0.3/parmetis-4.0.3.zip
+
+    if [ $? -eq 0 ]; then
+      unzip parmetis-4.0.3.zip
+      mv -f parmetis-4.0.3 parmetis
+      rm -f parmetis-4.0.3.zip
+    else
+      echo "Couldn't download ParMETIS libraries from: https://github.com/pvelissariou1/ParMETIS"
+    fi
+  popd >/dev/null 2>&1
+fi
 ####################
 
 exit ${err:-0}
