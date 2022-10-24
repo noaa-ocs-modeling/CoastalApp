@@ -8,7 +8,7 @@
 	branch = master
 [submodule "WW3"]
 	path = WW3
-	url = https://github.com/awest-noaa/WW3.git
+	url = https://github.com/pvelissariou1/WW3.git
 	branch = scalability
 [submodule "NEMS"]
 	path = NEMS

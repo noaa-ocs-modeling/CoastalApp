@@ -177,6 +177,7 @@ echo "    HDF5HOME       = ${HDF5HOME}"
 echo "    NETCDFHOME     = ${NETCDFHOME}"
 echo "    NETCDF_INCDIR  = ${NETCDF_INCDIR}"
 echo "    NETCDF_LIBDIR  = ${NETCDF_LIBDIR}"
+echo "    NETCDF_CONFIG  = ${NETCDF_CONFIG}"
 echo
 echo "    ESMFMKFILE     = ${ESMFMKFILE:-UNDEF}"
 echo

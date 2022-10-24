@@ -14,8 +14,11 @@ include         $(TOP)/conf/configure.nems.NUOPC
 
 LIBDIR      ?= .
 
-NETCDF_INC   = -I${NETCDF_INCDIR}
-NETCDF_LIB   = -L${NETCDF_LIBDIR} -lnetcdf
+#NETCDF_INC   = -I${NETCDF_INCDIR}
+#NETCDF_LIB   = -L${NETCDF_LIBDIR} -lnetcdf
+
+NETCDF_INC   = $(shell ${NETCDF_CONFIG} --cflags)
+NETCDF_LIB   = $(shell ${NETCDF_CONFIG} --flibs --libs)
 
 #NEMSIO_INC   = -I${LIBDIR}/incmod/nemsio
 #NEMSIO_LIB   = -L${LIBDIR} -lnemsio
