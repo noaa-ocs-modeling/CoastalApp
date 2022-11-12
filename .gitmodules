@@ -16,7 +16,7 @@
 	branch = develop
 [submodule "ADCIRC"]
 	path = ADCIRC
-	url = https://github.com/adcirc/adcirc-cg.git
+	url = https://github.com/pvelissariou1/adcirc.git
 	branch = development
 [submodule "NWM"]
 	path = NWM
