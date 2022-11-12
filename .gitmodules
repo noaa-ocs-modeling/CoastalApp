@@ -1,7 +1,7 @@
 [submodule "ATMESH"]
 	path = ATMESH
 	url = https://github.com/noaa-ocs-modeling/ATMESH.git
-	branch = test_adc_fix
+	branch = master
 [submodule "WW3DATA"]
 	path = WW3DATA
 	url = https://github.com/noaa-ocs-modeling/WW3DATA.git
