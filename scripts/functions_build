@@ -971,7 +971,9 @@ compileMetis() {
 
 
   err=0
-  bits64=1
+  bits64=0   # It seems the building ParMETIS with the 64 bit flag on produces a buggy build
+             # for ParMETIS 4.0.3
+             # If necessary, we may want to debug this issue
   tpMetisRequested=0
   compiledLIB=0
 
@@ -1161,7 +1163,7 @@ compileMetis() {
 
 
     #################### BEG:: 403 ####################
-    ### This is for the GitHub version
+    ### This is for the 4.0.3 version
     if [ "${typeParMETIS:-UNDEF}" == "403" ]; then
       compiledLIB=1
 
