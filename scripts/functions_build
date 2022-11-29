@@ -965,7 +965,7 @@ compileDateTime() {
 compileMetis() {
   local root_dir src_dir gklib_dir metis_dir make_flags
   local loc_dir bin_dir lib_dir inc_dir inst_dir
-  local i bits64 tmp_inc tmp_lib compiledLIB
+  local i tmp_inc tmp_lib compiledLIB
   local err bits64 tpMetisRequested
   local typeParMETIS
 
