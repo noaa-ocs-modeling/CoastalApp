@@ -62,7 +62,7 @@ unset src_name src_dir ilst funcs
 
 export MY_COMPILING_SYTEMS="gnu, intel, pgi"
 export MY_COMPILER_DEFAULT="gnu"
-export MY_COMPILING_PLATFORMS="custom, linux, macosx, cheyenne, gaea, hera, jet, orion, stampede, wcoss, mistral, strand"
+export MY_COMPILING_PLATFORMS="custom, linux, macosx, cheyenne, gaea, hera, jet, orion, tacc, wcoss, mistral, strand"
 
 ########################################
 ##### Atmospheric components
