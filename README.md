@@ -27,7 +27,7 @@ The models and modeling components (data components) currently supported in *Coa
      TARGET="_BLANK" REL="NOREFERRER">https://github.com/noaa-ocs-modeling/CoastalApp</a>
 (binary distributions of *CoastalApp* are not currently available).
 
-*CoastalApp* can be downloaded using one of the following methods:
+The application can be downloaded using one of the following methods:
 
    * ***Clone the source code from GitHub using the command:***
 
@@ -55,79 +55,74 @@ In the *CoastalApp* GitHub repository, the included models (e.g., ADCIRC, SCHISM
 
      git -c submodule."ADCIRC".update=none -c submodule."PAHM".update=none -c submodule."SCHISM/schism".update=none -c submodule."SCHISM/schism-esmf".update=none clone --recurse-submodules  https://github.com/noaa-ocs-modeling/CoastalApp.git
 
+Even if an archive is sufficient, it is advisable to use the distributed version
+control system Git to follow the *CoastalApp* development to merge easily to new
+versions.
+New Git users are invited to read some of the online guides to get familiar with
+vanilla Git concepts and commands:
+
+- Basic and advanced guide with the
+<a href="https://git-scm.com/book/en/v2/" TARGET="_BLANK" REL="NOREFERRER">Git Book</a>.
+- Reference guides with the
+<a href="https://git-scm.com/docs/" TARGET="_BLANK" REL="NOREFERRER">Git Reference</a>.
+- GitHub reference sheets with the
+<a href="https://training.github.com/" TARGET="_BLANK" REL="NOREFERRER">GitHub Reference</a>.
+- Manage your GitHub repositories with Git
+<a href="https://docs.github.com/en/get-started/using-git/" TARGET="_BLANK" REL="NOREFERRER">Using Git</a>.
+
 
 ## Building *CoastalApp*
 
+The build infrastracture in CoastalApp uses a hybrid "Make" system based on [GNU Make](https://www.gnu.org/software/make/) and [CMake](https://cmake.org/) toolkits that manage building of the source code and the generation of executables and other non-source files of a program. Furthermore, *CostalApp* utilizes environment module systems
+like [Lmod](https://lmod.readthedocs.io/en/latest/) (installed in most HPC clusters) or 
+[Environment Modules](https://modules.readthedocs.io/en/latest/).
+
 ### Requirements
+
+ 1. Recent version of CMake (**version &ge; 3.2**).
+ 2. Recent Fortran/C/C++ compilers: The compilers tested are **Intel &ge; 18**,
+    **GCC &ge; 4.8** and **PGI/NVidia &ge; 20.11**.
+ 3. Recent version of the <a href="https://www.unidata.ucar.edu/software/netcdf/" TARGET="_BLANK" REL="NOREFERRER">NetCDF-4</a> libraries: the Network Common Data Form (NetCDF) C and Fortran libraries (usually installed in the host OS).
+ 4. Recent version of the <a href="https://www.hdfgroup.org/" TARGET="_BLANK" REL="NOREFERRER">HDF5</a> libraries: the High-performance software and Data Format (HDF) libraries (usually installed in the host OS).
+ 5. Recent version of the <a href="https://earthsystemmodeling.org/" TARGET="_BLANK" REL="NOREFERRER">ESMF</a> libraries: the Earth System Modeling Framework (**version &ge; 8.1**).
+ 6. <a href="https://github.com/KarypisLab/ParMETIS" TARGET="_BLANK" REL="NOREFERRER">ParMETIS</a> libraries (**Optional**). This library is required if building WaveWatch III (WW3 component, mandatory) or SCHISM (optional). The library is not shipped with *CoastalApp* and it is the user's responsibility to download the library before compiling *CoastalApp*. The script ***download_parmetis.sh*** in CostalApp/scripts directory is supplied for this reason.
+
+### Build System
+
+To build *CoastalApp* the user should run the ***build.sh*** bash script (a link to the
+scripts/build.sh) located in the root directory of the downloaded source code.
+The following steps will help you to build *CoastalApp* on your local machine or the cluster of your choice. The build script accepts many options to allow the user to customize the compilation of *CoastalApp*. Running the script as:
+
+        build.sh --help
+
+will bring a help screen as shown in Table 2 that explains the use of all available options:
 
 ![ ](images/coastalapp-usage.png)
 
+### Installing ParMETIS (Optional)
 
+The unstructured WW3 and SCHISM models require the use of ParMETIS/METIS librarries for domain decomposition. While, the installation of this library is mandatory for WW3
+(at this point), for SCHISM is optional as it contains an internal version of ParMETIS (it can use either the internal or the externally built library). To ease the compilation of the library, *CoastalApp* supplies the script ***scripts/download_parmetis.sh*** to first download the source code of the library and then build the library by supplying the option "--tp parmetis" to the build script.
+The library source is downloaded into the CoastalApp/thirdparty_open directory.
+Assuming that ParMETIS is already downloaded, to build ParMETIS and WW3 run the build
+script as:
 
+        build.sh -compiler intel -platform=hera --component ww3 --tp=parmetis
 
-#### installing ParMETIS for WW3
+The above command will first compile ParMETIS and then will continue with the compilation of WW3 (notice the different format used for the supplied options, all work the same way). ParMETIS libraries will be installed in the CoastalApp/THIRDPARTY_INSTALL direcory (this directory never gets deleted during a clean process).
 
-Using unstructured WW3 requires an installation of ParMETIS for domain
-decomposition.
+If the user wants to compile SCHISM using the already compiled ParMETIS, then he/she
+can run the build script as:
 
-1. [download the code here](http://glaros.dtc.umn.edu/gkhome/metis/parmetis/download)
-2. build ParMETIS
-    ```bash
-    module purge
-    module load intel impi
-    setenv CFLAGS -fPIC
-    make config cc=mpiicc cxx=mpiicc prefix=/path/to/your/parmetis/ | & tee config.out-rr
-    make install | & tee make-install.out-rr
-    ```
-   This adds `libparmetis.a`
-   under `/path/to/your/parmetis/lib/libparmetis.a`.
-3. set the path to ParMETIS
-    ```bash
-    setenv METIS_PATH /path/to/your/parmetis
-    ```
-## Organization / Responsibility
+        PARMETISHOME=FULL_PATH_TO/CostalApp/THIRDPARTY_INSTALL build.sh -compiler intel -platform=hera --component schism
 
-#### `NEMS` application implementing ESMF / NUOPC coupling
-- Saeed Moghimi (**lead**) - saeed.moghimi@noaa.gov
-- Panagiotis Velissariou - panagiotis.velissariou@noaa.gov
+and *CoastalApp* will use the install ParMETIS in CostalApp/THIRDPARTY_INSTALL. If there is a sytem wide install ParMETIS, the user can set the PARMETISHOME variable to
+point to the system's installed ParMETIS.
 
-Former Contributors
+### Compilation
 
-- Zachary Burnett - zachary.burnett@noaa.gov
-- Andre Van der Westhuysen - andre.vanderwesthuysen@noaa.gov 
-- Beheen Trimble - beheenmt@gmail.com
-
-#### ESMF / NUOPC cap for `ADCIRC` model
-- Saeed Moghimi (**lead**) saeed.moghimi@noaa.gov
-- Guoming Ling - gling@nd.edu
-- Damrongsak Wirasaet - dwirasae@nd.edu
-- Panagiotis Velissariou - panagiotis.velissariou@noaa.gov
-- Zachary Burnett - zachary.burnett@noaa.gov
-#### ESMF / NUOPC cap for `FVCOM` model
-- Jianhua Qi (**lead**) - jqi@umassd.edu
-- Saeed Moghimi - saeed.moghimi@noaa.gov
-#### ESMF / NUOPC cap for `SCHISM` model
-- Carsten Lemmen (**lead**) - carsten.lemmen@hzg.de  
-- Y. Joseph Zhang - yjzhang@vims.edu
-#### ESMF / NUOPC cap for `WW3` model
-- Andre Van der Westhuysen (**lead**) - andre.vanderwesthuysen@noaa.gov
-- Ali Abdolali - ali.abdolali@noaa.gov
-#### `PaHM` model and ESMF / NUOPC cap for `PaHM` model
-- Panagiotis Velissariou (**lead**) - panagiotis.velissariou@noaa.gov
-#### `ATMESH` data component and ESMF / NUOPC cap for `ATMESH` data component
-- Saeed Moghimi (**lead**) saeed.moghimi@noaa.gov
-- Guoming Ling - gling@nd.edu
-- Panagiotis Velissariou - panagiotis.velissariou@noaa.gov
-#### ESMF / NUOPC cap for `NWM` model
-- Daniel Rosen (**lead**) - Daniel.Rosen@noaa.gov
-- Beheen Trimble - beheenmt@gmail.com
-- Jason Ducker - jason.ducker@noaa.gov
-- other colleagues from NWS / OWP
-
-## Compilation
-
-This section contains some generic instructions of how to build the NEMS
-application. The contents of this section will change soon.
+This section contains some generic instructions of how to build *CoastalApp* (NEMS
+application). The contents of this section will change soon.
 
 ```bash
 ./build.sh --help
@@ -212,6 +207,44 @@ For MacOS running MacPorts, use the `macports` option.
 ```bash
 ./build.sh --component "SCHISM" --compiler intel --plat hera --clean -1
 ```
+## Organization / Responsibility
+
+#### `NEMS` application implementing ESMF / NUOPC coupling
+- Saeed Moghimi (**lead**) - saeed.moghimi@noaa.gov
+- Panagiotis Velissariou - panagiotis.velissariou@noaa.gov
+
+Former Contributors:
+
+- Zachary Burnett - zachary.burnett@noaa.gov
+- Andre Van der Westhuysen - andre.vanderwesthuysen@noaa.gov 
+- Beheen Trimble - beheenmt@gmail.com
+
+#### ESMF / NUOPC cap for `ADCIRC` model
+- Saeed Moghimi (**lead**) saeed.moghimi@noaa.gov
+- Guoming Ling - gling@nd.edu
+- Damrongsak Wirasaet - dwirasae@nd.edu
+- Panagiotis Velissariou - panagiotis.velissariou@noaa.gov
+- Zachary Burnett - zachary.burnett@noaa.gov
+#### ESMF / NUOPC cap for `FVCOM` model
+- Jianhua Qi (**lead**) - jqi@umassd.edu
+- Saeed Moghimi - saeed.moghimi@noaa.gov
+#### ESMF / NUOPC cap for `SCHISM` model
+- Carsten Lemmen (**lead**) - carsten.lemmen@hzg.de  
+- Y. Joseph Zhang - yjzhang@vims.edu
+#### ESMF / NUOPC cap for `WW3` model
+- Andre Van der Westhuysen (**lead**) - andre.vanderwesthuysen@noaa.gov
+- Ali Abdolali - ali.abdolali@noaa.gov
+#### `PaHM` model and ESMF / NUOPC cap for `PaHM` model
+- Panagiotis Velissariou (**lead**) - panagiotis.velissariou@noaa.gov
+#### `ATMESH` data component and ESMF / NUOPC cap for `ATMESH` data component
+- Saeed Moghimi (**lead**) saeed.moghimi@noaa.gov
+- Guoming Ling - gling@nd.edu
+- Panagiotis Velissariou - panagiotis.velissariou@noaa.gov
+#### ESMF / NUOPC cap for `NWM` model
+- Daniel Rosen (**lead**) - Daniel.Rosen@noaa.gov
+- Beheen Trimble - beheenmt@gmail.com
+- Jason Ducker - jason.ducker@noaa.gov
+- other colleagues from NWS / OWP
 
 ## Contributing
 
