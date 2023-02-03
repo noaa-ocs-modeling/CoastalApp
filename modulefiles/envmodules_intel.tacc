@@ -25,12 +25,13 @@ myDIRS="${myDIRS} . ${APPMODS_DIR}"
 ####################
 ### (1) Load all needed environment modules.
 module purge
+module load cmake
 module load intel impi
 module load hdf5
 module load netcdf
 
 module use /work/07380/panvel/Modules/modulefiles
-module load impi-intel/esmf-8.0.1
+module load impi-intel/esmf-8.1.1
 
 
 ####################
