@@ -15,6 +15,7 @@
 ***CoastalApp*** is an ESMF ([https://earthsystemmodeling.org/](https://earthsystemmodeling.org/)) for building a [NUOPC](https://earthsystemmodeling.org/nuopc/)/[NEMS](https://www.nws.noaa.gov/ost/CTB/mts-arch/CFSv3-Plan-Mt-082511_files/Lapenta.pdf) coupling application that includes two types of components (a) 1-way and 2-way coupled modeling components (model source + NUOPC Cap) and (b) data components (NUOPC Cap only) that pass forcing data, as needed, via NetCDF files to the various models in CoastalApp. The application is based on its predecessor ESMF application ``ADC-WW3-NWM-NEMS`` (see [Moghimi et. al](#moghimi_1)) developed as part of the [**Coastal Act**](https://vlab.noaa.gov/web/osti-modeling/coastal-act1) coupling project to determine wind versus water percentage losses caused by a Named Storm Event.
 
 The models and modeling components (data components) currently supported in *CoastalApp* are outlined in Table 1.
+<a name="table_1"></a>
 
 
 ![](images/coastalapp_models.png)
@@ -40,10 +41,16 @@ Most of the modeling components in the *CoastalApp* GitHub repository (e.g., ADC
 
   * Exclude ADCIRC from cloning using one of the following commands:
     * ``git -c submodule."ADCIRC".update=none clone --recurse-submodules  https://github.com/noaa-ocs-modeling/CoastalApp.git``
+
+        OR
+
     * ``git clone --recurse-submodules=":(exclude)ADCIRC" https://github.com/noaa-ocs-modeling/CoastalApp.git``
 
   * Exclude multiple components (ADCIRC, PAHM and SCHISM) from cloning using one of the following commands:
     * ``git -c submodule."ADCIRC".update=none -c submodule."PAHM".update=none -c submodule."SCHISM/schism".update=none -c submodule."SCHISM/schism-esmf".update=none clone --recurse-submodules  https://github.com/noaa-ocs-modeling/CoastalApp.git``
+
+        OR
+
     * ``git  clone --recurse-submodules=':(exclude)ADCIRC' --recurse-submodules=':(exclude)PAHM' --recurse-submodules=":(exclude)SCHISM/*" https://github.com/noaa-ocs-modeling/CoastalApp.git``
 
 ***(2) Download the source archive using the command:***
@@ -99,6 +106,8 @@ The build script accepts many options to allow the user to customize the compila
         build.sh --help
 
 will bring up a help screen as shown in Table 2 that explains the use of all available options to the script:
+<a name="table_2"></a>
+
 
 ![ ](images/coastalapp-usage.png)
 
@@ -113,171 +122,161 @@ script as follows:
 
         build.sh -compiler intel -platform=hera --component ww3 --tp=parmetis
 
-The above command will first compile ParMETIS and then will continue with the compilation of WW3 (notice the different format used for the supplied options, all work the same way). ParMETIS libraries will be installed in the CoastalApp/THIRDPARTY_INSTALL direcory (this directory never gets deleted during a clean process).
+The above command will first compile ParMETIS and then will continue with the compilation of WW3 (notice that different formats can be used for the supplied options, all work the same way). ParMETIS libraries will be installed in the CoastalApp/THIRDPARTY_INSTALL direcory (this directory never gets deleted during a clean process).
 
 If the user wants to compile SCHISM using the already compiled ParMETIS, then he/she
 can run the build script as:
 
         PARMETISHOME=FULL_PATH_TO/CostalApp/THIRDPARTY_INSTALL build.sh -compiler intel -platform=hera --component schism
 
-and *CoastalApp* will use the install ParMETIS in CostalApp/THIRDPARTY_INSTALL. If there is a sytem wide install ParMETIS, the user can set the PARMETISHOME variable to
-point to the system's installed ParMETIS.
+and *CoastalApp* will use the install ParMETIS in CostalApp/THIRDPARTY_INSTALL. If there is a sytem wide
+install ParMETIS, the user can set the PARMETISHOME variable to point to the system's installed ParMETIS.
 
 ### Compilation
 
-This section contains some generic instructions of how to build *CoastalApp* (NEMS
-application). The contents of this section will change soon.
+This section contains some generic instructions of how to build *CoastalApp* (NEMS application).
+The following steps will help in building *CoastalApp* on a local machine (desktop or otherwise) or on a HPC cluster.
 
-```bash
-./build.sh --help
-```
+ 1. Make sure that CMake and the NetCDF/HDF5/ESMF libraries are in the user's PATH environment. In a Cluster/HPC system that uses the environment module system, the user should load all the required modules for CMake NetCDF, HDF5 and ESMF before building *CoastalApp* (this is done by setting the --platform option).
+ 2. Run the ``build.sh`` script as:
 
-The following example builds `NEMS.x` with ADCIRC, ATMESH, and WW3DATA,
-using variables / modules from the Hera environment, compiling with the
-Intel compiler, and cleaning before building.
+          build.sh --compiler COMPILER --platform PLATFORM --component "LIST OF COMPONENTS" --tp parmetis (if needed) 
 
-```bash
-./build.sh --component "ADCIRC ATMESH WW3DATA" --plat hera --compiler intel --clean -2 
-```
+The option ``--component`` is mandatory as it is indentionally left with no default value. It is up to the
+user the list of components to compile (at minimum one components is needed).
+All other options are optional and most of them have default values assigned to them (see [Table 2](#table_2)).
+If the user user chooses a platform to compile *CoastalApp* for, the build script will load the appropriate modulefile found in the modulefiles/ directory. In case the application needs to be built in an unsupported
+platform, ther user can copy one of the ``modulefiles/envmodules_COMPILER.custom`` file, rename it to ``modulefiles/envmodules_COMPILER.USERS_PLATFORM`` and then modify the file according to the chosen
+platform's configuration.
 
-Change directory to CoastalApp-testsuite/CoastalApp:
+Upon successful compilation of *CoastalApp*, the binaries and libraries for each component are installed into
+the ``COMPONENT_INSTALL`` directory and all related component executables, libraries and other files are
+installed in the ``ALLBIN_INSTALL`` directory. The final ``NEMS`` executable that contains all model components requested by the user is also installed into the ``ALLBIN_INSTALL`` directory as two identical files: ``NEMS-COMPONENT_LIST.x`` and ``NEMS.x``. As a sanity check, the user might want to check that all
+files were installed properly in the `` the user ``ALLBIN_INSTALL`` directory.
 
-``cd CoastalApp``
+  * **Example 1** Compile ATMESH and ADCIRC using the Intel compiler for the "tacc" platform:
 
-and run the build.sh script to fit your organization's configuration:
+          ``build.sh --compiler intel --platform tacc --component "atmesh adcirc"``
 
-`` ./build.sh --compiler intel --platform hera --component "atmesh pahm adcirc ww3"  -y``
+    In this case, the build script will first load the modulefiles/envmodules_intel.tacc file and
+    then will present to the user a list of the configured parameters, waiting for a yes/no to
+    continue. Upon successful compilation all component executables, libraries and the ``NEMS*.x``
+    executables are installed in the ``ALLBIN_INSTALL`` directory.
 
-In the case of ww3, the ParMETIS library is required to build ww3. To use ParMETIS within CoastalApp, you need to first download ParMETIS by running the script: ``scripts/download_parametis.sh``
+  * **Example 2** Build ``NEMS.x`` for PAHM, ATMESH, ADCIRC, WW3 on "hera" using the Intel compiler:
+    * First download ParMETIS (as described previously):
 
-This command will install the ParMETIS codes into CoastalApp/thirdparty_open.
+        Run: ``scripts/download_parmetis.sh``
 
-In this case you need to run the build.sh script as:
+    * Next build the application:
 
-`` ./build.sh --compiler intel --platform hera --component "atmesh pahm adcirc ww3" --tp parmetis  -y``
+          ``build.sh --compiler intel --platform hera --component "pahm atmesh adcirc ww3" --tp parmetis``
 
-If you want to use a pre-build ParMETIS library in your system, you may run the build script as:
+    In this case, the build script will first load the modulefiles/envmodules_intel.hera file and
+    then will present to the user a list of the configured parameters, waiting for a yes/no to
+    continue. Next it will compile and install the ParMETIS/METIS libraries into the
+    ``THIRDPARTY_INSTALL`` directory setting all the appropriate ``METIS`` environment variables.
+    Finally it will continue with the compilations of all requested components to produce the ``NEMS.x``
+    executable.
 
-``PARMETISHOME=YOUR_INSTALLED_PARMETIS_LOCATION ./build.sh --compiler intel --platform hera --component "atmesh pahm adcirc ww3"  -y``
+  * **Example 3** Rebuild ``NEMS.x`` for PAHM, ATMESH, ADCIRC, WW3 on "hera" using the Intel compiler,
+    the already installed ParMETIS and cleaning the previously compiled components (the ``ALLBIN_INSTALL``
+    directory is not deleted)
+    * First run:
 
-To get the full list of options that the build script accepts with brief explanations, you may run the script as: ``./build.sh --help``
+        ``PARMETISHOME=FULL_PATH/THIRDPARTY_INSTALL build.sh --compiler intel --platform hera --component "pahm atmesh adcirc ww3" --clean 2``
 
-### Components
+        This cleans all components (see [Table 2](#table_2)), and deletes all ``COMPONENT_INSTALL`` folders
+        except the ``ALLBIN_INSTALL`` directory. This step is required to ensure the integrity of the
+        subsequent build.
 
-- `--component` can be any combination of
-    - `ADCIRC`
-    - `ATMESH`
-    - `WW3` / `WW3DATA`
-    - `NWM`
+    * Next build the application:
 
-```bash
-./build.sh --component "ADCIRC WW3" --plat hera --compiler intel --clean -2 
-```
+          ``PARMETISHOME=FULL_PATH/THIRDPARTY_INSTALL build.sh --compiler intel --platform hera --component "pahm atmesh adcirc ww3"``
 
-```bash
-./build.sh --component "SCHISM" --plat orion --compiler intel --clean -2
-```
+  * **Example 4** Build ``NEMS.x`` for ATMESH and SCHISM, WW3 on "hera" using the Intel compiler,
+    SCHISM's internal ParMETIS and accepting all parameter settings:
 
-### Platforms
+        ``build.sh --compiler intel --platform hera --component "atmesh schism" -y``
 
-- `--plat` can be one of
-    - `hera`
-    - `stampede`
-    - `wcoss`
-    - `orion`
-    - `jet`
-    - `gaea`
-    - `cheyenne`
-    - `linux`
-    - `macosx`
-    - `macports`
+        In this case, the build script will load the modulefiles/envmodules_intel.hera file and
+        it will continue to the compilation without waiting for a yes/no answer.
 
-For MacOS running MacPorts, use the `macports` option.
 
-```bash
-./build.sh --component "SCHISM" --plat hera --compiler intel --clean -2
-```
-
-```bash
-./build.sh --component "SCHISM" --plat orion --compiler intel --clean -2
-```
-
-### Compiler
-
-- `--compiler` can be one of
-    - `intel`
-    - `gnu`
-    - `pgi`
-
-```bash
-./build.sh --component "SCHISM" --compiler gnu --plat macports
-```
-
-```bash
-./build.sh --component "SCHISM" --compiler intel --plat hera
-```
-
-### Clean
-
-- `--clean` is optional, and can be one of
-    - ` ` (`make clean` and exit)
-    - `1` (`make clean` and exit)
-    - `2` (`make clobber` and exit)
-    - `-1` (`make clean` and build)
-    - `-2` (`make clobber` and build)
-
-```bash
-./build.sh --component "SCHISM" --compiler intel --plat hera --clean
-```
-
-```bash
-./build.sh --component "SCHISM" --compiler intel --plat hera --clean -1
-```
 ## Organization / Responsibility
 
-#### `NEMS` application implementing ESMF / NUOPC coupling
+### ``NEMS`` application implementing ESMF / NUOPC coupling
 - Saeed Moghimi (**lead**) - saeed.moghimi@noaa.gov
 - Panagiotis Velissariou - panagiotis.velissariou@noaa.gov
 
-Former Contributors:
+Past Contributors:
 
 - Zachary Burnett - zachary.burnett@noaa.gov
 - Andre Van der Westhuysen - andre.vanderwesthuysen@noaa.gov 
 - Beheen Trimble - beheenmt@gmail.com
 
-#### ESMF / NUOPC cap for `ADCIRC` model
+### ESMF / NUOPC Cap for the ``ADCIRC`` model
 - Saeed Moghimi (**lead**) saeed.moghimi@noaa.gov
-- Guoming Ling - gling@nd.edu
 - Damrongsak Wirasaet - dwirasae@nd.edu
 - Panagiotis Velissariou - panagiotis.velissariou@noaa.gov
+
+Past Contributors:
+
+- Guoming Ling - gling@nd.edu
 - Zachary Burnett - zachary.burnett@noaa.gov
-#### ESMF / NUOPC cap for `FVCOM` model
+
+### ESMF / NUOPC Cap for the ``FVCOM`` model
 - Jianhua Qi (**lead**) - jqi@umassd.edu
 - Saeed Moghimi - saeed.moghimi@noaa.gov
-#### ESMF / NUOPC cap for `SCHISM` model
-- Carsten Lemmen (**lead**) - carsten.lemmen@hzg.de  
+
+### ESMF / NUOPC Cap for the ``SCHISM`` model
+- Carsten Lemmen (**lead**) - carsten.lemmen@hzg.de
 - Y. Joseph Zhang - yjzhang@vims.edu
-#### ESMF / NUOPC cap for `WW3` model
-- Andre Van der Westhuysen (**lead**) - andre.vanderwesthuysen@noaa.gov
+
+### ESMF / NUOPC Cap for the ``WW3`` model
 - Ali Abdolali - ali.abdolali@noaa.gov
-#### `PaHM` model and ESMF / NUOPC cap for `PaHM` model
+
+Past Contributors:
+
+- Andre Van der Westhuysen - andre.vanderwesthuysen@noaa.gov
+
+### ``PaHM`` model and ESMF / NUOPC Cap for the ``PaHM`` model
 - Panagiotis Velissariou (**lead**) - panagiotis.velissariou@noaa.gov
-#### `ATMESH` data component and ESMF / NUOPC cap for `ATMESH` data component
+
+### ``BARDATA`` data component and ESMF / NUOPC Cap for the ``BARDATA`` data component
+- Panagiotis Velissariou (**lead**) - panagiotis.velissariou@noaa.gov
+
+### ``ATMESH`` data component and ESMF / NUOPC Cap for the ``ATMESH`` data component
 - Saeed Moghimi (**lead**) saeed.moghimi@noaa.gov
-- Guoming Ling - gling@nd.edu
 - Panagiotis Velissariou - panagiotis.velissariou@noaa.gov
-#### ESMF / NUOPC cap for `NWM` model
+
+Past Contributors:
+
+- Guoming Ling - gling@nd.edu
+
+### ``WW3DATA`` data component and ESMF / NUOPC Cap for the ``WW3DATA`` data component
+- Saeed Moghimi (**lead**) saeed.moghimi@noaa.gov
+- Panagiotis Velissariou - panagiotis.velissariou@noaa.gov
+
+Past Contributors:
+
+- Guoming Ling - gling@nd.edu
+
+### ESMF / NUOPC Cap for the ``NWM`` model
 - Daniel Rosen (**lead**) - Daniel.Rosen@noaa.gov
-- Beheen Trimble - beheenmt@gmail.com
 - Jason Ducker - jason.ducker@noaa.gov
-- other colleagues from NWS / OWP
+- Other colleagues from NWS / OWP
+
+Past Contributors:
+
+- Beheen Trimble - beheenmt@gmail.com
 
 ## Contributing
 
 Feel free to fork this repository and create a pull request with
 contributions.
 
-#### adding a new platform / compiler to compilation script
+### Adding a new platform / compiler to compilation script
 
 Environment files are stored in `modulefiles/` with the
 filename `envmodules_<COMPILER>.<PLATFORM>`
@@ -289,29 +288,14 @@ run `build.sh` to compile.
 
 To collaborate and contribute to this repository follow below instructions:
 
-1. go to https://github.com/noaa-ocs-modeling/CoastalApp
-2. create a fork (click `Fork` on the upper right corner), and fork to your account.
-3. clone your forked repository
-   ```bash
-   git clone --recursive https://github.com/<ACCOUNT>/CoastalApp
-   ```
-4. edit the files locally
-   ```bash
-   git status
-   ```
-5. commit changes
-   ```bash
-   git commit -a -m "describe what you changed"
-   ```
-6. push your changes to GitHub
-   ```bash
-   git push
-   ```
-7. enter your GitHub username/password if asked
-8. create a pull request with descriptions of changes at
-   ```
-   https://github.com/noaa-ocs-modeling/CoastalApp/compare/<BRANCH>...<ACCOUNT>:<BRANCH>
-   ```
+1. Go to https://github.com/noaa-ocs-modeling/CoastalApp
+2. Create a fork (click `Fork` on the upper right corner), and fork to your account.
+3. Clone your forked repository: ``git clone --recursive https://github.com/<ACCOUNT>/CoastalApp``
+4. Edit the files locally: ``git status``
+5. Commit changes: ``git commit -a -m "describe what you changed"``
+6. Push your changes to GitHub: ``git push``
+7. Enter your GitHub username/password if asked
+8. Create a pull request with descriptions of changes at: ``https://github.com/noaa-ocs-modeling/CoastalApp/compare/<BRANCH>...<ACCOUNT>:<BRANCH>``
 
 ## Citations
 
