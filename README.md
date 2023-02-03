@@ -143,10 +143,10 @@ The following steps will help in building *CoastalApp* on a local machine (deskt
           build.sh --compiler COMPILER --platform PLATFORM --component "LIST OF COMPONENTS" --tp parmetis (if needed) 
 
 The option ``--component`` is mandatory as it is indentionally left with no default value. It is up to the
-user the list of components to compile (at minimum one components is needed).
+user to supply the list of components to compile (at minimum one component is needed).
 All other options are optional and most of them have default values assigned to them (see [Table 2](#table_2)).
-If the user user chooses a platform to compile *CoastalApp* for, the build script will load the appropriate modulefile found in the modulefiles/ directory. In case the application needs to be built in an unsupported
-platform, ther user can copy one of the ``modulefiles/envmodules_COMPILER.custom`` file, rename it to ``modulefiles/envmodules_COMPILER.USERS_PLATFORM`` and then modify the file according to the chosen
+If the user chooses a supported platform to compile *CoastalApp* for, the build script will load the appropriate modulefile found in the modulefiles/ directory. In case the application needs to be built for an unsupported
+platform, ther user can copy one of the ``modulefiles/envmodules_COMPILER.custom`` files, rename it to ``modulefiles/envmodules_COMPILER.USERS_PLATFORM`` and then modify the file according to the chosen
 platform's configuration.
 
 Upon successful compilation of *CoastalApp*, the binaries and libraries for each component are installed into
@@ -156,7 +156,7 @@ files were installed properly in the `` the user ``ALLBIN_INSTALL`` directory.
 
   * **Example 1** Compile ATMESH and ADCIRC using the Intel compiler for the "tacc" platform:
 
-          ``build.sh --compiler intel --platform tacc --component "atmesh adcirc"``
+          build.sh --compiler intel --platform tacc --component "atmesh adcirc"
 
     In this case, the build script will first load the modulefiles/envmodules_intel.tacc file and
     then will present to the user a list of the configured parameters, waiting for a yes/no to
@@ -170,7 +170,7 @@ files were installed properly in the `` the user ``ALLBIN_INSTALL`` directory.
 
     * Next build the application:
 
-          ``build.sh --compiler intel --platform hera --component "pahm atmesh adcirc ww3" --tp parmetis``
+          build.sh --compiler intel --platform hera --component "pahm atmesh adcirc ww3" --tp parmetis
 
     In this case, the build script will first load the modulefiles/envmodules_intel.hera file and
     then will present to the user a list of the configured parameters, waiting for a yes/no to
@@ -184,7 +184,7 @@ files were installed properly in the `` the user ``ALLBIN_INSTALL`` directory.
     directory is not deleted)
     * First run:
 
-        ``PARMETISHOME=FULL_PATH/THIRDPARTY_INSTALL build.sh --compiler intel --platform hera --component "pahm atmesh adcirc ww3" --clean 2``
+        PARMETISHOME=FULL_PATH/THIRDPARTY_INSTALL build.sh --compiler intel --platform hera --component "pahm atmesh adcirc ww3" --clean 2
 
         This cleans all components (see [Table 2](#table_2)), and deletes all ``COMPONENT_INSTALL`` folders
         except the ``ALLBIN_INSTALL`` directory. This step is required to ensure the integrity of the
@@ -192,12 +192,12 @@ files were installed properly in the `` the user ``ALLBIN_INSTALL`` directory.
 
     * Next build the application:
 
-          ``PARMETISHOME=FULL_PATH/THIRDPARTY_INSTALL build.sh --compiler intel --platform hera --component "pahm atmesh adcirc ww3"``
+          PARMETISHOME=FULL_PATH/THIRDPARTY_INSTALL build.sh --compiler intel --platform hera --component "pahm atmesh adcirc ww3"
 
   * **Example 4** Build ``NEMS.x`` for ATMESH and SCHISM, WW3 on "hera" using the Intel compiler,
     SCHISM's internal ParMETIS and accepting all parameter settings:
 
-        ``build.sh --compiler intel --platform hera --component "atmesh schism" -y``
+        build.sh --compiler intel --platform hera --component "atmesh schism" -y
 
         In this case, the build script will load the modulefiles/envmodules_intel.hera file and
         it will continue to the compilation without waiting for a yes/no answer.
