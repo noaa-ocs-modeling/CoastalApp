@@ -9,10 +9,12 @@
   * [Panagiotis.Velissariou@noaa.gov](mailto:Panagiotis.Velissariou@noaa.gov)
   * [Saeed.Moghimi@noaa.gov](mailto:Saeed.Moghimi@noaa.gov)
 
+## Introduction
 
 ***CoastalApp*** is a modeling framework for coastal applications and regional forecasts. It consists of coupled modeling components that link the atmospheric, ocean and terrestrial realms under one common framework. CoastalApp is a flexible and portable modeling system. Flexibility means that additional modeling components can be added with ease and portability means that CoastalApp can be built and run under different computing environments and operating systems.
 
-***CoastalApp*** is an ESMF ([https://earthsystemmodeling.org/](https://earthsystemmodeling.org/)) for building a [NUOPC](https://earthsystemmodeling.org/nuopc/)/[NEMS](https://www.nws.noaa.gov/ost/CTB/mts-arch/CFSv3-Plan-Mt-082511_files/Lapenta.pdf) coupling application that includes two types of components (a) 1-way and 2-way coupled modeling components (model source + NUOPC Cap) and (b) data components (NUOPC Cap only) that pass forcing data, as needed, via NetCDF files to the various models in CoastalApp. The application is based on its predecessor ESMF application ``ADC-WW3-NWM-NEMS`` (see [Moghimi et. al](#moghimi_1)) developed as part of the [**Coastal Act**](https://vlab.noaa.gov/web/osti-modeling/coastal-act1) coupling project to determine wind versus water percentage losses caused by a Named Storm Event.
+***CoastalApp*** is based on the ESMF ([https://earthsystemmodeling.org/](https://earthsystemmodeling.org/))
+framework for building a [NUOPC](https://earthsystemmodeling.org/nuopc/)/[NEMS](https://www.nws.noaa.gov/ost/CTB/mts-arch/CFSv3-Plan-Mt-082511_files/Lapenta.pdf) coupling application that includes two types of components (a) 1-way and 2-way coupled modeling components (model source + NUOPC Cap) and (b) data components (NUOPC Cap only) that pass forcing data, as needed, via NetCDF files to the various models in CoastalApp. The application is based on its predecessor ESMF application ``ADC-WW3-NWM-NEMS`` (see [Moghimi et. al](#moghimi_1)) developed as part of the [**Coastal Act**](https://vlab.noaa.gov/web/osti-modeling/coastal-act1) coupling project to determine wind versus water percentage losses caused by a Named Storm Event.
 
 The models and modeling components (data components) currently supported in *CoastalApp* are outlined in Table 1.
 <a name="table_1"></a>
@@ -20,6 +22,16 @@ The models and modeling components (data components) currently supported in *Coa
 
 ![](images/coastalapp_models.png)
 
+**Accessing the individual modeling components**
+
+  * ATMESH : [https://github.com/noaa-ocs-modeling/ATMESH](https://github.com/noaa-ocs-modeling/ATMESH)
+  * PAHM   : [https://github.com/noaa-ocs-modeling/PaHM](https://github.com/noaa-ocs-modeling/PaHM)
+  * ADCIRC : [https://adcirc.org/](https://adcirc.org/), [https://github.com/adcirc/adcirc](https://github.com/adcirc/adcirc)
+  * SCHISM : [http://ccrm.vims.edu/schismweb/](http://ccrm.vims.edu/schismweb/), [https://github.com/schism-dev/schism](https://github.com/schism-dev/schism)
+  * FVCOM  : [http://fvcom.smast.umassd.edu/](http://fvcom.smast.umassd.edu/)
+  * BARDATA: [https://github.com/noaa-ocs-modeling/BARDATA](https://github.com/noaa-ocs-modeling/BARDATA)
+  * WW3    : [https://github.com/NOAA-EMC/WW3/wiki](https://github.com/NOAA-EMC/WW3/wiki), [https://github.com/NOAA-EMC/WW3](https://github.com/NOAA-EMC/WW3)
+  * WW3DATA: [https://github.com/noaa-ocs-modeling/WW3DATA](https://github.com/noaa-ocs-modeling/WW3DATA)
 
 ## Downloading *CoastalApp*
 
@@ -34,10 +46,12 @@ The application can be downloaded using one of the following methods:
 
         git clone --recurse-submodules  https://github.com/noaa-ocs-modeling/CoastalApp.git
 
-The source will be downloaded into the target directory CoastalApp. It is assumed that all subsequent operations are taking place
-in the CoastalApp directory.
+The source will be downloaded into the target directory CoastalApp. It is assumed that all subsequent operations
+are taking place into the CoastalApp directory.
 
-Most of the modeling components in the *CoastalApp* GitHub repository (e.g., ADCIRC, SCHISM, ...) are simply git submodules (pointers) that point to the respective repository of each model. Some models, for example ADCIRC and FVCOM, require that the user is registered with the respective model repository in order to be granted access. If the user doesn't have access to a model, he/she can exclude particular model components when cloning *CoastalApp* using, for example, commands like:
+Most of the modeling components in the *CoastalApp* GitHub repository (e.g., ADCIRC, SCHISM, ...) are simply git submodules (pointers) that point to the respective repository of each model. Some models, for example ADCIRC and FVCOM, require that the user is registered with the respective model repository in order to be granted access.
+In case, users don't have access to a model and in order to avoid errors and permission issues during the cloning
+process of *CoastalApp*, they can exclude the particular modeling component using, for example, commands like:
 
   * Exclude ADCIRC from cloning using one of the following commands:
     * ``git -c submodule."ADCIRC".update=none clone --recurse-submodules  https://github.com/noaa-ocs-modeling/CoastalApp.git``
@@ -124,13 +138,15 @@ script as follows:
 
 The above command will first compile ParMETIS and then will continue with the compilation of WW3 (notice that different formats can be used for the supplied options, all work the same way). ParMETIS libraries will be installed in the CoastalApp/THIRDPARTY_INSTALL direcory (this directory never gets deleted during a clean process).
 
-If the user wants to compile SCHISM using the already compiled ParMETIS, then he/she
-can run the build script as:
+In the case users want to use a pre-compiled version of ParMETIS (either in THIRDPARTY_INSTALL, or in a system-wide
+installation), they can run the build script as:
 
         PARMETISHOME=FULL_PATH_TO/CostalApp/THIRDPARTY_INSTALL build.sh -compiler intel -platform=hera --component schism
 
-and *CoastalApp* will use the install ParMETIS in CostalApp/THIRDPARTY_INSTALL. If there is a sytem wide
-install ParMETIS, the user can set the PARMETISHOME variable to point to the system's installed ParMETIS.
+and *CoastalApp* will use the installed ParMETIS in ``CostalApp/THIRDPARTY_INSTALL``. If there is a system wide
+installed ParMETIS, users can set the PARMETISHOME variable to point to the system's installed ParMETIS.
+In any case, *CoastalApp* tries to find the libraries in ``PARMETISHOME/lib`` and the header files in
+``PARMETISHOME/include``.
 
 ### Compilation
 
@@ -146,13 +162,15 @@ The option ``--component`` is mandatory as it is indentionally left with no defa
 user to supply the list of components to compile (at minimum one component is needed).
 All other options are optional and most of them have default values assigned to them (see [Table 2](#table_2)).
 If the user chooses a supported platform to compile *CoastalApp* for, the build script will load the appropriate modulefile found in the modulefiles/ directory. In case the application needs to be built for an unsupported
-platform, ther user can copy one of the ``modulefiles/envmodules_COMPILER.custom`` files, rename it to ``modulefiles/envmodules_COMPILER.USERS_PLATFORM`` and then modify the file according to the chosen
+platform, ther user can copy one of the ``modulefiles/envmodules_<COMPILER>.custom`` files, rename it to ``modulefiles/envmodules_<COMPILER>.<USER'S_PLATFORM>`` and then modify the file according to the chosen
 platform's configuration.
 
 Upon successful compilation of *CoastalApp*, the binaries and libraries for each component are installed into
-the ``COMPONENT_INSTALL`` directory and all related component executables, libraries and other files are
-installed in the ``ALLBIN_INSTALL`` directory. The final ``NEMS`` executable that contains all model components requested by the user is also installed into the ``ALLBIN_INSTALL`` directory as two identical files: ``NEMS-COMPONENT_LIST.x`` and ``NEMS.x``. As a sanity check, the user might want to check that all
-files were installed properly in the `` the user ``ALLBIN_INSTALL`` directory.
+its respective ``<COMPONENT>_INSTALL`` directory (e.g., SCHISM_INSTALL).
+In addition, all component executables, libraries and other files are also installed (copied) into the ``ALLBIN_INSTALL`` directory. This directory never gets deleted during a complete cleanup of the compiled files and
+it is the user's responsibility to delete this directory (if needed).
+The final ``NEMS`` executable that contains all model components requested by the user is installed into the ``ALLBIN_INSTALL`` directory as two identical files: ``NEMS-<COMPONENT_LIST>.x`` and ``NEMS.x``.
+As a sanity check, the user might want to check that all files were installed properly in the ``ALLBIN_INSTALL`` directory (e.g., check the file sizes).
 
   * **Example 1** Compile ATMESH and ADCIRC using the Intel compiler for the "tacc" platform:
 
@@ -278,11 +296,11 @@ contributions.
 
 ### Adding a new platform / compiler to compilation script
 
-Environment files are stored in `modulefiles/` with the
-filename `envmodules_<COMPILER>.<PLATFORM>`
+The environment files are stored in the ``CoastalApp/modulefiles/`` directory following the
+filename naming scheme: ``envmodules_<COMPILER>.<PLATFORM>``
 
-To compile in your own system you should create a similar file, then
-run `build.sh` to compile.
+To compile *CoastalApp* in your own system you should create a similar file (if the system is not supported),
+and then run ``build.sh`` as usual to compile the application.
 
 ## Collaboration
 
