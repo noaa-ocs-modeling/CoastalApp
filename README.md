@@ -199,8 +199,8 @@ files were installed properly in the `` the user ``ALLBIN_INSTALL`` directory.
 
         build.sh --compiler intel --platform hera --component "atmesh schism" -y
 
-        In this case, the build script will load the modulefiles/envmodules_intel.hera file and
-        it will continue to the compilation without waiting for a yes/no answer.
+    In this case, the build script will load the modulefiles/envmodules_intel.hera file and
+    it will continue to the compilation without waiting for a yes/no answer.
 
 
 ## Organization / Responsibility
