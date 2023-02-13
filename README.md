@@ -26,9 +26,14 @@ The models and modeling components (data components) currently supported in *Coa
 
   * ATMESH : [https://github.com/noaa-ocs-modeling/ATMESH](https://github.com/noaa-ocs-modeling/ATMESH)
   * PAHM   : [https://github.com/noaa-ocs-modeling/PaHM](https://github.com/noaa-ocs-modeling/PaHM)
-  * ADCIRC : [https://adcirc.org/](https://adcirc.org/), [https://github.com/adcirc/adcirc](https://github.com/adcirc/adcirc)
-  * SCHISM : [http://ccrm.vims.edu/schismweb/](http://ccrm.vims.edu/schismweb/), [https://github.com/schism-dev/schism](https://github.com/schism-dev/schism)
-  * FVCOM  : [http://fvcom.smast.umassd.edu/](http://fvcom.smast.umassd.edu/)
+  * ADCIRC : [https://adcirc.org/](https://adcirc.org/),
+             [https://github.com/adcirc/adcirc](https://github.com/adcirc/adcirc)
+             (requires registration; please send an email request to
+             [Crystal Fulcher](mailto:cfulcher@email.unc.edu))
+  * SCHISM : [http://ccrm.vims.edu/schismweb/](http://ccrm.vims.edu/schismweb/),
+             [https://github.com/schism-dev/schism](https://github.com/schism-dev/schism)
+  * FVCOM  : [http://fvcom.smast.umassd.edu/](http://fvcom.smast.umassd.edu/),
+             [https://github.com/FVCOM-GitHub](https://github.com/FVCOM-GitHub)
   * BARDATA: [https://github.com/noaa-ocs-modeling/BARDATA](https://github.com/noaa-ocs-modeling/BARDATA)
   * WW3    : [https://github.com/NOAA-EMC/WW3/wiki](https://github.com/NOAA-EMC/WW3/wiki), [https://github.com/NOAA-EMC/WW3](https://github.com/NOAA-EMC/WW3)
   * WW3DATA: [https://github.com/noaa-ocs-modeling/WW3DATA](https://github.com/noaa-ocs-modeling/WW3DATA)
@@ -40,14 +45,14 @@ The models and modeling components (data components) currently supported in *Coa
      TARGET="_BLANK" REL="NOREFERRER">https://github.com/noaa-ocs-modeling/CoastalApp</a>
 (binary distributions of *CoastalApp* are not currently available).
 
-The application can be downloaded using one of the following methods:
+The application can be downloaded using the following method:
 
-***(1) Clone the source code from GitHub using the command:***
+***Clone the source code from GitHub:***
 
         git clone --recurse-submodules  https://github.com/noaa-ocs-modeling/CoastalApp.git
 
-The source will be downloaded into the target directory CoastalApp. It is assumed that all subsequent operations
-are taking place into the CoastalApp directory.
+The source will be downloaded into the target directory CoastalApp. It is assumed
+that all subsequent operations are taking place into the CoastalApp directory.
 
 Most of the modeling components in the *CoastalApp* GitHub repository (e.g., ADCIRC, SCHISM, ...) are simply git submodules (pointers) that point to the respective repository of each model. Some models, for example ADCIRC and FVCOM, require that the user is registered with the respective model repository in order to be granted access.
 In case, users don't have access to a model and in order to avoid errors and permission issues during the cloning
@@ -67,18 +72,24 @@ process of *CoastalApp*, they can exclude the particular modeling component usin
 
     * ``git  clone --recurse-submodules=':(exclude)ADCIRC' --recurse-submodules=':(exclude)PAHM' --recurse-submodules=":(exclude)SCHISM/*" https://github.com/noaa-ocs-modeling/CoastalApp.git``
 
-***(2) Download the source archive using the command:***
+***Note:*** The alternative method of downloading the application by fetching the
+zip archive via the command:
 
         wget https://github.com/noaa-ocs-modeling/CoastalApp/archive/refs/heads/main.zip
 
-and extract the sources in the CoastalApp directory by issuing the following commands:
+will download *CoastalApp* but all the model component directories will be empty
+as these components are basically pointers to their respective repositories. Only
+*CoastalApp's* configuration and build files will be available in this case. If
+users are only interested on how *CoastalApp* is configured, they can download
+the archive and extract the sources in the CoastalApp directory by issuing the following commands:
 
         unzip -o main.zip  (the data will be extracted into the CoastalApp-main directory)
 
         mv CoastalApp-main CoastalApp  (move the extracted files to the CoastalApp directory)
 
-Even though the archive is sufficient to compile *CoastalApp*, it is advisable to use the distributed version control system Git
-to follow the *CoastalApp* development and updates and to easily merge to new versions.
+By using the distributed version control system Git, users will be able to follow
+the *CoastalApp* development and its updates and furthermore they will be able
+to easily merge to new versions of the application.
 New Git users are invited to read some of the online guides to get familiar with vanilla Git concepts and commands:
 
 - Basic and advanced guide with the
