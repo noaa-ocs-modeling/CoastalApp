@@ -101,9 +101,8 @@ checkNEMSComponents
 # Get the compilers to use for this project compilation
 getCompilerNames "${COMPILER}"
 
-# Get the list of the third party comonents to build
+# Get the list of the third party components to build
 getThirdParty
-
 ############################################################
 ### END:: SYSTEM CONFIGURATION
 ############################################################
@@ -178,9 +177,7 @@ echo "    HDF5HOME       = ${HDF5HOME}"
 echo "    NETCDFHOME     = ${NETCDFHOME}"
 echo "    NETCDF_INCDIR  = ${NETCDF_INCDIR}"
 echo "    NETCDF_LIBDIR  = ${NETCDF_LIBDIR}"
-echo "    DATETIMEHOME   = ${DATETIMEHOME}"
-echo "    METISHOME      = ${METISHOME}"
-echo "    PARMETISHOME   = ${PARMETISHOME}"
+echo "    NETCDF_CONFIG  = ${NETCDF_CONFIG}"
 echo
 echo "    ESMFMKFILE     = ${ESMFMKFILE:-UNDEF}"
 echo
@@ -222,75 +219,72 @@ fi
 ### BEG:: START THE CALCULATIONS
 ############################################################
 
-##########
-# Compile third party libraries first (based upon user's request)
-compileERR=0
-if [ -n "${THIRDPARTY:+1}" ]; then
-  for iPart in ${THIRDPARTY}
-  do
-    case "$( toUPPER ${iPart} )" in
-      DATETIME)
-        compileDateTime
-        compileERR=$?
-        if [ ${compileERR} -eq 0 ]; then
-          export DATETIME=enable
-          export DATETIMEHOME=${DATETIMEHOME}
-        fi
+###========================================
+### BEG :: install thirdparty_open libraries and programs
+### First compile thirdparty libraries if requested by the user or,
+### use the environment variables DATETIMEHOME, PARMETISHOME, ...
+### if they are set. If a thirdparty library was explicitly requested
+### vi -tp option then try to compile the library from the thirdparty_open
+### and ignore the environment.
+###========================================
+compileDateTime
+  compileERR=$(( ${compileERR:-0} + $? ))
+
+compileMetis
+  compileERR=$(( ${compileERR:-0} + $? ))
+###========================================
+### END :: install thirdparty_open libraries and programs
+###========================================
+
+
+###========================================
+### BEG :: Compile the project
+### This part of the code is executed only if the user supplied
+### valid model or data components to be compiled into the NEMS application.
+###========================================
+if [ -n "${COMPONENT:+1}" ]; then
+  compileERR=0
+  pushd ${NEMS_DIR} >/dev/null 2>&1
+    case ${CLEAN:-0} in
+      -1)
+        compileNems clean
+        compileERR=$(( ${compileERR:-0} + $? ))
         ;;
-      METIS|PARMETIS)
-        compileMetis
-        compileERR=$?
-        if [ ${compileERR} -eq 0 ]; then
-         export PARMETISHOME METISHOME
-         export METIS=${METISHOME}
-        fi
+      -2)
+        compileNems distclean
+        compileERR=$(( ${compileERR:-0} + $? ))
+        ;;
+      -3)
+        compileNems noclean
+        compileERR=$(( ${compileERR:-0} + $? ))
         ;;
        *)
          ;; #Do Nothing
     esac
-  done
-fi
 
-
-##########
-# Compile the project
-compileERR=0
-pushd ${NEMS_DIR} >/dev/null 2>&1
-  case ${CLEAN:-0} in
-    -1)
-      compileNems clean
-      compileERR=$?
-      ;;
-    -2)
-      compileNems distclean
-      compileERR=$?
-      ;;
-    -3)
-      compileNems noclean
-      compileERR=$?
-      ;;
-     *)
-       ;; #Do Nothing
-  esac
-
-  if [ ${compileERR} -eq 0 ]; then
-    compileNems build
-    compileERR=$?
-  fi
-
-  if [  ${compileERR} -eq 0 ]; then
-    if [ -f exe/NEMS.x ]; then
-      cp -p exe/NEMS.x exe/NEMS${compFNAME:+-${compFNAME}}.x
+    if [ ${compileERR} -eq 0 ]; then
+      compileNems build
+      compileERR=$(( ${compileERR:-0} + $? ))
     fi
-  fi
-popd >/dev/null 2>&1
 
-##########
-# Install all data, executables, libraries in a common directory
-if [  ${compileERR} -eq 0 ]; then
-  installNems
-  compileERR=$?
+    if [  ${compileERR} -eq 0 ]; then
+      if [ -f exe/NEMS.x ]; then
+        cp -p exe/NEMS.x exe/NEMS${compFNAME:+-${compFNAME}}.x
+        compileERR=$(( ${compileERR:-0} + $? ))
+      fi
+    fi
+  popd >/dev/null 2>&1
+
+  ##########
+  # Install all data, executables, libraries in a common directory
+  if [  ${compileERR} -eq 0 ]; then
+    installNems
+    compileERR=$(( ${compileERR:-0} + $? ))
+  fi
 fi
-##########
+###========================================
+### END :: Compile the project
+###========================================
+
 
 exit ${compileERR:-0}

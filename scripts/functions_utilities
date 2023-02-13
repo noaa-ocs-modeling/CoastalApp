@@ -516,6 +516,271 @@ function checkSUBSTR()
 ###********************************************************************************
 
 
+###********************************************************************************
+### BEG:: FILE FUNCTIONS
+###********************************************************************************
+
+###========================================
+### checkFILE()
+### Usage:      checkFILE [options] file
+### Parameters: file (string)
+### Returns:    1 if the options are not met or, no arguments
+###             were supplied or, the file is an empty string
+###             0 in any other case (success)
+### Echoes:     NONE
+###
+### Possible options are:
+### -h FILE exists and is a symbolic link (same as -L)
+### -L FILE exists and is a symbolic link (same as -h)
+### -r FILE exists and is readable
+### -s FILE exists and has a size greater than zero
+### -w FILE exists and is writable
+###
+### Checks if the file "file" is a valid file
+### based on the options supplied. If no options supplied
+### it simply checks that if "file" is a a regular file
+###========================================
+checkFILE()
+{
+  local -i retval=0
+  local get_opts my_arg="" chk_my_arg="" my_opts="-f" iopt
+# Use these to reset the options since the shell does not
+# do that automatically
+  local opt_id=${OPTIND} opt_arg="${OPTARG}"
+
+  [ $# -eq 0 ] && { retval=1; return ${retval}; }
+
+  while getopts ":hLrsw" get_opts
+  do
+    case ${get_opts} in
+      h|L) my_opts="${my_opts} -h";;
+        r) my_opts="${my_opts} -r";;
+        s) my_opts="${my_opts} -s";;
+        w) my_opts="${my_opts} -w";;
+        *) ;; # DEFAULT
+    esac
+  done
+
+# Get the first argument after the options
+  shift $(( ${OPTIND} - 1))
+  my_arg=${1}
+
+# Reset the option variables since the shell doesn't do it
+  OPTIND=${opt_id}
+  OPTARG="${opt_arg}"
+
+  chk_my_arg="$( echo "${my_arg##*/}" | sed -e 's/[[:space:]]//g' )"
+  [ "X${my_arg}" = "X" ] && { retval=1; return ${retval}; }
+
+  for iopt in ${my_opts}
+  do
+    [ ! ${iopt} "${my_arg}" ] && { retval=1; return ${retval}; }
+  done
+
+  return ${retval}
+}
+
+###========================================
+### checkDIR()
+### Usage:      checkDIR [options] dir
+### Parameters: dir (string)
+### Returns:    1 if the options are not met or, no arguments
+###             were supplied or, the dir is an empty string
+###             0 in any other case (success)
+### Echoes:     NONE
+###
+### Possible options are:
+### -h FILE exists and is a symbolic link (same as -L)
+### -L FILE exists and is a symbolic link (same as -h)
+### -r FILE exists and is readable
+### -x FILE exists and is executable
+### -w FILE exists and is writable
+###
+### Checks if the directory "dir" is a valid directory
+### based on the options supplied. If no options supplied
+### it simply checks that if "dir" is a directory
+###========================================
+checkDIR()
+{
+  local -i retval=0
+  local get_opts my_arg="" chk_my_arg="" my_opts="-d" iopt
+# Use these to reset the options since the shell does not
+# do that automatically
+  local opt_id=${OPTIND} opt_arg="${OPTARG}"
+
+  [ $# -eq 0 ] && { retval=1; return ${retval}; }
+
+  while getopts ":hLrxw" get_opts
+  do
+    case ${get_opts} in
+      h|L) my_opts="${my_opts} -h";;
+        r) my_opts="${my_opts} -r";;
+        x) my_opts="${my_opts} -x";;
+        w) my_opts="${my_opts} -w";;
+        *) ;; # DEFAULT
+    esac
+  done
+
+# Get the first argument after the options
+  shift $(( ${OPTIND} - 1))
+  my_arg=${1}
+
+# Reset the option variables since the shell doesn't do it
+  OPTIND=${opt_id}
+  OPTARG="${opt_arg}"
+
+  chk_my_arg="$( echo "${my_arg##*/}" | sed -e 's/[[:space:]]//g' )"
+  [ "X${my_arg}" = "X" ] && { retval=1; return ${retval}; }
+
+  for iopt in ${my_opts}
+  do
+    [ ! ${iopt} "${my_arg}" ] && { retval=1; return ${retval}; }
+  done
+
+  return ${retval}
+}
+
+###========================================
+### makeDIR()
+### Usage:      makeDIR DirName
+### Parameters: DirName (string), the directory to create
+### Returns:    1 on failure (eg., argument list is empty)
+###             0 on success
+### Echoes:     NONE
+###
+### Creates the directory "DirName" if it doesn't exist,
+### if the directory exists it checks if it is readable.
+### On failure this function issues: exit 1
+###========================================
+makeDIR()
+{
+  local my_dir
+
+  [ $# -eq 0 ] && return 0
+
+  my_dir="$( strTrim "${1}" 2 )"
+  [ -z "${my_dir:-}" ] && return 0
+
+  if ! $( checkDIR "${my_dir}" ); then
+    mkdir -p "${my_dir}" >/dev/null 2>&1
+    if [ $? -ne 0 ]; then
+      procError "failed to create the directory: ${my_dir:-UNDEF}"
+    else
+      procWarn "created the empty directory: ${my_dir:-UNDEF}"
+    fi
+  fi
+
+  if ! $( checkDIR -rwx "${my_dir}" ); then
+    procError "directory exists but read/write/execute permissions are not valid" \
+              "  Directory = ${my_dir:-UNDEF}"
+  fi
+
+  return 0
+}
+
+###========================================
+### deleteDIR()
+### Usage:      deleteDIR DirName
+### Parameters: DirName (string), the directory to delete
+### Returns:    1 on failure (eg., argument list is empty)
+###             0 on success
+### Echoes:     NONE
+###
+### Deletes the directory "DirName" if it exists,
+### if the directory exists it checks if it is readable.
+### On failure this function issues: exit 1
+###========================================
+deleteDIR()
+{
+  local nm_func="${FUNCNAME[0]}"
+
+  local -i retval=0
+  local my_dir
+  local not_dirs=":/:${HOME}:${PATH}:.:"
+
+  [ $# -eq 0 ] && { retval=1; return ${retval}; }
+
+  my_dir="${1}"
+
+  [[ :${not_dirs}: == *:${my_dir}:* ]] && { retval=1; return ${retval}; }
+  
+  [ $(id -u) -eq 0 ] && { retval=1; return ${retval}; }
+
+  if $( checkDIR "${my_dir}" ); then
+    rm -rf "${my_dir}" >/dev/null 2>&1
+    if [ $? -ne 0 ]; then
+      procError "failed to delete the directory: ${my_dir:-UNDEF}"
+    else
+      procWarn "deleted the directory: ${my_dir:-UNDEF}"
+    fi
+  fi
+
+  return ${retval}
+}
+
+###========================================
+### checkPROG()
+### Usage:      checkPROG [options] program
+### Parameters: program (string)
+### Returns:    1 if the options are not met or, no arguments
+###             were supplied or, the program is an empty string
+###             0 in any other case (success)
+### Echoes:     NONE
+###
+### Possible options are:
+### -h FILE exists and is a symbolic link (same as -L)
+### -L FILE exists and is a symbolic link (same as -h)
+### -r FILE exists and is readable
+### -s FILE exists and has a size greater than zero
+###
+### Checks if the program "program" is a valid executable
+### program based on the options supplied. If no options
+### supplied it simply checks that if "program" is an
+### executable program
+###========================================
+checkPROG()
+{
+  local get_opts my_arg="" chk_my_arg="" my_opts="-f -x" iopt
+# Use these to reset the options since the shell does not
+# do that automatically
+  local opt_id=${OPTIND} opt_arg="${OPTARG}"
+
+  [ $# -eq 0 ] && return 1
+
+  while getopts ":hLrs" get_opts
+  do
+    case ${get_opts} in
+      h|L) my_opts="${my_opts} -h";;
+        r) my_opts="${my_opts} -r";;
+        s) my_opts="${my_opts} -s";;
+        *) ;; # DEFAULT
+    esac
+  done
+
+# Get the first argument after the options
+  shift $(( ${OPTIND} - 1))
+  my_arg=${1}
+
+# Reset the option variables since the shell doesn't do it
+  OPTIND=${opt_id}
+  OPTARG="${opt_arg}"
+
+  chk_my_arg="$( echo "${my_arg##*/}" | sed -e 's/[[:space:]]//g' )"
+  [ "X${chk_my_arg}" = "X" ] && return 1
+
+  for iopt in ${my_opts}
+  do
+    [ ! ${iopt} ${my_arg} ] && return 1
+  done
+
+  return 0
+}
+
+###********************************************************************************
+### END:: FILE FUNCTIONS
+###********************************************************************************
+
+
 ###========================================
 ### getYesNo()
 ### Usage:      getYesNo value
@@ -692,9 +957,9 @@ getCompilerNames()
        FC=${FC:-ifort}
        F90=${F90:-ifort}
        PCC=${PCC:-mpiicc}
-       PCXX=${PCXX:-mpiicpc}
-       PFC=${PFC:-mpiifort}
-       PF90=${PF90:-mpiifort}
+       PCXX=${PCXX:-mpicxx}
+       PFC=${PFC:-mpif90}
+       PF90=${PF90:-mpif90}
        ;;
     pgi)
        CC=${CC:-pgcc}
