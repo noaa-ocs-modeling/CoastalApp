@@ -93,11 +93,11 @@ get_env_netcdf()
   if [ -n "${_netcdf_env_name:+1}" ]; then
     _netcdf_env_name="$( eval echo "\$${_netcdf_env_name}" )"
     if [ -n "${_netcdf_env_name:+1}" ]; then
-      export netcdf="${_netcdf_env_name}"
-      export netcdfHOME="${_netcdf_env_name}"
-      export netcdf_DIR="${_netcdf_env_name}"
-      export netcdf_PATH="${_netcdf_env_name}"
-      export netcdf_ROOT="${_netcdf_env_name}"
+      export NETCDF="${_netcdf_env_name}"
+      export NETCDFHOME="${_netcdf_env_name}"
+      export NETCDF_DIR="${_netcdf_env_name}"
+      export NETCDF_PATH="${_netcdf_env_name}"
+      export NETCDF_ROOT="${_netcdf_env_name}"
       _DEFINED_NETCDF=TRUE
     fi
   fi

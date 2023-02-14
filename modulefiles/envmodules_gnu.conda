@@ -1,0 +1,70 @@
+#!/usr/bin/env bash
+# 
+# Author: Carsten Lemmen <carsten.lemmen@hereon.de>
+# Copyright: 2022-2023, Helmholtz-Zentrum Hereon 
+# License: CC-1.0  Creative Commons Zero
+
+echo Using $(conda --version) || (
+  echo "ERROR: Conda does not seem to be installed or accessible"
+  exit 1 )
+
+CONDALIST=$(conda list "mpi|metis|clang|esmf|hdf5|netcdf|gfortran" | awk '/^[a-z].*/ {print $1}' | sed 's/\n/ /g')
+
+for package in hdf5 netcdf-fortran metis parmetis clang clangxx gfortran; do
+  if ! $(echo $CONDALIST |grep -q $package); then 
+    echo "ERROR: $package is not installed in your environment."
+    echo "       Run conda install $packages"
+    exit 1
+  fi
+  echo ".. found conda package $package"
+done
+
+if $(echo $CONDALIST |grep -q -E '(openmpi|mpich)'); then 
+   echo ".. found conda mpi package"
+#  echo ".. found conda package $(echo $CONDALIST |grep -E '(openmpi|mpich)')"
+else
+   echo "ERROR: Neither mpich or openmpi is  installed in your environment."
+    echo "       Run conda install openmpi/mpich"
+    exit 1
+fi
+
+for package in esmf; do
+  if ! $(echo $CONDALIST |grep -q $package); then 
+    echo "ERROR: $package is not installed in your environment."
+    echo "       Run conda install $packages"
+    exit 1
+  fi
+  echo ".. found conda package $package"
+  #export ESMFMKFILE="${ESMFMKFILE:-${CONDA_PREFIX}/lib/esmf.mk}"
+  export ESMFMKFILE=${CONDA_PREFIX}/lib/esmf.mk
+  echo ".. with ESMFMKFILE=$ESMFMKFILE"
+done
+
+export CC=$CONDA_PREFIX/bin/clang
+export CXX=$CONDA_PREFIX/bin/clang++
+export F90=$CONDA_PREFIX/bin/gfortran
+export FC=$CONDA_PREFIX/bin/gfortran
+export PCC=$CONDA_PREFIX/bin/mpicc
+export PCXX=$CONDA_PREFIX/bin/mpicxx
+export PF90=$CONDA_PREFIX/bin/mpifort
+export PFC=$CONDA_PREFIX/bin/mpifort
+
+export METIS_DIR=$CONDA_PREFIX
+export PARMETISHOME=$CONDA_PREFIX
+
+export HDF5=$CONDA_PREFIX
+export HDF5HOME=${HDF5}
+export HDF5_DIR=${HDF5}
+export HDF5_PATH=${HDF5}
+export HDF5_ROOT=${HDF5}
+
+export NETCDF=$CONDA_PREFIX
+export NETCDFHOME=${NETCDF}
+export NETCDF_DIR=${NETCDF}
+export NETCDF_PATH=${NETCDF}
+export NETCDF_ROOT=${NETCDF}
+
+export NETCDF_CONFIG=${NETCDFHOME:+${NETCDFHOME}/bin/nc-config}
+export NETCDF_INCDIR=${NETCDFHOME:+${NETCDFHOME}/include}
+export NETCDF_LIBDIR=${NETCDFHOME:+${NETCDFHOME}/lib}
+
