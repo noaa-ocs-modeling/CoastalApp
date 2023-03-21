@@ -484,6 +484,9 @@ UsageBuild()
   COMPILER="$( toLOWER "$( basename "${MY_COMPILER}" )" )"
   export COMPILER=${COMPILER:-}
 
+  # Get the compilers to use for this project compilation
+  getCompilerNames "${COMPILER}"
+
   COMPONENT="$( toUPPER "${MY_COMPONENT}" )"
   export COMPONENT=${COMPONENT:-}
 

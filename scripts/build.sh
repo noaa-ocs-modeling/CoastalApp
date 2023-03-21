@@ -92,11 +92,12 @@ checkModuleCmd
 # Call ParseArgs to get the user input.
 ParseArgs "${@}"
 
-# Get the compilers to use for this project compilation
-getCompilerNames "${COMPILER}"
-
 # Set the variables for this script
 getNEMSEnvVars ${appDIR}
+
+# This is already included in getNEMSEnvVars
+# Get the compilers to use for this project compilation
+#getCompilerNames "${COMPILER}"
 
 # Check if the user supplied valid components
 checkNEMSComponents
