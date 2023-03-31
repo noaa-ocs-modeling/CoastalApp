@@ -31,7 +31,7 @@ module load cmake
 module use /contrib/coastal/common/apps/modulefiles
 module load hpc-common
 module load hpc-gnu/9.2.0 openmpi
-module load hdf5 netcdf
+module load hdf5 netcdf/4.7.4
 module load esmf
 
 
