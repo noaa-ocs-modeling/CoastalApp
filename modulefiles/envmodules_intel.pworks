@@ -4,7 +4,7 @@
 ### Module File to load the required environment modules for the NEMS application
 ###
 ### Author: Panagiotis Velissariou <panagiotis.velissariou@noaa.gov>
-### Date:   June 26 2021
+### Date:   March 31 2023
 ###########################################################################
 
 
@@ -28,7 +28,7 @@ myDIRS="${myDIRS} . ${APPMODS_DIR}"
 module purge
 module load cmake
 
-module use /scratch2/STI/coastal/common/apps/modulefiles
+module use /contrib/coastal/common/apps/modulefiles
 module load hpc-common
 module load hpc-intel/19.0.5.281 hpc-impi
 module load hdf5 netcdf/4.7.4

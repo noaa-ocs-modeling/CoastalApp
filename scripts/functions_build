@@ -484,6 +484,9 @@ UsageBuild()
   COMPILER="$( toLOWER "$( basename "${MY_COMPILER}" )" )"
   export COMPILER=${COMPILER:-}
 
+  # Get the compilers to use for this project compilation
+  getCompilerNames "${COMPILER}"
+
   COMPONENT="$( toUPPER "${MY_COMPONENT}" )"
   export COMPONENT=${COMPONENT:-}
 
@@ -529,13 +532,17 @@ UsageBuild()
   if [[ :${component_ww3}: == *:"WW3":* ]]; then
     WW3_CONFOPT="${COMPILER}"
     WW3_COMP="${COMPILER}"
+    WW3_F90="${F90:-${FC}}"
+    WW3_CC="${CC}"
     WWATCH3_NETCDF=NC4
   fi
   export WW3_CONFOPT=${WW3_CONFOPT:-}
   export WW3_COMP=${WW3_COMP:-}
+  export WW3_F90=${WW3_F90:-}
+  export WW3_CC=${WW3_CC:-}
   export WWATCH3_NETCDF=${WWATCH3_NETCDF:-}
   #####
-  
+
   # Export some important environment variables for NEMS and for other models
   export NEMS_COMPILER="${COMPILER:-}"
   export NEMS_PARALLEL="${PARALLEL:-}"

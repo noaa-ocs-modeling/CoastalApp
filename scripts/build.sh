@@ -95,11 +95,12 @@ ParseArgs "${@}"
 # Set the variables for this script
 getNEMSEnvVars ${appDIR}
 
+# This is already included in getNEMSEnvVars
+# Get the compilers to use for this project compilation
+#getCompilerNames "${COMPILER}"
+
 # Check if the user supplied valid components
 checkNEMSComponents
-
-# Get the compilers to use for this project compilation
-getCompilerNames "${COMPILER}"
 
 # Get the list of the third party components to build
 getThirdParty
