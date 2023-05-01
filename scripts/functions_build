@@ -484,9 +484,6 @@ UsageBuild()
   COMPILER="$( toLOWER "$( basename "${MY_COMPILER}" )" )"
   export COMPILER=${COMPILER:-}
 
-  # Get the compilers to use for this project compilation
-  getCompilerNames "${COMPILER}"
-
   COMPONENT="$( toUPPER "${MY_COMPONENT}" )"
   export COMPONENT=${COMPONENT:-}
 
@@ -522,25 +519,6 @@ UsageBuild()
     compFNAME="$( echo "${compFNAME}" | sed 's/ /_/g' )"
   fi
   export compFNAME=${compFNAME:-}
-  #####
-
-  ##### Get the WW3 related environment variables
-  WW3_CONFOPT=
-  WW3_COMP=
-  WWATCH3_NETCDF=
-  component_ww3="$( echo "${COMPONENT}" | sed 's/ /:/g' )"
-  if [[ :${component_ww3}: == *:"WW3":* ]]; then
-    WW3_CONFOPT="${COMPILER}"
-    WW3_COMP="${COMPILER}"
-    WW3_F90="${F90:-${FC}}"
-    WW3_CC="${CC}"
-    WWATCH3_NETCDF=NC4
-  fi
-  export WW3_CONFOPT=${WW3_CONFOPT:-}
-  export WW3_COMP=${WW3_COMP:-}
-  export WW3_F90=${WW3_F90:-}
-  export WW3_CC=${WW3_CC:-}
-  export WWATCH3_NETCDF=${WWATCH3_NETCDF:-}
   #####
 
   # Export some important environment variables for NEMS and for other models
@@ -580,6 +558,7 @@ UsageBuild()
   fi
   export NEMS_DIR
 
+  ##### Modulefile to source
   modFILE="envmodules${COMPILER:+_${COMPILER}}${PLATFORM:+.${PLATFORM}}"
   if [ ! -f "${APPMODS_DIR}/${modFILE}" ]; then
     echo
@@ -594,6 +573,22 @@ UsageBuild()
     export modFILE="${APPMODS_DIR}/${modFILE}"
     source ${modFILE} 2>/dev/null
   fi
+
+  # Get the compilers to use for this project compilation
+  getCompilerNames "${COMPILER}"
+
+  ##### Get the WW3 related environment variables
+  component_ww3="$( echo "${COMPONENT}" | sed 's/ /:/g' )"
+  if [[ :${component_ww3}: == *:"WW3":* ]]; then
+    export WW3_CONFOPT="${COMPILER}"
+    export WW3_COMP="${COMPILER}"
+    export WW3_F90="${F90:-${FC}}"
+    export WW3_CC="${CC}"
+    export WWATCH3_NETCDF=NC4
+  else
+    unset WW3_CONFOPT WW3_COMP WW3_F90 WW3_CC WWATCH3_NETCDF
+  fi
+  #####
 }
 
 ###========================================
@@ -1068,13 +1063,13 @@ compileMetis() {
    
       if [ -d "${gklib_dir}" ]; then
         pushd ${gklib_dir} >/dev/null 2>&1
-          eval "make config ${make_flags} prefix=${loc_dir}"
+          eval "make ${make_flags} prefix=${loc_dir} config"
           err=$?
 
           if [ ${err:-0} -ne 0 ]; then
             procError "the configuration of the GKlib library source failed" \
                       "tried to run the make command as:" \
-                      "make config ${make_flags} prefix=${loc_dir}"
+                      "make ${make_flags} prefix=${loc_dir} config"
           fi
 
           make install
@@ -1109,13 +1104,13 @@ compileMetis() {
             sed -i -e 's@^#define[[:space:]]*REALTYPEWIDTH[[:space:]]*64@#define REALTYPEWIDTH 32@' include/metis.h
           fi
         
-          eval "make config ${make_flags} gklib_path=${gklib_dir} prefix=${loc_dir}"
+          eval "make ${make_flags} gklib_path=${gklib_dir} prefix=${loc_dir} config"
           err=$?
 
           if [ ${err:-0} -ne 0 ]; then
             procError "the configuration of the METIS library source failed" \
                       "tried to run the make command as:" \
-                      "make config ${make_flags} gklib_path=${gklib_dir} prefix=${loc_dir}"
+                      "make ${make_flags} gklib_path=${gklib_dir} prefix=${loc_dir} config"
           fi
 
           make install
@@ -1146,13 +1141,13 @@ compileMetis() {
 
       pushd ${this_dir} >/dev/null 2>&1
         sed -i -e 's@\(CONFIG_FLAGS[[:space:]]*=[[:space:]]*-DCMAKE_VERBOSE_MAKEFILE=1[[:space:]]*\)$@\1 \$(CONFIG_FLAGS1)@' Makefile
-        eval "make config "${make_flags}" gklib_path=${gklib_dir} metis_path=${metis_dir} prefix=${loc_dir}"
+        eval "make "${make_flags}" gklib_path=${gklib_dir} metis_path=${metis_dir} prefix=${loc_dir} config"
         err=$?
 
         if [ ${err:-0} -ne 0 ]; then
           procError "the configuration of the ParMETIS library source failed" \
                     "tried to run the make command as:" \
-                    "make config ${make_flags} gklib_path=${gklib_dir} metis_path=${metis_dir} prefix=${loc_dir}"
+                    "make ${make_flags} gklib_path=${gklib_dir} metis_path=${metis_dir} prefix=${loc_dir} config"
         fi
 
         make install
@@ -1196,13 +1191,13 @@ compileMetis() {
             sed -i -e 's@^#define[[:space:]]*REALTYPEWIDTH[[:space:]]*64@#define REALTYPEWIDTH 32@' include/metis.h
           fi
         
-         eval "make config ${make_flags} gklib_path=${gklib_dir} prefix=${loc_dir}"
+         eval "make ${make_flags} gklib_path=${gklib_dir} prefix=${loc_dir} config"
          err=$?
 
          if [ ${err:-0} -ne 0 ]; then
            procError "the configuration of the METIS library source failed" \
                      "tried to run the make command as:" \
-                     "make config ${make_flags} gklib_path=${gklib_dir} prefix=${loc_dir}"
+                     "make ${make_flags} gklib_path=${gklib_dir} prefix=${loc_dir} config"
          fi
 
          make install
@@ -1233,13 +1228,13 @@ compileMetis() {
 
       pushd ${this_dir} >/dev/null 2>&1
         sed -i -e 's@\(CONFIG_FLAGS[[:space:]]*=[[:space:]]*-DCMAKE_VERBOSE_MAKEFILE=1[[:space:]]*\)$@\1 \$(CONFIG_FLAGS1)@' Makefile
-        eval "make config "${make_flags}" gklib_path=${gklib_dir} metis_path=${metis_dir} prefix=${loc_dir}"
+        eval "make "${make_flags}" gklib_path=${gklib_dir} metis_path=${metis_dir} prefix=${loc_dir} config"
         err=$?
 
         if [ ${err:-0} -ne 0 ]; then
           procError "the configuration of the ParMETIS library source failed" \
                     "tried to run the make command as:" \
-                    "make config ${make_flags} gklib_path=${gklib_dir} metis_path=${metis_dir} prefix=${loc_dir}"
+                    "make ${make_flags} gklib_path=${gklib_dir} metis_path=${metis_dir} prefix=${loc_dir} config"
         fi
 
         make install
@@ -1356,7 +1351,11 @@ compileMetis() {
         tmp_inc="$( find -L ${PARMETISHOME}/include -maxdepth 1 -type f -name "parmetis.h" | head -1 )"
         tmp_lib="$( find -L ${PARMETISHOME}/lib -maxdepth 1 -type f -name "libparmetis.*" | head -1 )"
         if [ -n "${tmp_inc:+1}" ] && [ -n "${tmp_lib:+1}" ]; then
-          export PARMETISHOME=${PARMETISHOME}
+          PARMETISHOME=${PARMETIS_HOME}
+          [ -z "${PARMETISHOME}" ] && PARMETISHOME=${PARMETIS_PATH}
+          [ -z "${PARMETISHOME}" ] && PARMETISHOME=${PARMETISHOME}
+          export PARMETISHOME
+          
           export METISHOME=${PARMETISHOME}
           export METIS=${PARMETISHOME}
           export METIS_PATH=${PARMETISHOME}

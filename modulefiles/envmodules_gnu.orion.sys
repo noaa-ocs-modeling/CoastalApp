@@ -25,23 +25,18 @@ myDIRS="${myDIRS} . ${APPMODS_DIR}"
 
 ####################
 ### (1) Load all needed environment modules.
-use_defaults=0
 module purge
-module use /scratch2/NCEPDEV/nwprod/hpc-stack/libs/hpc-stack/modulefiles/stack
-module load hpc
 module load cmake
-if [ ${use_defaults:-0} -le 0 ]; then
-  module load hpc-intel/18.0.5.274  hpc-impi
-  module load szip hdf5 netcdf
-  module load esmf/8_1_1
-else
-  module load hpc-intel  hpc-impi
-  module load szip hdf5 netcdf
-  module load esmf
-fi
+
+module load gcc/10.2.0 openmpi/4.0.4
+
+module load hdf5/1.10.6  netcdf/4.7.4
+# NOT AVAILABLE module load proj
+# NOT AVAILABLE module load parmetis
+module load esmf/8.1.1
 
 
-###################
+####################
 ### (2) Set some environments varaiables related to the loaded
 ###     modules and required to compile the NEMS application properly.
 funcs="$( find ${myDIRS} -type f -iname "PlatformFuncs" | head -n 1 )"
@@ -65,9 +60,30 @@ unset funcs myDIRS
 # (this should be done automatically when loading this file - todo).
 #export HDF5_USE_FILE_LOCKING=FALSE
 
-export NETCDF_CONFIG=${NETCDFHOME:+${NETCDFHOME}/bin/nc-config}
-export NETCDF_INCDIR=${NETCDFHOME:+${NETCDFHOME}/include}
-export NETCDF_LIBDIR=${NETCDFHOME:+${NETCDFHOME}/lib}
+export NETCDF_CONFIG=${NETCDF_HOME:+${NETCDF_HOME}/bin/nc-config}
 
-export ESMFMKFILE=${ESMFMKFILE}
+if [ -z "${NETCDF_CONFIG}" ]; then
+  export NETCDF_CONFIG=${NETCDF_HOME:+${NETCDF_HOME}/bin/nc-config}
+fi
+
+if [ -z "${NETCDF_INCDIR}" ]; then
+  export NETCDF_INCDIR=${NETCDF_INCLUDE_DIRS:+${NETCDF_INCLUDE_DIRS}}
+  if [ -z "${NETCDF_INCDIR}" ]; then
+    export NETCDF_INCDIR=${NETCDF_HOME:+${NETCDF_HOME}/include}
+  fi
+fi
+
+if [ -z "${NETCDF_LIBDIR}" ]; then
+  export NETCDF_LIBDIR=${NETCDF_LIBRARY_DIRS:+${NETCDF_LIBRARY_DIRS}}
+  if [ -z "${NETCDF_LIBDIR}" ]; then
+    export NETCDF_LIBDIR=${NETCDF_HOME:+${NETCDF_HOME}/lib}
+  fi
+fi
+
+if [ -z "${ESMFMKFILE}" ]; then
+  echo "The variable ESMFMKFILE is not set. Please load the esmf module for your platform"
+  echo "Exiting ..."
+  exit 1
+else
+  export ESMFMKFILE=${ESMFMKFILE}
 ########## END:: PLATFORM CUSTOMIZED SETTINGS ##########

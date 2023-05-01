@@ -21,6 +21,16 @@ function strTrim ()
   echo -n ${out_str}
 }
 
+toUPPER()
+{
+  echo "${1}" | tr '[:lower:]' '[:upper:]'
+}
+
+toLOWER()
+{
+  echo "${1}" | tr '[:upper:]' '[:lower:]'
+}
+
 get_env_hdf5()
 {
   local _DEFINED_HDF5
@@ -35,6 +45,7 @@ get_env_hdf5()
     if [ -n "${_hdf5_env_name:+1}" ]; then
       export HDF5="${_hdf5_env_name}"
       export HDF5HOME="${_hdf5_env_name}"
+      export HDF5_HOME="${_hdf5_env_name}"
       export HDF5_DIR="${_hdf5_env_name}"
       export HDF5_PATH="${_hdf5_env_name}"
       export HDF5_ROOT="${_hdf5_env_name}"
@@ -46,6 +57,7 @@ get_env_hdf5()
     _hdf5_env_name="${HDF5}"
     if [ -n "${_hdf5_env_name:+1}" ]; then
       export HDF5HOME="${_hdf5_env_name}"
+      export HDF5_HOME="${_hdf5_env_name}"
       export HDF5_DIR="${_hdf5_env_name}"
       export HDF5_PATH="${_hdf5_env_name}"
       export HDF5_ROOT="${_hdf5_env_name}"
@@ -57,6 +69,7 @@ get_env_hdf5()
         if [ -n "${_hdf5_env_name:+1}" ]; then
           export HDF5="${_hdf5_env_name}"
           export HDF5HOME="${_hdf5_env_name}"
+          export HDF5_HOME="${_hdf5_env_name}"
           export HDF5_DIR="${_hdf5_env_name}"
           export HDF5_PATH="${_hdf5_env_name}"
           export HDF5_ROOT="${_hdf5_env_name}"
@@ -67,6 +80,7 @@ get_env_hdf5()
           if [ -n "${_hdf5_env_name:+1}" ]; then
             export HDF5="${_hdf5_env_name}"
             export HDF5HOME="${_hdf5_env_name}"
+            export HDF5_HOME="${_hdf5_env_name}"
             export HDF5_DIR="${_hdf5_env_name}"
             export HDF5_PATH="${_hdf5_env_name}"
             export HDF5_ROOT="${_hdf5_env_name}"
@@ -95,6 +109,7 @@ get_env_netcdf()
     if [ -n "${_netcdf_env_name:+1}" ]; then
       export NETCDF="${_netcdf_env_name}"
       export NETCDFHOME="${_netcdf_env_name}"
+      export NETCDF_HOME="${_netcdf_env_name}"
       export NETCDF_DIR="${_netcdf_env_name}"
       export NETCDF_PATH="${_netcdf_env_name}"
       export NETCDF_ROOT="${_netcdf_env_name}"
@@ -113,6 +128,7 @@ get_env_netcdf()
       if [ -n "${_netcdf_env_name:+1}" ]; then
         export NETCDF="${_netcdf_env_name}"
         export NETCDFHOME="${_netcdf_env_name}"
+        export NETCDF_HOME="${_netcdf_env_name}"
         export NETCDF_DIR="${_netcdf_env_name}"
         export NETCDF_PATH="${_netcdf_env_name}"
         export NETCDF_ROOT="${_netcdf_env_name}"
@@ -124,6 +140,7 @@ get_env_netcdf()
           if [ -n "${_netcdf_env_name:+1}" ]; then
             export NETCDF="${_netcdf_env_name}"
             export NETCDFHOME="${_netcdf_env_name}"
+            export NETCDF_HOME="${_netcdf_env_name}"
             export NETCDF_DIR="${_netcdf_env_name}"
             export NETCDF_PATH="${_netcdf_env_name}"
             export NETCDF_ROOT="${_netcdf_env_name}"
@@ -134,6 +151,7 @@ get_env_netcdf()
             if [ -n "${_netcdf_env_name:+1}" ]; then
               export NETCDF="${_netcdf_env_name}"
               export NETCDFHOME="${_netcdf_env_name}"
+              export NETCDF_HOME="${_netcdf_env_name}"
               export NETCDF_DIR="${_netcdf_env_name}"
               export NETCDF_PATH="${_netcdf_env_name}"
               export NETCDF_ROOT="${_netcdf_env_name}"

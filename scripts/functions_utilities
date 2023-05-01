@@ -945,31 +945,31 @@ getCompilerNames()
        CC=${CC:-gcc}
        CXX=${CXX:-g++}
        FC=${FC:-gfortran}
-       F90=${F90:-gfortran}
+       F90=${F90:-${FC}}
        PCC=${PCC:-mpicc}
        PCXX=${PCXX:-mpicxx}
        PFC=${PFC:-mpif90}
-       PF90=${PF90:-mpif90}
+       PF90=${PF90:-${PFC}}
        ;;
     intel)
        CC=${CC:-icc}
        CXX=${CXX:-icpc}
        FC=${FC:-ifort}
-       F90=${F90:-ifort}
+       F90=${F90:-${FC}}
        PCC=${PCC:-mpiicc}
        PCXX=${PCXX:-mpiicpc}
        PFC=${PFC:-mpiifort}
-       PF90=${PF90:-mpiifort}
+       PF90=${PF90:-${PFC}}
        ;;
     pgi)
        CC=${CC:-pgcc}
        CXX=${CXX:-pgc++}
        FC=${FC:-pgfortran}
-       F90=${F90:-pgfortran}
+       F90=${F90:-${FC}}
        PCC=${PCC:-pgcc}
        PCXX=${PCXX:-pgc++}
        PFC==${PFC:-pgfortran}
-       PF90=${PF90:-pgfortran}
+       PF90=${PF90:-${PFC}}
        ;;
     *) # No defaults. Give the user the option to define the environment variables
        # CC, CXX, FC, F90 before running this script.
