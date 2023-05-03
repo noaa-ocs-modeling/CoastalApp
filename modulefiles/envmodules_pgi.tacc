@@ -94,4 +94,5 @@ if [ -z "${ESMFMKFILE}" ]; then
   exit 1
 else
   export ESMFMKFILE=${ESMFMKFILE}
+fi
 ########## END:: PLATFORM CUSTOMIZED SETTINGS ##########
