@@ -35,3 +35,6 @@
 [submodule "SCHISM/schism-esmf"]
 	path = SCHISM/schism-esmf
 	url = https://github.com/schism-dev/schism-esmf.git
+[submodule "FVCOM"]
+	path = FVCOM
+	url = https://github.com/pvelissariou1/FVCOM
