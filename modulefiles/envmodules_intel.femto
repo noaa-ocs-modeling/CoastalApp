@@ -37,9 +37,44 @@ if [ -f "${funcs}" ]; then
 fi
 unset funcs myDIRS
 
-export NETCDFHOME=$(nc-config --prefix)
-export NETCDF_CONFIG=${NETCDFHOME:+${NETCDFHOME}/bin/nc-config}
-export NETCDF_INCDIR=${NETCDFHOME:+${NETCDFHOME}/include}
-export NETCDF_LIBDIR=${NETCDFHOME:+${NETCDFHOME}/lib}
 
-export ESMFMKFILE=${ESMFMKFILE}
+########## BEG:: PLATFORM CUSTOMIZED SETTINGS ##########
+# Is this needed in all systems?
+# If file locking is not allowed in the filesystem, or the
+# HDF5 locking mechanism is not compatible with the
+# OS locking mechanism, then HDF5 (>=1.10.x) throws errors like
+# access denied when trying to READ/WRITE NetCDF files.
+# On some platforms HDF5 locking is disabled on other it is not.
+# If you experience these problems uncomment the next line
+# (this should be done automatically when loading this file - todo).
+#export HDF5_USE_FILE_LOCKING=FALSE
+
+export NETCDFHOME=$(nc-config --prefix)
+
+if [ -z "${NETCDF_CONFIG}" ]; then
+  export NETCDF_CONFIG=${NETCDFHOME:+${NETCDFHOME}/bin/nc-config}
+fi
+
+if [ -z "${NETCDF_INCDIR}" ]; then
+  export NETCDF_INCDIR=${NETCDF_INC:+${NETCDF_INC}}
+  if [ -z "${NETCDF_INCDIR}" ]; then
+    export NETCDF_INCDIR=${NETCDFHOME:+${NETCDFHOME}/include}
+  fi
+fi
+
+if [ -z "${NETCDF_LIBDIR}" ]; then
+  export NETCDF_LIBDIR=${NETCDF_LIB:+${NETCDF_LIB}}
+  if [ -z "${NETCDF_LIBDIR}" ]; then
+    export NETCDF_LIBDIR=${NETCDFHOME:+${NETCDFHOME}/lib}
+  fi
+fi
+
+if [ -z "${ESMFMKFILE}" ]; then
+  echo "The variable ESMFMKFILE is not set. Please load the esmf module for your platform"
+  echo "Exiting ..."
+  exit 1
+else
+  export ESMFMKFILE=${ESMFMKFILE}
+fi
+########## END:: PLATFORM CUSTOMIZED SETTINGS ##########
+

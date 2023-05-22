@@ -7,6 +7,12 @@
 ### Date:   June 26 2021
 ###########################################################################
 
+#----------
+[[ "$0" == "bash" || "$0" == "-bash" ]] && retv=return || retv=exit
+echo "$(basename ${BASH_SOURCE[0]}) :: This environment is either not configured or not supported"
+echo "  Exiting ..."
+${retv} 1
+#----------
 
 ####################
 # Get the directory where the script is located
@@ -27,10 +33,13 @@ myDIRS="${myDIRS} . ${APPMODS_DIR}"
 ### (1) Load all needed environment modules.
 module purge
 module load cmake
-module load intel/2018.4 impi/2018.4
-module load hdf5/1.10.5-parallel pnetcdf/1.12.0 netcdf/4.7.2-parallel
 
-module load esmf/8.0.0
+module load gcc/9.1.0 mvapich2-x/2.3
+
+module load hdf5/1.10.4 netcdf/4.6.2
+# NOT AVAILABLE module load proj
+# NOT AVAILABLE module load parmetis
+# NOT AVAILABLE module load esmf
 
 
 ####################
@@ -40,8 +49,8 @@ funcs="$( find ${myDIRS} -type f -iname "PlatformFuncs" | head -n 1 )"
 if [ -f "${funcs}" ]; then
   source "${funcs}"
 
-  get_env_hdf5
-  get_env_netcdf
+  get_env_hdf5 TACC_HDF5_DIR
+  get_env_netcdf TACC_NETCDF_DIR
 fi
 unset funcs myDIRS
 
@@ -57,9 +66,32 @@ unset funcs myDIRS
 # (this should be done automatically when loading this file - todo).
 #export HDF5_USE_FILE_LOCKING=FALSE
 
-export NETCDF_CONFIG=${NETCDFHOME:+${NETCDFHOME}/bin/nc-config}
-export NETCDF_INCDIR=${NETCDF_INCLUDE_DIRS}
-export NETCDF_LIBDIR=${NETCDF_LIBRARY_DIRS}
+if [ -z "${NETCDF_CONFIG}" ]; then
+  export NETCDF_CONFIG=${TACC_NETCDF_BIN:+${TACC_NETCDF_BIN}/nc-config}
+  if [ -z "${NETCDF_CONFIG}" ]; then
+    export NETCDF_CONFIG=${NETCDF_HOME:+${NETCDF_HOME}/bin/nc-config}
+  fi
+fi
 
-export ESMFMKFILE=${ESMFMKFILE}
+if [ -z "${NETCDF_INCDIR}" ]; then
+  export NETCDF_INCDIR=${TACC_NETCDF_INC:+${TACC_NETCDF_INC}}
+  if [ -z "${NETCDF_INCDIR}" ]; then
+    export NETCDF_INCDIR=${NETCDF_HOME:+${NETCDF_HOME}/include}
+  fi
+fi
+
+if [ -z "${NETCDF_LIBDIR}" ]; then
+  export NETCDF_LIBDIR=${TACC_NETCDF_LIB:+${TACC_NETCDF_LIB}}
+  if [ -z "${NETCDF_LIBDIR}" ]; then
+    export NETCDF_LIBDIR=${NETCDF_HOME:+${NETCDF_HOME}/lib}
+  fi
+fi
+
+if [ -z "${ESMFMKFILE}" ]; then
+  echo "The variable ESMFMKFILE is not set. Please load the esmf module for your platform"
+  echo "Exiting ..."
+  exit 1
+else
+  export ESMFMKFILE=${ESMFMKFILE}
+fi
 ########## END:: PLATFORM CUSTOMIZED SETTINGS ##########

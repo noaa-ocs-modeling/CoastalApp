@@ -33,10 +33,11 @@ myDIRS="${myDIRS} . ${APPMODS_DIR}"
 ### (1) Load all needed environment modules.
 module purge
 module load cmake/3.17.1-gcc-9.1.0
+
 module load gcc openmpi
+
 module load netcdf-c
 module load netcdf-fortran
-
 module load esmf
 
 
@@ -72,5 +73,11 @@ export NETCDF_CONFIG=${NETCDFHOME:+${NETCDFHOME}/bin/nc-config}
 export NETCDF_INCDIR="$(nc-config --includedir) -I$(nf-config --includedir)"
 export NETCDF_LIBDIR="$(nc-config --prefix)/lib $(nf-config --flibs)"
 
-export ESMFMKFILE=${ESMFMKFILE}
+if [ -z "${ESMFMKFILE}" ]; then
+  echo "The variable ESMFMKFILE is not set. Please load the esmf module for your platform"
+  echo "Exiting ..."
+  exit 1
+else
+  export ESMFMKFILE=${ESMFMKFILE}
+fi
 ########## END:: PLATFORM CUSTOMIZED SETTINGS ##########
