@@ -36,8 +36,8 @@ module load hpc-intel/2019.5 hpc-impi
 #module load hpc-intel/2022.1.2 hpc-impi
 
 module load hdf5/1.10.9 netcdf/4.7.4
-module load proj/4.8.0
-module load parmetis/4.0.3
+#module load proj/4.8.0
+#module load parmetis/4.0.3
 module load esmf/8.3.1
 
 
