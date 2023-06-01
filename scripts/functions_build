@@ -70,22 +70,22 @@ MY_ATM_MODS="ATMESH PAHM"
 #MY_ATM_MODS="ATMESH WRF HWRF PAHM"
 
 ##### Ocean components
-MY_OCN_MODS="ADCIRC SCHISM"
-#MY_OCN_MODS="ADCIRC SCHISM FVCOM ROMS"
+MY_OCN_MODS="ADCIRC FVCOM SCHISM"
+#MY_OCN_MODS="ADCIRC FVCOM ROMS SCHISM"
 
 ##### Hydrologic components
 MY_HYD_MODS="NWM"
 
 ##### Wave components
-MY_WAV_MODS="WW3DATA WW3"
+MY_WAV_MODS="WW3 WW3DATA"
 
 ##### Miscellaneous components
 MY_MSC_MODS="BARDATA"
 ########################################
 
-#export MY_COMPONENT_DEFAULT="ADCIRC WW3DATA ATMESH"
+#export MY_COMPONENT_DEFAULT="ATMESH ADCIRC WW3DATA"
 export MY_COMPONENT_DEFAULT=
-export MY_COMPONENT_LIST="${MY_ATM_MODS} ${MY_OCN_MODS} ${MY_HYD_MODS} ${MY_WAV_MODS} ${MY_MSC_MODS}"
+export MY_COMPONENT_LIST="${MY_ATM_MODS} ${MY_OCN_MODS} ${MY_WAV_MODS} ${MY_HYD_MODS} ${MY_MSC_MODS}"
 
 export MY_THIRDPARTY_LIST="DATETIME PARMETIS"
 
@@ -385,8 +385,9 @@ UsageBuild()
   echo "  -tp|--tp|-third|--third|-thirdparty|--thirdparty [=|space] \"thirdparty_list\" (OPTIONAL)."
   echo "    The third party libraries and programs to build."
   echo "      ADCIRC might need the DATETIME library for its build and"
-  echo "      SCHISM, WW3 require METIS/PARMETIS libraries for their build."
-  echo "    If a component is ADCIRC, WW3 or SCHISM then in the THIRDPARTY environment variable"
+  echo "      FVCOM requires the METIS libraries for its build."
+  echo "      SCHISM, WW3 require the METIS/PARMETIS libraries for their build."
+  echo "    If a component is ADCIRC, FVCOM, SCHISM  or WW3 then in the THIRDPARTY environment variable"
   echo "    the required third party libraries will be added if they were not requested by the user."
   echo "    Available third party libs/progs: ${MY_THIRDPARTY_LIST}"
   echo "    Default: none."
@@ -645,9 +646,10 @@ UsageBuild()
 ###========================================
  getThirdParty() {
   local chk_component user_thirdparty
-  local chk_thirdparty tmp_thirdparty
+  local chk_thirdparty tmp_thirdparty inst_dir
   local icomp ivar iprt var val
   local var_names var_parts
+  local tmp_inc tmp_lib chkLibHome
 
 
   chk_thirdparty="$( toUPPER "${MY_THIRDPARTY_LIST}" )"
@@ -669,6 +671,9 @@ UsageBuild()
       tmp_thirdparty="${tmp_thirdparty} ${icomp}"
     fi
   done
+
+  ### Get the location of the thirdparty install directory
+  inst_dir="${APP_DIR:+${APP_DIR}/}THIRDPARTY_INSTALL"
 
 
   ##########
@@ -694,6 +699,24 @@ UsageBuild()
       done
     fi
   done
+  ##########
+
+
+  ##########
+  # This is for ParMETIS/METIS libraries as they are required by different models
+  # like: FVCOM, SCHISM. WW3, ...
+  chkLibHome=${PARMETISHOME:-${PARMETIS_HOME}}
+  chkLibHome=${chkLibHome:-${PARMETISDIR}}
+  chkLibHome=${chkLibHome:-${PARMETIS_DIR}}
+  chkLibHome=${chkLibHome:-${inst_dir}}
+  tmp_inc="$( find -L ${chkLibHome}/include -maxdepth 1 -type f \( -name "metis.h" -o -name "parmetis.h" \) 2>/dev/null )"
+  tmp_lib="$( find -L ${chkLibHome}/lib -maxdepth 1 -type f \( -name "libparmetis.a" -o -name "libparmetis.so*" \) 2>/dev/null )"
+  if [ -n "${tmp_inc:+1}" ] && [ -n "${tmp_lib:+1}" ]; then
+    PARMETISHOME=${chkLibHome}
+    PARMETIS_HOME=${chkLibHome}
+    PARMETISDIR=${chkLibHome}
+    PARMETIS_DIR=${chkLibHome}
+  fi
   ##########
 
 
@@ -730,7 +753,23 @@ UsageBuild()
     fi
   fi
 
-  ### (3) WW3
+  ### (3) FVCOM
+  # For FVCOM the user can specify that the CoastalApp may build the ParMETIS library
+  # by using the --thirdparty="parmetis" option. We issue a warning here to let the user
+  # know that he/she might need to specify this library.
+  if [[ ":${chk_component}:" == *:"FVCOM":* ]]; then
+    if ! $( checkSUBSTR "${tmp_thirdparty}" PARMETIS ) && \
+       [ -z "${PARMETIS_HOME}" ] && [ -z "${PARMETISHOME}" ]; then
+      procError "The METIS library is needed for the compilation of FVCOM." \
+                "Please supply the PARMETIS_HOME or PARMETISHOME environment" \
+                "variable that points to the location of the pre-compiled library or use the" \
+                "--thirdparty="parmetis" option in the build.sh script to compile the" \
+                "library from within CoastalApp (NOTE: need to download first the library" \
+                "by running the download_parmetis.sh script found in the scripts directory."
+    fi
+  fi
+
+  ### (4) WW3
   # For WW3 the user should specify the location of the ParMETIS library or to use
   # the --thirdparty="parmetis" option. We issue an error here to let the user
   # know that he/she need to specify this library for WW3.
@@ -980,7 +1019,7 @@ compileMetis() {
   compiledLIB=0
 
 
-  # First check if the user explicitly requested to build PerMetis
+  # First check if the user explicitly requested to build ParMetis
   # from the thirdparty_open directory. It is the user's responsibility
   # to download ParMetis into the thirdparty_open directory
   # (CoastalApp does not ship with ParMetis).
@@ -1316,21 +1355,41 @@ compileMetis() {
       fi
       ##########
 
-      unset PARMETISHOME METISHOME PARMETIS_HOME METIS_HOME
+      unset PARMETIS PARMETISHOME PARMETIS_HOME PARMETISDIR PARMETIS_DIR PARMETISPATH PARMETIS_PATH
+      unset METIS METISHOME METIS_HOME METISDIR METIS_DIR METISPATH METIS_PATH
       unset PARMETISROOT METISROOT PARMETIS_ROOT METIS_ROOT
-      unset PARMETISPATH METISPATH PARMETIS_PATH METIS_PATH
-      unset PARMETISDIR METISDIR PARMETIS_DIR METIS_DIR
 
+      export PARMETIS="${inst_dir}"
       export PARMETISHOME="${inst_dir}"
+      export PARMETIS_HOME="${inst_dir}"
+      export PARMETISDIR="${inst_dir}"
+      export PARMETIS_DIR="${inst_dir}"
+      export PARMETISPATH="${inst_dir}"
+      export PARMETIS_PATH="${inst_dir}"
+ 
+      export METIS="${inst_dir}"
       export METISHOME="${inst_dir}"
-      export METIS=${PARMETISHOME}
-      export METIS_PATH=${PARMETISHOME}
-      procWarn "Setting the following variables:" \
-               "   PARMETISHOME = ${PARMETISHOME}" \
-               "   METISHOME    = ${METISHOME}" \
-               "   METIS        = ${METIS}" \
-               "   METIS_PATH   = ${METIS_PATH}"
+      export METIS_HOME="${inst_dir}"
+      export METISDIR="${inst_dir}"
+      export METIS_DIR="${inst_dir}"
+      export METISPATH="${inst_dir}"
+      export METIS_PATH="${inst_dir}"
 
+      procWarn "Setting the following variables:" \
+               "   PARMETIS      = "${PARMETIS}" \
+               "   PARMETISHOME  = "${PARMETISHOME}" \
+               "   PARMETIS_HOME = "${PARMETIS_HOME}" \
+               "   PARMETISDIR   = "${PARMETISDIR}" \
+               "   PARMETIS_DIR  = "${PARMETIS_DIR}" \
+               "   PARMETISPATH  = "${PARMETISPATH}" \
+               "   PARMETIS_PATH = "${PARMETIS_PATH}" \
+               "   METIS         = "${METIS}" \
+               "   METISHOME     = "${METISHOME}" \
+               "   METIS_HOME    = "${METIS_HOME}" \
+               "   METISDIR      = "${METISDIR}" \
+               "   METIS_DIR     = "${METIS_DIR}" \
+               "   METISPATH     = "${METISPATH}" \
+               "   METIS_PATH    = "${METIS_PATH}"
 
       return ${err}
     fi
@@ -1379,6 +1438,324 @@ compileMetis() {
   ### END :: Use pre-compiled libraries
   ######################
 }
+
+
+###========================================
+### compileFVCOMLibs()
+###
+### Usage:      compileFVCOMLibs src_dir
+###
+### Parameters: src_dir = the application root directory
+###
+### Returns : error status
+###
+### Exports : NONE
+###
+### Echoes  : NONE
+###
+### compileFVCOMLibs: Uses environment variables to compile the application.
+###========================================
+compileFVCOMLibs() {
+  local fvcom_dir libs_src_dir src_dir src_tar make_flags
+  local chkLibHome inst_dir bin_dir lib_dir inc_dir
+  local i err tmp_inc tmp_lib chk_component
+
+  local -i bldJUL bldPROJ bldFPROJ
+  
+
+  err=0
+  bldJUL=0
+  bldPROJ=0
+  bldFPROJ=0
+
+
+  ### First check if the user explicitly requested to build FVCOM
+  chk_component="$( toUPPER "${COMPONENT}" )"
+  [ -z "${chk_component}" ] && \
+    chk_component="$( toUPPER "${MY_COMPONENT}" )"
+  chk_component="$( echo "${chk_component}" | sed 's/[[:space:]]/:/g' )"
+
+  if [[ ":${chk_component}:" != *:"FVCOM":* ]]; then
+    return 0
+  fi
+
+
+  ### Get the location of the FVCOM directory
+  checkDIR -rx "${1}"
+  if [ $? -eq 0 ]; then
+    fvcom_dir="${1}"
+  else
+    fvcom_dir="${APP_DIR:+${APP_DIR}/}FVCOM"
+  fi
+
+  ### Get the location of the install directory
+  inst_dir="${APP_DIR:+${APP_DIR}/}THIRDPARTY_INSTALL"
+  bin_dir=${inst_dir}/bin
+  lib_dir=${inst_dir}/lib
+  inc_dir=${inst_dir}/include
+
+
+  ######################
+  ### BEG :: Build the Julian library
+  ### This follows any environment settings.
+  ######################
+  # Get the location of the pre-compiled third party library for JULIAN.
+  chkLibHome=${JULIANHOME:-${JULIAN_HOME}}
+  chkLibHome=${chkLibHome:-${inst_dir}}
+  if [ -n "${chkLibHome}" ]; then
+    checkDIR -rx "${chkLibHome}"
+    if [ $? -eq 0 ]; then
+      tmp_inc="$( find -L ${chkLibHome}/include -maxdepth 1 -type f -name "fjulian.inc" 2>/dev/null )"
+      tmp_lib="$( find -L ${chkLibHome}/lib -maxdepth 1 -type f \( -name "libjulian*.a" -o -name "libjulian*.so*" \) 2>/dev/null )"
+      if [ -n "${tmp_inc:+1}" ] && [ -n "${tmp_lib:+1}" ]; then
+        export JULIANHOME=${chkLibHome}
+        export JULIAN_HOME=${chkLibHome}
+        procWarn "Setting the following variables:" \
+                 "   JULIANHOME  = ${JULIANHOME}" \
+                 "   JULIAN_HOME = ${JULIAN_HOME}" \
+                 "Make sure that the libraries have been compiled with the same compiler."
+        bldJUL=0
+      else
+        unset JULIANHOME JULIAN_HOME
+        bldJUL=1
+        procWarn "Could not locate fjulian.inc and/or libjulian in JULIANHOME = ${chkLibHome}." \
+                  "Is JULIANHOME or JULIAN_HOME environment variable set properly?" \
+                  "Will proceed by building the Julian library internally."
+      fi
+    else
+      unset JULIANHOME JULIAN_HOME
+      bldJUL=1
+      procWarn "Error accessing the location JULIANHOME = ${chkLibHome}." \
+                "Is JULIANHOME or JULIAN_HOME environment variable set properly?" \
+                "Will proceed by building the Julian library internally."
+    fi
+  fi
+
+  ##### Try to build the library #####
+  if [ ${bldJUL:-0} -gt 0 ]; then
+    libs_src_dir=${fvcom_dir}/src/libs
+    src_tar=${libs_src_dir}/julian.tgz
+    src_dir=${libs_src_dir}/julian
+    if [ -e "${src_tar}" ]; then
+      tar -C ${libs_src_dir} -zxvf ${src_tar}
+      
+      # Build the library
+      pushd ${src_dir} >/dev/null 2>&1
+        make_flags="CC=${CC} FC=${FC:-${F90}} F90=${F90}"
+        make ${make_flags} libjulian tconvert
+        err=$?
+
+        if [ ${err} -eq 0 ]; then
+          for i in ${bin_dir} ${lib_dir} ${inc_dir}
+          do
+            makeDIR "${i}"
+          done
+
+          install -m 0644 libjulian.a ${lib_dir}/
+          err=$?
+
+          install -m 0644 fjulian.inc ${inc_dir}/
+          err=$?
+
+          install -m 0755 tconvert ${bin_dir}/
+          err=$?
+        fi
+      popd >/dev/null 2>&1
+
+      if [ ${err} -eq 0 ]; then
+        export JULIANHOME=${inst_dir}
+        export JULIAN_HOME=${inst_dir}
+        
+        deleteDIR ${src_dir}
+      else
+        procError "Building and installing the Julian library produced errors." \
+                  "Check the errors and modify this script accondingly." \
+                  "This is a required library for FVCOM."
+      fi
+    else
+      procError "The julian archive ${src_tar} was not found." \
+                "Failed to build the julian library." \
+                "This is a required library for FVCOM."
+    fi
+  fi
+  ######################
+  ### END :: Build the Julian library
+  ######################
+
+
+  ######################
+  ### BEG :: Build the PROJ library
+  ### This follows any environment settings.
+  ######################
+  # Get the location of the pre-compiled third party library for PROJ.
+  chkLibHome=${PROJHOME:-${PROJ_HOME}}
+  chkLibHome=${chkLibHome:-${inst_dir}}
+  if [ -n "${chkLibHome}" ]; then
+    checkDIR -rx "${chkLibHome}"
+    if [ $? -eq 0 ]; then
+      tmp_inc="$( find -L ${chkLibHome}/include -maxdepth 1 -type f \( -name "org_proj4_Projections.h" -o -name "proj_api.h" \) 2>/dev/null )"
+      tmp_lib="$( find -L ${chkLibHome}/lib -maxdepth 1 -type f \( -name "libproj*.a" -o -name "libproj*.so*" \) 2>/dev/null )"
+      if [ -n "${tmp_inc:+1}" ] && [ -n "${tmp_lib:+1}" ]; then
+        export PROJHOME=${chkLibHome}
+        export PROJ_HOME=${chkLibHome}
+        procWarn "Setting the following variables:" \
+                 "   PROJHOME  = ${PROJHOME}" \
+                 "   PROJ_HOME = ${PROJ_HOME}" \
+                 "Make sure that the libraries have been compiled with the same compiler."
+        bldPROJ=0
+      else
+        unset PROJHOME PROJ_HOME
+        bldPROJ=1
+        procWarn "Could not locate geodesic.h, pj_list.h and/or libproj* in PROJHOME = ${chkLibHome}." \
+                  "Is PROJHOME or PROJ_HOME environment variable set properly?" \
+                  "Will proceed by building the PROJ library internally."
+      fi
+    else
+      unset PROJHOME PROJ_HOME
+      bldPROJ=1
+      procWarn "Error accessing the location PROJHOME = ${chkLibHome}." \
+                "Is PROJHOME or PROJ_HOME environment variable set properly?" \
+                "Will proceed by building the PROJ library internally."
+    fi
+  fi
+
+  ##### Try to build the PROJ library #####
+  if [ ${bldPROJ:-0} -gt 0 ]; then
+    libs_src_dir=${fvcom_dir}/src/libs
+    src_tar=${libs_src_dir}/proj.tgz
+    src_dir=${libs_src_dir}/proj
+    if [ -e "${src_tar}" ]; then
+      tar -C ${libs_src_dir} -zxvf ${src_tar}
+      
+      # Build the PROJ library
+      pushd ${src_dir} >/dev/null 2>&1
+        make_flags="CC=${CC} CXX=${CXX:-${CC}} CPP=\"${CC} -E\" FC=${FC:-${F90}} F90=${F90}"
+        make_flags="${make_flags} CFLAGS=\"-g -O2\" CXXFLAGS=\"-g -O2\" FFLAGS=\"-g -O2\""
+
+        eval "./configure --prefix=${inst_dir} --enable-shared=no --without-mutex ${make_flags}"
+        err=$?
+
+        if [ ${err} -eq 0 ]; then
+          make install
+          err=$?
+
+          rm -f ${inst_dir}/lib/libproj.la
+          deleteDIR ${inst_dir}/lib/pkgconfig
+          deleteDIR ${inst_dir}/man
+          deleteDIR ${inst_dir}/share/man
+        fi
+      popd >/dev/null 2>&1
+
+      if [ ${err} -eq 0 ]; then
+        export PROJHOME=${inst_dir}
+        export PROJ_HOME=${inst_dir}
+        
+        deleteDIR ${src_dir}
+      else
+        procWarn "Building and installing the PROJ library produced errors." \
+                  "Check the errors and modify this script accondingly." \
+                  "This is a required library for FVCOM based upon the model's configuration."
+      fi
+    else
+      procWarn "The PROJ archive ${src_tar} was not found." \
+                "Failed to build the PROJ library." \
+                "This is a required library for FVCOM based upon the model's configuration."
+    fi
+  fi
+  ######################
+  ### END :: Build the PROJ library
+  ######################
+
+
+  ######################
+  ### BEG :: Build the FPROJ library
+  ### This follows any environment settings.
+  ######################
+  # Get the location of the pre-compiled third party library for FPROJ.
+  chkLibHome=${FPROJHOME:-${FPROJ_HOME}}
+  chkLibHome=${chkLibHome:-${PROJHOME}}
+  chkLibHome=${chkLibHome:-${PROJ_HOME}}
+  chkLibHome=${chkLibHome:-${inst_dir}}
+  if [ -n "${chkLibHome}" ]; then
+    checkDIR -rx "${chkLibHome}"
+    if [ $? -eq 0 ]; then
+      tmp_inc="$( find -L ${chkLibHome}/include -maxdepth 1 -type f -name "proj*.mod" 2>/dev/null )"
+      tmp_lib="$( find -L ${chkLibHome}/lib -maxdepth 1 -type f \( -name "libfproj*.a" -o -name "libfproj*.so*" \) 2>/dev/null )"
+      if [ -n "${tmp_inc:+1}" ] && [ -n "${tmp_lib:+1}" ]; then
+        export FPROJHOME=${chkLibHome}
+        export FPROJ_HOME=${chkLibHome}
+        procWarn "Setting the following variables:" \
+                 "   FPROJHOME  = ${FPROJHOME}" \
+                 "   FPROJ_HOME = ${FPROJ_HOME}" \
+                 "Make sure that the libraries have been compiled with the same compiler."
+        bldFPROJ=0
+      else
+        unset FPROJHOME FPROJ_HOME
+        bldFPROJ=1
+        procWarn "Could not locate proj*.mod and/or libfproj* in FPROJHOME = ${chkLibHome}." \
+                  "Is FPROJHOME or FPROJ_HOME environment variable set properly?" \
+                  "Will proceed by building the FPROJ library internally."
+      fi
+    else
+      unset FPROJHOME FPROJ_HOME
+      bldFPROJ=1
+      procWarn "Error accessing the location FPROJHOME = ${chkLibHome}." \
+                "Is FPROJHOME or FPROJ_HOME environment variable set properly?" \
+                "Will proceed by building the FPROJ library internally."
+    fi
+  fi
+
+  ##### Try to build the FPROJ library
+  ##### This built depends upon the successful
+  ##### build of the PROJ library above.
+  if [ -n "${PROJHOME}" ] && [ ${bldFPROJ:-0} -gt 0 ]; then
+    libs_src_dir=${fvcom_dir}/src/libs
+    src_tar=${libs_src_dir}/fproj.tgz
+    src_dir=${libs_src_dir}/fproj
+    if [ -e "${src_tar}" ]; then
+      tar -C ${libs_src_dir} -zxvf ${src_tar}
+      
+      # Build the FPROJ library
+      pushd ${src_dir} >/dev/null 2>&1
+        make_flags="CC=${CC} CXX=${CXX:-${CC}} CPP=\"${CC} -E\" FC=${FC:-${F90}} F90=${F90}"
+        make_flags="${make_flags} CFLAGS=\"-g -O2\" CPPFLAGS=\"-DIFORT\" FFLAGS=\"-g -O2\""
+
+        eval "./configure --prefix=${inst_dir} --with-proj4=${PROJHOME} ${make_flags}"
+        err=$?
+
+        if [ ${err} -eq 0 ]; then
+          make install
+          err=$?
+        fi
+      popd >/dev/null 2>&1
+
+      if [ ${err} -eq 0 ]; then
+        export FPROJHOME=${inst_dir}
+        export FPROJ_HOME=${inst_dir}
+
+        deleteDIR ${src_dir}
+      else
+        procWarn "Building and installing the FPROJ library produced errors." \
+                  "Check the errors and modify this script accondingly." \
+                  "This is a required library for FVCOM based upon the model's configuration."
+      fi
+    else
+      procWarn "The FPROJ archive ${src_tar} was not found." \
+                "Failed to build the FPROJ library." \
+                "This is a required library for FVCOM based upon the model's configuration."
+    fi
+
+  fi
+
+  PROJINCS="-I${PROJHOME}/include"
+  PROJLIBS="-L${PROJHOME}/lib -lfproj4 -lproj -lm"
+  export PROJINCS PROJLIBS
+  
+  INCLUDEPATH=${INCLUDEPATH:+${INCLUDEPATH}:}${JULIANHOME}/include
+  LIBPATH=${LIBPATH:+${LIBPATH}:}${JULIANHOME}/lib
+  export INCLUDEPATH LIBPATH
+}
+
 
 ###========================================
 ### compileNems()
@@ -1523,4 +1900,3 @@ installNems() {
   echo "   --- Removing files that are not needed from: ${instdir} ---"
   ${RMBIN} ${instdir}/*.mk ${instdir}/*.mod
 }
-
