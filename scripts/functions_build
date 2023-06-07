@@ -1102,7 +1102,7 @@ compileMetis() {
    
       if [ -d "${gklib_dir}" ]; then
         pushd ${gklib_dir} >/dev/null 2>&1
-          eval "make ${make_flags} prefix=${loc_dir} config"
+          eval "make ${make_flags} openmp=ON prefix=${loc_dir} config"
           err=$?
 
           if [ ${err:-0} -ne 0 ]; then
@@ -1143,7 +1143,7 @@ compileMetis() {
             sed -i -e 's@^#define[[:space:]]*REALTYPEWIDTH[[:space:]]*64@#define REALTYPEWIDTH 32@' include/metis.h
           fi
         
-          eval "make ${make_flags} gklib_path=${gklib_dir} prefix=${loc_dir} config"
+          eval "make ${make_flags} openmp=ON gklib_path=${gklib_dir} prefix=${loc_dir} config"
           err=$?
 
           if [ ${err:-0} -ne 0 ]; then
@@ -1180,7 +1180,7 @@ compileMetis() {
 
       pushd ${this_dir} >/dev/null 2>&1
         sed -i -e 's@\(CONFIG_FLAGS[[:space:]]*=[[:space:]]*-DCMAKE_VERBOSE_MAKEFILE=1[[:space:]]*\)$@\1 \$(CONFIG_FLAGS1)@' Makefile
-        eval "make "${make_flags}" gklib_path=${gklib_dir} metis_path=${metis_dir} prefix=${loc_dir} config"
+        eval "make "${make_flags}" openmp=ON gklib_path=${gklib_dir} metis_path=${metis_dir} prefix=${loc_dir} config"
         err=$?
 
         if [ ${err:-0} -ne 0 ]; then
@@ -1230,7 +1230,7 @@ compileMetis() {
             sed -i -e 's@^#define[[:space:]]*REALTYPEWIDTH[[:space:]]*64@#define REALTYPEWIDTH 32@' include/metis.h
           fi
         
-         eval "make ${make_flags} gklib_path=${gklib_dir} prefix=${loc_dir} config"
+         eval "make ${make_flags} openmp=ON gklib_path=${gklib_dir} prefix=${loc_dir} config"
          err=$?
 
          if [ ${err:-0} -ne 0 ]; then
@@ -1267,7 +1267,7 @@ compileMetis() {
 
       pushd ${this_dir} >/dev/null 2>&1
         sed -i -e 's@\(CONFIG_FLAGS[[:space:]]*=[[:space:]]*-DCMAKE_VERBOSE_MAKEFILE=1[[:space:]]*\)$@\1 \$(CONFIG_FLAGS1)@' Makefile
-        eval "make "${make_flags}" gklib_path=${gklib_dir} metis_path=${metis_dir} prefix=${loc_dir} config"
+        eval "make "${make_flags}" openmp=ON gklib_path=${gklib_dir} metis_path=${metis_dir} prefix=${loc_dir} config"
         err=$?
 
         if [ ${err:-0} -ne 0 ]; then
