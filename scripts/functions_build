@@ -1533,7 +1533,7 @@ compileFVCOMLibs() {
 
   ##### Try to build the library #####
   if [ ${bldJUL:-0} -gt 0 ]; then
-    libs_src_dir=${fvcom_dir}/src/libs
+    libs_src_dir=${fvcom_dir}/libs
     src_tar=${libs_src_dir}/julian.tgz
     src_dir=${libs_src_dir}/julian
     if [ -e "${src_tar}" ]; then
@@ -1621,7 +1621,7 @@ compileFVCOMLibs() {
 
   ##### Try to build the PROJ library #####
   if [ ${bldPROJ:-0} -gt 0 ]; then
-    libs_src_dir=${fvcom_dir}/src/libs
+    libs_src_dir=${fvcom_dir}/libs
     src_tar=${libs_src_dir}/proj.tgz
     src_dir=${libs_src_dir}/proj
     if [ -e "${src_tar}" ]; then
@@ -1709,7 +1709,7 @@ compileFVCOMLibs() {
   ##### This built depends upon the successful
   ##### build of the PROJ library above.
   if [ -n "${PROJHOME}" ] && [ ${bldFPROJ:-0} -gt 0 ]; then
-    libs_src_dir=${fvcom_dir}/src/libs
+    libs_src_dir=${fvcom_dir}/libs
     src_tar=${libs_src_dir}/fproj.tgz
     src_dir=${libs_src_dir}/fproj
     if [ -e "${src_tar}" ]; then
