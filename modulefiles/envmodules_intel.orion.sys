@@ -28,10 +28,10 @@ myDIRS="${myDIRS} . ${APPMODS_DIR}"
 module purge
 module load cmake
 
-module load intel/2019.5   impi/2019.6
+#module load intel/2019.5   impi/2019.6
 #module load intel/2020.2   impi/2020.2
 #module load intel/2021.2   impi/2021.2
-#module load intel/2022.1.2 impi/2022.1.2
+module load intel/2022.1.2 impi/2022.1.2
 
 module load hdf5/1.10.6  netcdf/4.7.4
 # NOT AVAILABLE module load proj
