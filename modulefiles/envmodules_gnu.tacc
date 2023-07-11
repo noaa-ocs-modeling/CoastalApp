@@ -7,12 +7,12 @@
 ### Date:   June 26 2021
 ###########################################################################
 
-#----------
-[[ "$0" == "bash" || "$0" == "-bash" ]] && retv=return || retv=exit
-echo "$(basename ${BASH_SOURCE[0]}) :: This environment is either not configured or not supported"
-echo "  Exiting ..."
-${retv} 1
-#----------
+##----------
+#[[ "$0" == "bash" || "$0" == "-bash" ]] && retv=return || retv=exit
+#echo "$(basename ${BASH_SOURCE[0]}) :: This environment is either not configured or not supported"
+#echo "  Exiting ..."
+#${retv} 1
+##----------
 
 ####################
 # Get the directory where the script is located
