@@ -740,13 +740,16 @@ UsageBuild()
   # by using the --thirdparty="parmetis" option. We issue a warning here to let the user
   # know that he/she might need to specify this library.
   if [[ ":${chk_component}:" == *:"SCHISM":* ]]; then
+
+    #################### BEG :: TO BE MOVED? ####################
     # This block might need to be moved elsewhere in th build system
     if [ -n "${USE_PAHM}" ]; then
       USE_PAHM="$( getYesNo "${USE_PAHM}" )"
       if [ -z "${USE_PAHM}" -o "${USE_PAHM}" == "no" ]; then
         export USE_PAHM=
       else
-       export USE_PAHM=ON 
+        export USE_PAHM=ON 
+      fi
     fi
 
     if [ -n "${NO_PARMETIS}" ]; then
@@ -754,8 +757,10 @@ UsageBuild()
       if [ -z "${NO_PARMETIS}" -o "${NO_PARMETIS}" == "no" ]; then
         export NO_PARMETIS=
       else
-       export NO_PARMETIS=ON 
+        export NO_PARMETIS=ON 
+      fi
     fi
+    #################### END:: TO BE MOVED? ####################
 
     if [ -z "${NO_PARMETIS}" ]; then
       if ! $( checkSUBSTR "${tmp_thirdparty}" PARMETIS ) && \
