@@ -817,9 +817,9 @@ getYesNo()
   fi
 
   case "${param}" in
-    1|y|yes|yea|yeah|yep) answer="yes" ;;
-     0|n|no|not|nop|nope) answer="no"  ;;
-                       *) answer=""    ;; # DEFAULT
+    1|y|yes|yea|yeah|yep|on)  answer="yes" ;;
+     0|n|no|not|nop|nope|off) answer="no"  ;;
+                       *)     answer=""    ;; # DEFAULT
   esac
 
   echo -n "${answer}"

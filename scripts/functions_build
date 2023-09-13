@@ -740,16 +740,35 @@ UsageBuild()
   # by using the --thirdparty="parmetis" option. We issue a warning here to let the user
   # know that he/she might need to specify this library.
   if [[ ":${chk_component}:" == *:"SCHISM":* ]]; then
-    if ! $( checkSUBSTR "${tmp_thirdparty}" PARMETIS ) && \
-       [ -z "${PARMETIS_HOME}" ] && [ -z "${PARMETISHOME}" ]; then
-      procWarn "The PARMETIS library might be needed for the compilation of SCHISM." \
-               "Please supply the PARMETIS_HOME or PARMETISHOME environment" \
-               "variable that points to the location of the pre-compiled library or use the" \
-               "--thirdparty="parmetis" option in the build.sh script to compile the" \
-               "library from within CoastalApp (NOTE: need to download first the library" \
-               "by running the download_parmetis.sh script found in the scripts directory." \
-               "Finally, if the library is not provided, then SCHISM can use its internal" \
-               "version of ParMETIS or the NO_PARMETIS option (OFF by default)."
+    # This block might need to be moved elsewhere in th build system
+    if [ -n "${USE_PAHM}" ]; then
+      USE_PAHM="$( getYesNo "${USE_PAHM}" )"
+      if [ -z "${USE_PAHM}" -o "${USE_PAHM}" == "no" ]; then
+        export USE_PAHM=
+      else
+       export USE_PAHM=ON 
+    fi
+
+    if [ -n "${NO_PARMETIS}" ]; then
+      NO_PARMETIS="$( getYesNo "${NO_PARMETIS}" )"
+      if [ -z "${NO_PARMETIS}" -o "${NO_PARMETIS}" == "no" ]; then
+        export NO_PARMETIS=
+      else
+       export NO_PARMETIS=ON 
+    fi
+
+    if [ -z "${NO_PARMETIS}" ]; then
+      if ! $( checkSUBSTR "${tmp_thirdparty}" PARMETIS ) && \
+         [ -z "${PARMETIS_HOME}" ] && [ -z "${PARMETISHOME}" ]; then
+        procWarn "The PARMETIS library might be needed for the compilation of SCHISM." \
+                 "Please supply the PARMETIS_HOME or PARMETISHOME environment" \
+                 "variable that points to the location of the pre-compiled library or use the" \
+                 "--thirdparty="parmetis" option in the build.sh script to compile the" \
+                 "library from within CoastalApp (NOTE: need to download first the library" \
+                 "by running the download_parmetis.sh script found in the scripts directory." \
+                 "Finally, if the library is not provided, then SCHISM can use its internal" \
+                 "version of ParMETIS or the NO_PARMETIS option (OFF by default)."
+      fi
     fi
   fi
 
@@ -1876,6 +1895,21 @@ installNems() {
       for iprog in ${cmp_progs} tide_fac
       do
         prog="$( find -L ${icmp} -type f -name ${iprog} | head -1 )"
+
+        if [ -n "${prog:+1}" ]; then
+          ${CPBIN} ${prog} ${instdir}/
+        fi
+      done
+    fi
+    ######
+
+    ###### Extra SCHISM files
+    if [ "${icmp}" == "SCHISM" ]; then
+      echo
+      echo "   --- Installing from: ${icmp} to ${instdir} ---"
+      for iprog in ${APP_DIR}/SCHISM/build/bin/*
+      do
+        prog="${iprog}"
 
         if [ -n "${prog:+1}" ]; then
           ${CPBIN} ${prog} ${instdir}/
