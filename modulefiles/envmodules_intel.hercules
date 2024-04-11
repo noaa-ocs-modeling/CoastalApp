@@ -1,0 +1,117 @@
+#!/usr/bin/env bash-*-Shell-script-functions*-
+
+###########################################################################
+### Module File to load the required environment modules for the NEMS application
+###
+### Author: Panagiotis Velissariou <panagiotis.velissariou@noaa.gov>
+### Date:   June 26 2021
+###########################################################################
+
+
+####################
+# Get the directory where the script is located
+if [[ $(uname -s) == Darwin ]]; then
+  myDIRS="$(cd "$(dirname "$(grealpath -s "${BASH_SOURCE[0]}" )" )" && pwd -P)"
+else
+  myDIRS="$(cd "$(dirname "$(realpath -s "${BASH_SOURCE[0]}" )" )" && pwd -P)"
+fi
+myDIRS="${myDIRS} . ${APPMODS_DIR}"
+####################
+
+
+# This script is responsible for loading modules that are
+# compatible with the NUOPC Layer version used in NEMS.
+#       intel-oneapi-compilers/2022.0.2
+#       intel-oneapi-compilers/2022.2.1
+#       intel-oneapi-compilers/2023.1.0
+
+#       intel-oneapi-mpi/2021.5.1
+#       intel-oneapi-mpi/2021.7.1
+#       intel-oneapi-mpi/2021.9.0
+
+####################
+### (1) Load all needed environment modules.
+module purge
+#module load cmake/3.20.2 # (already the default cmake)
+
+module load intel-oneapi-compilers/2023.1.0 intel-oneapi-mpi/2021.7.1
+module load netcdf-c/4.9.2 netcdf-fortran/4.6.0
+module load netcdf-c/4.9.0 netcdf-fortran/4.5.3
+module load esmf/8.4.2
+
+module load intel-oneapi-compilers/2022.2.1 intel-oneapi-mpi/2021.7.1
+module load netcdf-c/4.9.0 netcdf-fortran/4.6.0
+
+module load esmf/8.3.1
+
+
+
+
+module load proj/4.8.0
+#module load proj/5.2.0
+
+
+
+module use /work/noaa/epic/role-epic/spack-stack/hercules/spack-stack-dev-20230825/envs/ufs-pio-2.5.10/install/modulefiles/Core
+###module use /work/noaa/epic/role-epic/spack-stack/hercules/modulefiles
+
+module load stack-intel/2021.9.0 stack-intel-oneapi-mpi/2021.9.0
+
+module load cmake/3.23.1
+
+module load netcdf-c/4.9.2 netcdf-fortran/4.6.0
+
+module load esmf/8.4.2
+
+
+
+####################
+### (2) Set some environments varaiables related to the loaded
+###     modules and required to compile the NEMS application properly.
+funcs="$( find ${myDIRS} -type f -iname "PlatformFuncs" | head -n 1 )"
+if [ -f "${funcs}" ]; then
+  source "${funcs}"
+
+  get_env_hdf5
+  get_env_netcdf
+fi
+unset funcs myDIRS
+
+
+########## BEG:: PLATFORM CUSTOMIZED SETTINGS ##########
+# Is this needed in all systems?
+# If file locking is not allowed in the filesystem, or the
+# HDF5 locking mechanism is not compatible with the
+# OS locking mechanism, then HDF5 (>=1.10.x) throws errors like
+# access denied when trying to READ/WRITE NetCDF files.
+# On some platforms HDF5 locking is disabled on other it is not.
+# If you experience these problems uncomment the next line
+# (this should be done automatically when loading this file - todo).
+#export HDF5_USE_FILE_LOCKING=FALSE
+
+if [ -z "${NETCDF_CONFIG}" ]; then
+  export NETCDF_CONFIG=${NETCDF_HOME:+${NETCDF_HOME}/bin/nc-config}
+fi
+
+if [ -z "${NETCDF_INCDIR}" ]; then
+  export NETCDF_INCDIR=${NETCDF_INCLUDE_DIRS:+${NETCDF_INCLUDE_DIRS}}
+  if [ -z "${NETCDF_INCDIR}" ]; then
+    export NETCDF_INCDIR=${NETCDF_HOME:+${NETCDF_HOME}/include}
+  fi
+fi
+
+if [ -z "${NETCDF_LIBDIR}" ]; then
+  export NETCDF_LIBDIR=${NETCDF_LIBRARY_DIRS:+${NETCDF_LIBRARY_DIRS}}
+  if [ -z "${NETCDF_LIBDIR}" ]; then
+    export NETCDF_LIBDIR=${NETCDF_HOME:+${NETCDF_HOME}/lib}
+  fi
+fi
+
+if [ -z "${ESMFMKFILE}" ]; then
+  echo "The variable ESMFMKFILE is not set. Please load the esmf module for your platform"
+  echo "Exiting ..."
+  exit 1
+else
+  export ESMFMKFILE=${ESMFMKFILE}
+fi
+########## END:: PLATFORM CUSTOMIZED SETTINGS ##########
