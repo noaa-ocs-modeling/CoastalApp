@@ -1,5 +1,5 @@
 # CoastalApp
-
+### CoastalApp will be deprecated. Please switch to https://github.com/oceanmodeling/ufs-coastal 
 [![tests](https://github.com/noaa-ocs-modeling/CoastalApp/workflows/tests/badge.svg)](https://github.com/noaa-ocs-modeling/CoastalApp/actions?query=workflow%3Atests)
 [![build](https://github.com/noaa-ocs-modeling/CoastalApp/workflows/build/badge.svg)](https://github.com/noaa-ocs-modeling/CoastalApp/actions?query=workflow%3Abuild)
 [![license](https://img.shields.io/github/license/noaa-ocs-modeling/CoastalApp)](https://creativecommons.org/share-your-work/public-domain/cc0)
