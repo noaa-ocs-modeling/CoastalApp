@@ -26,21 +26,20 @@ myDIRS="${myDIRS} . ${APPMODS_DIR}"
 ####################
 ### (1) Load all needed environment modules.
 module purge
+module load cmake
 
-module use /scratch1/NCEPDEV/nems/role.epic/spack-stack/spack-stack-1.5.1/envs/unified-env-rocky8/install/modulefiles/Core
+module use /scratch2/STI/coastal/common/apps/modulefiles
+module load hpc-common
 
-module load stack-intel/2021.5.1
-module load stack-intel-oneapi-mpi/2021.5.1
+#module load hpc-intel/19.0.5.281 hpc-impi
+#module load hpc-intel/2020.2 hpc-impi
+module load hpc-intel/2022.1.2 hpc-impi
+#module load hpc-intel/2022.3.0 hpc-impi
 
-module load cmake/3.23.1
-
-#module load jasper/2.0.32
-#module load zlib/1.2.13
-#module load libpng/1.6.37
-
-module load hdf5/1.14.0
-module load netcdf-c/4.9.2 netcdf-fortran/4.6.0
-module load esmf/8.5.0
+module load hdf5/1.10.9 netcdf/4.7.4
+module load proj/4.8.0
+module load parmetis/4.0.3
+module load esmf/8.3.1
 
 
 ###################
